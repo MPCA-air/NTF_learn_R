@@ -1,0 +1,63 @@
+---
+title: "R | Installation"
+output: 
+ html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    theme: readable
+    highlight: tango
+    css: css/camp_style.css
+fontsize: 14pt
+monofont: Source Code Pro
+monofontoptions: Scale = 1.1
+---
+
+
+<style> code {color: #535353 !important;} </style>
+
+```{r setup, include=FALSE}
+library(rmarkdown)
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
+htmltools::tagList(rmarkdown::html_dependency_font_awesome())
+```
+
+
+# Install `R`
+
+Let’s install the newest version of __R__. This data software is contributed to and maintained by people all around the world. It lets you perform data analysis like you're writing a recipe for chocolate chip cookies. Once you've written your favorite recipe you can use it over and over again and share it with your collaborators. 
+
+
+__Install R__  
+
+1. Open your web browser and navigate to R's download page -> [CRAN](https://cran.r-project.org).
+1. Choose your operating system from the top. Or use the shortcuts below.
+    - __WINDOWS__ go here: [Windows](https://cran.r-project.org/bin/windows/base/)
+    - __MAC__ go here: [Mac](https://cran.r-project.org/bin/macosx/)
+        - Scroll down and download the highest numbered file (ex. __R-3.5.0.pkg__)
+    - __LINUX__ go here: [Linux](https://cran.r-project.org/bin/linux/)
+1. Open the file and install with the default options.
+
+
+  
+# Install `RStudio` 
+
+Now let's install the newest version of __RStudio__. This is the handy user interface we use to write R scripts and keep our projects organized. It isn't required to use R, but it makes things easier.
+
+
+__Install RStudio__  
+
+
+1. Open your web browser and navigate to [www.rstudio.com](https://www.rstudio.com/products/rstudio/download/#download).
+1. Choose your operating system and download the newest version.
+1. Open the file and install with the default options.
+1. You are officially ready.
+
+
+
+# Do a happy dance!
+
+![](http://www.gifbin.com/bin/012012/1331836791_kittens_on_turntables.gif)
+
+
+

@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>R Camp | day 1</title>
+
+<script src="01_NTF_Air_Demo_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="01_NTF_Air_Demo_files/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="01_NTF_Air_Demo_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="01_NTF_Air_Demo_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="01_NTF_Air_Demo_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="01_NTF_Air_Demo_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="01_NTF_Air_Demo_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="01_NTF_Air_Demo_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="01_NTF_Air_Demo_files/navigation-1.1/tabsets.js"></script>
+<link href="01_NTF_Air_Demo_files/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+pre, code { background-color: #f8f8f8; }
+code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code > span.dt { color: #204a87; } /* DataType */
+code > span.dv { color: #0000cf; } /* DecVal */
+code > span.bn { color: #0000cf; } /* BaseN */
+code > span.fl { color: #0000cf; } /* Float */
+code > span.ch { color: #4e9a06; } /* Char */
+code > span.st { color: #4e9a06; } /* String */
+code > span.co { color: #8f5902; font-style: italic; } /* Comment */
+code > span.ot { color: #8f5902; } /* Other */
+code > span.al { color: #ef2929; } /* Alert */
+code > span.fu { color: #000000; } /* Function */
+code > span.er { color: #a40000; font-weight: bold; } /* Error */
+code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #000000; } /* Constant */
+code > span.sc { color: #000000; } /* SpecialChar */
+code > span.vs { color: #4e9a06; } /* VerbatimString */
+code > span.ss { color: #4e9a06; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #000000; } /* Variable */
+code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code > span.ex { } /* Extension */
+code > span.at { color: #c4a000; } /* Attribute */
+code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="css\camp_style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">R Camp | day 1</h1>
+
+</div>
+
+
+<div id="good-morning" class="section level3 unnumbered">
+<h3>Good morning</h3>
+<p><br></p>
+<blockquote>
+<p>First day on the job. You are given a lap top with one folder on it. In the folder is an Excel file. On this first day of work you also receive an email asking what you think of the data and that the data isn’t a full set and will be updated within the current season. You are told that once the data set is full, you will have 1 day to complete your analysis. The MISSION IMPOSSIBLE begins.</p>
+</blockquote>
+<blockquote>
+<p>First things first, let’s load this data set into R.</p>
+</blockquote>
+<blockquote>
+<p>R is a language that is written in packages. In order to complete certain commands, you need to load these packages.</p>
+</blockquote>
+<blockquote>
+<p>This is an Excel file. So, we will load <em>read_excel</em> to read in the data.</p>
+</blockquote>
+<p>install.packages(“readxl”) library(readxl)</p>
+<blockquote>
+<p>There are a series of commands within each pacakge. Since we’ve got an xlsx file, we run “read.xlsx()”</p>
+</blockquote>
+<p>data_2008 &lt;- read_xlsx(“X:/Agency_Files/Outcomes/Risk_Eval_Air_Mod/_Air_Risk_Evaluation/R/R_Camp/NTP_Training/NTF_learn_R/data/example data - firsthalf.xlsx“, sheet =”2008“)</p>
+</div>
+<div id="read-in-the-wb-and-look-at-the-tabs." class="section level2">
+<h2><span class="header-section-number">0.1</span> read in the wb and look at the tabs.</h2>
+<p>data_2009 &lt;- read_xlsx(“X:/Agency_Files/Outcomes/Risk_Eval_Air_Mod/_Air_Risk_Evaluation/R/R_Camp/NTP_Training/NTF_learn_R/data/example data - firsthalf.xlsx“, sheet =”2009“)</p>
+<blockquote>
+<p>We can look at the data in multiple ways Another package that we use all the time to pull together datasets or summarize datasets is called <em>dplyr</em>.</p>
+</blockquote>
+<p>install.packages(“dplyr”) library(dplyr)</p>
+<p>names() nrows() glimpse()</p>
+<blockquote>
+<p>Since it looks like our data has the same format and only the year is changing, then we can just bind up the rows with <em>bind_rows</em></p>
+</blockquote>
+<p>air_data &lt;- bind_rows(data_2008, data_2009)</p>
+<blockquote>
+<p>Now we’ve got all the data together, and what dates do we have?</p>
+</blockquote>
+<p>summary(air_data) ##(can we see the missing dates this way?) &gt;They have the same names <br></p>
+<p style="display:block; text-align:center;">
+<img src="https://pbs.twimg.com/media/DNhps0gUQAAcS55.jpg" width="520">
+</p>
+<p><br><br><br></p>
+</div>
+<div id="welcome-to-r-camp" class="section level1 unnumbered">
+<h1>Welcome to R Camp!</h1>
+<hr>
+<p><img src="http://placekitten.com/g/247/252" /> <img src="http://placekitten.com/g/249/251" /> <img src="http://placekitten.com/g/249/253" /></p>
+<p><br></p>
+<p>We are <strong>Kristie</strong>, <strong>Dorian</strong>, and <strong>Derek</strong>.</p>
+<p>We like <strong>R</strong>.</p>
+<p>We are not computer scientists.</p>
+<p>Sometimes we mistakes. You will see us make mistakes. Feel free to laugh. It’s okay. Really.</p>
+<p><br><br></p>
+<div id="who-are-you" class="section level3 unnumbered">
+<h3>Who are you?</h3>
+<p><br></p>
+<div id="you-are-the-great-cohort-of-2018" class="section level4 unnumbered">
+<h4>You are the great cohort of   <span style="font-size: 1.8em;"><i class="fa fa-group" aria-hidden="true" style="color: steelblue;"></i></span> <span style="font-size: 2.7em;">2018</span><span style="font-size: 2em;"><i class="fa fa-group" aria-hidden="true" style="color: steelblue;"></i></span></h4>
+<div class="figure">
+<img src="images/name_cloud.png" widht="70%" />
+
+</div>
+<p><br></p>
+<p>You are the all in this together. Use each other as a resource. Share ideas, share code, collaborate. Make bad R jokes.<br />
+<br></p>
+<p><strong>Here’s one:</strong> <em>What ’tis the pirate’s favorite letter?</em></p>
+<p><br></p>
+<div class="figure">
+<img src="http://photos1.blogger.com/x/blogger/1599/2546/1600/667273/R-is-for-Pirate.jpg" width="230" />
+
+</div>
+<p><br></p>
+<blockquote>
+<p><em>Just kidding. You’d think it’d be R, but ’tis the <strong>C</strong> they truly love.</em></p>
+</blockquote>
+<p><br></p>
+</div>
+</div>
+<div id="disclaimer" class="section level3 unnumbered">
+<h3><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:orange;"></i> Disclaimer</h3>
+<p>Spelling is very important in R.</p>
+<p><br></p>
+<div class="figure">
+<img src="https://blog.wdtinc.com/hs-fs/hubfs/blog-files/lightning_spelling.jpg?t=1509031247746&amp;width=600&amp;name=lightning_spelling.jpg" />
+
+</div>
+<p><em>The Official Guide to spelling lightning.</em></p>
+<p><br></p>
+<blockquote>
+<p>We don’t know everything.<br />
+Actually, we just learned how to spell lightening storm.<br />
+Ahem, I mean <strong>lightning</strong> storm.</p>
+</blockquote>
+<p><br></p>
+</div>
+<div id="lets-go" class="section level3 unnumbered">
+<h3>LET’S GO!</h3>
+</div>
+</div>
+<div id="new-project" class="section level1">
+<h1><span class="header-section-number">1</span> | New project</h1>
+<hr>
+<p>Okay detective, let’s open a new dossier for today’s mystery.</p>
+<p><br></p>
+<p><strong>Step 1:</strong> Start a new project</p>
+<ul>
+<li>In <em>Rstudio</em> select <em>File</em> from the top menu bar</li>
+<li>Choose <em>New Project…</em></li>
+<li>Choose <em>New Directory</em></li>
+<li>Choose <em>New Project</em></li>
+<li>Enter a project name such as <code>&quot;cat_mystery&quot;</code></li>
+<li>Select <em>Browse…</em> and choose a folder where you normally perform your work.</li>
+<li>Click <em>Create Project</em></li>
+</ul>
+<div id="new-r-script" class="section level2">
+<h2><span class="header-section-number">1.1</span> New R script</h2>
+<p>R “scripts” are where you write your R code and document your work. They’re like recipes or prescriptions you write the tell the computer what you want to happen to your data.</p>
+<p><strong>Step 2:</strong> Open a new R script</p>
+<ul>
+<li>In the upper left, click on the white file icon with the green (+) sign.</li>
+<li>Select <em>R Script</em>.</li>
+</ul>
+<div class="figure">
+<img src="http://docplayer.net/docs-images/25/5462802/images/10-0.png" width="450" />
+
+</div>
+<p><br></p>
+<p><strong>Save script</strong></p>
+<ul>
+<li>Click on the floppy disk icon</li>
+<li>Enter a file name such as <code>cat_code.R</code></li>
+</ul>
+</div>
+<div id="a-tour-of-r-studio" class="section level2">
+<h2><span class="header-section-number">1.2</span> A tour of R Studio</h2>
+<p><img src="http://www.sthda.com/sthda/RDoc/images/rstudio.png" width="580"></p>
+<p><br></p>
+<p><strong>1. Code editor</strong></p>
+<p>This is where you write your scripts and document your work. The tabs at the top of the code editor allow you to view scripts and data sets you have open. This is where you’ll spend most of your time.</p>
+<p><strong>2. Console</strong></p>
+<p>This is where code is actually executed by the computer. It shows code that you have run and any errors, warnings, or other messages resulting from that code. You can input code directly into the console and run it, but it won’t be saved for later. That’s why we like to run all of our code directly from a script in the code editor.</p>
+<p><strong>3. Workspace</strong></p>
+<p>This pane shows all of the objects and functions that you have created, as well as a history of the code you have run during your current session. The environment tab shows all of your objects and functions. The history tab shows the code you have run. Note the <em>broom</em> icon below the Connections tab. This cleans shop and allows you to clear all of the objects in your workspace.</p>
+<p><strong>4. Plots and files</strong></p>
+<p>These tabs allows you to view and open files in your current directory, view plots and other visual objects like maps, view your installed packages and their functions, and access the help window. If at anytime you’re unsure what a function or package does, enter the name of thing after a question mark. For example, try entering <code>?mean</code> into the console and push <strong>ENTER</strong>.</p>
+</div>
+<div id="make-it-your-own" class="section level2">
+<h2><span class="header-section-number">1.3</span> Make it your own</h2>
+<p>Let’s add a little style so we feel more at home. Follow these steps to change the font-size and and color scheme:</p>
+<ol style="list-style-type: decimal">
+<li>Go to <strong>Tools</strong> on the top navigation bar.</li>
+<li>Choose <code>Global Options...</code></li>
+<li>Choose <code>Appearance</code> with the paint bucket.</li>
+<li>Find something you like.</li>
+</ol>
+<p><br></p>
+<div class="figure">
+<img src="images/font_change.png" style="margin-left:20px;" width="420" />
+
+</div>
+</div>
+</div>
+<div id="first-steps" class="section level1">
+<h1><span class="header-section-number">2</span> | First steps</h1>
+<hr>
+<p>You can create objects and assign values to them using the “left arrow” <code>&lt;-</code>, more officially known as the assignment operator. Try adding the code below to your R script and creating an object called <code>name</code>.</p>
+<p>Once you add the code to your script, you can run the code by moving the blinking cursor to that line and pressing <strong>CTRL + ENTER</strong>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a new object</span>
+cat &lt;-<span class="st"> &quot;Derek&quot;</span>
+
+cat
+
+
+<span class="co"># When saving text to a character object you need quotation marks.</span>
+<span class="co"># This won&#39;t work.</span>
+cat &lt;-<span class="st"> </span>Derek
+
+
+<span class="co"># Without quotes, R looks for an object called Derek, and then let you know that it couldn&#39;t find one. </span>
+
+
+<span class="co"># You can copy an object by saving it to a new name.</span>
+cat2 &lt;-<span class="st"> </span>cat2
+
+
+<span class="co"># Overwrite an object</span>
+cat &lt;-<span class="st"> &quot;Derek II&quot;</span>
+  
+cat
+
+
+<span class="co"># Did name2 change as well?</span>
+cat2  </code></pre></div>
+<p><br></p>
+<p>If you create a name you don’t like you can drop it with the function <code>rm()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Delete objects to clean-up your environment</span>
+<span class="kw">rm</span>(cat)
+
+<span class="kw">rm</span>(cat2)
+
+
+<span class="co"># Now, how do I get the &#39;cat&#39; object back?</span></code></pre></div>
+<p><br></p>
+<div class="tip">
+<p><strong>HOORAY!</strong> Don’t worry about deleting data or making a mistake in R. When you load data files into R it only copies the contents. That means all your original data files will remain safe and won’t suffer from any accidental changes. If anything disappears or goes wrong in R, it’s okay! You can always re-load the data using your script. No more worries about whether you remembered to save the latest data file or not.</p>
+</div>
+<p><br></p>
+<div id="give-it-a-name" class="section level2">
+<h2><span class="header-section-number">2.1</span> Give it a name</h2>
+<p>Everything has a name in R and you can name things almost anything you like. You can even name your data <code>TOP_SECRET_Shhhhhh...</code> or <code>unicorn_sightings</code> or <code>the_worst_data_ever</code>.</p>
+<p>Sadly, there are a <em>few</em> minor restrictions. Object names can’t include spaces or special characters such as a <code>+</code>, <code>-</code>, <code>*</code>, <code>\</code>, <code>/</code>, <code>=</code>, <code>!</code>, or <code>)</code>. However, on the plus side object names can include a <code>_</code>.</p>
+<p><br></p>
+<p><strong>Your turn!</strong> <em>Try running some of these examples in your R console.</em></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">n cats &lt;-<span class="st"> </span><span class="dv">5</span>
+
+n<span class="op">*</span>cats &lt;-<span class="st"> </span><span class="dv">5</span>
+
+n_cats &lt;-<span class="st"> </span><span class="dv">5</span>
+
+n.cats &lt;-<span class="st"> </span><span class="dv">5</span>
+
+
+all_the_cats<span class="op">!</span><span class="st"> </span><span class="er">&lt;</span><span class="op">-</span><span class="st"> &quot;A very a big number&quot;</span>
+
+
+<span class="co"># You can add one cat</span>
+n_cats &lt;-<span class="st"> </span>n_cats <span class="op">+</span><span class="st"> </span><span class="dv">1</span>
+
+
+<span class="co"># But what if you have 10,000 cats?</span>
+n_cats &lt;-<span class="st"> </span><span class="dv">10</span>,<span class="dv">000</span>
+
+
+<span class="co"># They also cannot begin with a number.</span>
+1st_cat &lt;-<span class="st"> &quot;Fluffer Puff&quot;</span>
+
+<span class="co"># But they can contain numbers.</span>
+cat1    &lt;-<span class="st"> &quot;Fluffer Puff&quot;</span></code></pre></div>
+<p><br></p>
+<blockquote>
+<p><strong>NOTE:</strong> What happened when you created <code>n_cats</code> the second time?</p>
+<p>When you create a new object that has the same name as something that already exists, the new object will replace the old one. Sometimes you’ll want to update an existing object and replace the old version. Other times you may want to copy an object to a new name to preserve the original. This is similar to choosing between <em>Save</em> and <em>Save As</em> when you save a file.</p>
+</blockquote>
+</div>
+<div id="multiple-items" class="section level2">
+<h2><span class="header-section-number">2.2</span> Multiple items</h2>
+<hr>
+<p>You can put multiple values inside <code>c()</code> to make a vector of items. Each additional item is separated by a comma. The <code>c</code> stands for to conCATenate or to combine values.</p>
+<p>Let’s use <code>c()</code> to create a few vectors of cat names and their ages.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a character vector and name it cat_names</span>
+cat_names &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Fluffy&quot;</span>, <span class="st">&quot;Longmire&quot;</span>, <span class="st">&quot;Lucy&quot;</span>)
+
+<span class="co"># Print cat_names to the console</span>
+cat_names</code></pre></div>
+<pre><code>## [1] &quot;Fluffy&quot;   &quot;Longmire&quot; &quot;Lucy&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a numeric vector and name it cat_ages</span>
+cat_ages  &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">7</span>,<span class="fl">14.5</span>)
+
+<span class="co"># Print cat_ages to the console</span>
+cat_ages</code></pre></div>
+<pre><code>## [1]  3.0  7.0 14.5</code></pre>
+</div>
+<div id="make-a-table" class="section level2">
+<h2><span class="header-section-number">2.3</span> Make a table</h2>
+<p>A table in R is known as a <strong>data frame</strong>. Data frames have columns of data, each made from a named vector. Let’s make a data frame with two columns by using the cat names and ages from above.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create table with columns &quot;names&quot; and &quot;ages&quot; with values from the cat_names and cat_ages vectors</span>
+cat_df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">names =</span> cat_names,
+                     <span class="dt">ages  =</span> cat_ages)
+
+<span class="co"># Print the cat_df data frame to the console</span>
+cat_df</code></pre></div>
+<pre><code>##      names ages
+## 1   Fluffy  3.0
+## 2 Longmire  7.0
+## 3     Lucy 14.5</code></pre>
+<p><br></p>
+<p>To see the values in one of your columns, use the <code>$</code> sign after the name of your table.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Print the &quot;ages&quot; column in cat_df</span>
+cat_df<span class="op">$</span>ages</code></pre></div>
+<pre><code>## [1]  3.0  7.0 14.5</code></pre>
+<div class="quiz">
+<h3 id="pop-quiz-hotshot" class="unnumbered">Pop Quiz, hotshot!</h3>
+<p><strong>Which of these names are valid for a new object? (Hint: You are allowed to test them.)</strong></p>
+<p><input type="radio"> <em>my cat fred</em> <br> <input type="radio"> <em>my_CAT55</em> <br> <input type="radio"> <em>5cats</em> <br> <input type="radio"> <em>my-cat</em> <br> <input type="radio"> <em>Whatever!</em> <br></p>
+<br>
+<div class="toggle">
+<button class="btn_code">
+<em>Show solution</em>
+</button>
+<p><br></p>
+<p><i class="fa fa-check" aria-hidden="true" style="color: green;"></i> <code>my_CAT55</code></p>
+<p><em>Yes!! That was purrfect!</em></p>
+</div>
+</div>
+</div>
+<div id="leave-a-comment" class="section level2">
+<h2><span class="header-section-number">2.4</span> Leave a #comment</h2>
+<p>You may have noticed the text in the scripts with the <code>#</code> in front. These are called comments. Any line that starts with a <code>#</code> won’t be executed as R code. You can use the # to add notes in your script to make it easier for others and yourself to understand what is happening and why. You can also use comments to add warnings or instructions for others, add references to data you’re using, or point out things that need to be looked into further.</p>
+</div>
+<div id="functions" class="section level2">
+<h2><span class="header-section-number">2.5</span> Functions</h2>
+<div class="figure">
+<img src="images/pizza_cat.png" align="right" style="margin-left:25px; margin-bottom: 60px;" width="280" />
+
+</div>
+<p>Now that you know what objects are and how to create them, let’s learn how to use them. Functions take one or more inputs called “arguments”. They perform steps based on the arguments and usually return an output object.</p>
+<p><br></p>
+<p>You can think of a function like ordering pizza.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">order_pizza</span>(<span class="dt">address  =</span> <span class="st">&quot;140 3rd place, Bingo MN&quot;</span>, 
+            <span class="dt">toppings =</span> <span class="kw">c</span>(<span class="st">&quot;mouse whiskers&quot;</span>, <span class="st">&quot;catnip&quot;</span>, <span class="st">&quot;anchovies&quot;</span>), 
+            <span class="dt">time     =</span> <span class="st">&quot;ASAP&quot;</span>)</code></pre></div>
+<p><br></p>
+<p>The function above calls a pizza place and provides several arguments (your address, pizza toppings, and delivery time). With some luck, the function will sucessfully return a new object (your cat’s favorite pizza). Note that when you have more than one argument, you will use a comma to separate them.</p>
+<div id="mean-age" class="section level3 unnumbered">
+<h3>Mean age</h3>
+<p>We already covered two functions: <code>c()</code> and <code>data.frame()</code>. Now let’s use the <code>mean()</code> function to find the average age of our cats.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Call the mean function with cat_ages as input</span>
+cat_ages_mean &lt;-<span class="st"> </span><span class="kw">mean</span>(cat_ages) <span class="co"># Assigns the output to cat_ages_mean</span>
+
+<span class="co"># Print the cat_ages_mean value to the console</span>
+cat_ages_mean</code></pre></div>
+<pre><code>## [1] 8.166667</code></pre>
+<p><br></p>
+<p>The <code>mean()</code> function takes the <em>cat_ages</em> vector as input, performs some calculations, and returns a single numeric object. Note that we assigned the output object to the name <code>cat_ages_mean</code>. If you don’t assign the output object it will be printed to the console and won’t be saved. Sometimes this is okay, especially when you’re still in the exploratory stages.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Alternative without assigning output</span>
+<span class="kw">mean</span>(cat_ages) </code></pre></div>
+<pre><code>## [1] 8.166667</code></pre>
+<p><br></p>
+<p>Note that our <code>cat_ages</code> vector has not changed at all. Each function has its own “environment”, and all of its calculations happen inside its own bubble. Usually anything that happens inside a function won’t change objects outside of the function’s environment.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cat_ages</code></pre></div>
+<pre><code>## [1]  3.0  7.0 14.5</code></pre>
+<p><br></p>
+</div>
+<div id="function-summary" class="section level3 unnumbered">
+<h3>Function summary</h3>
+<p>There are functions in R that are more complex, but most boil down to the same general setup:</p>
+<blockquote>
+<p>new_output &lt;- function(input1, input2)</p>
+</blockquote>
+<p>You call the function with input arguments inside parentheses and get an output object in return. You can make your own functions in R and call them almost anything you like, even <code>my_amazing_cat_function()</code>. Naming rules for functions and arguments are the same as those for objects (no spaces or special characters like <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>\</code>, <code>=</code>, or <code>!</code> and they can’t begin with a number, sorry).</p>
+<div class="quiz">
+<h3 id="pop-quiz" class="unnumbered">Pop Quiz!</h3>
+<p><strong>Which of these is a valid function call?</strong></p>
+<p><input type="radio"> <em>lick(“paws” “tail”)</em> <br> <input type="radio"> <em>scratch, “couch”, “door”</em> <br> <input type="radio"> <em>sleep(3, “hours”)</em> <br> <input type="radio"> <em>meow(until fed)</em> <br> <input type="radio"> <em>shed(1 million, “hairs”)</em> <br></p>
+<br>
+<div class="toggle">
+<button class="btn_code">
+<em>Show solution</em>
+</button>
+<p><br></p>
+<p><i class="fa fa-check" aria-hidden="true" style="color: green;"></i> <code>sleep(3, &quot;hours&quot;)</code></p>
+<p><em>Correct! You’re quite good at this.</em></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="reading-and-loading-data" class="section level1">
+<h1><span class="header-section-number">3</span> | Reading and loading data</h1>
+<hr>
+<p>The first step of a good mystery is finding some clues. Here’s an example data table showing my favorite cats. It is saved on the internet as an Excel file <a href="https://raw.githubusercontent.com/MPCA-air/RCamp/master/data/my_cats.xlsx">here</a>.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Cat Name</th>
+<th align="right">Cat Age</th>
+<th align="left">Cat Color</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Mr. Sauce</td>
+<td align="right">3</td>
+<td align="left">Salt-n-pepper</td>
+</tr>
+<tr class="even">
+<td align="left">Sad Face</td>
+<td align="right">2</td>
+<td align="left">Tabby</td>
+</tr>
+<tr class="odd">
+<td align="left">Noodles</td>
+<td align="right">6</td>
+<td align="left">Calico</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<blockquote>
+<p><strong>But how do we get this data into R?</strong></p>
+</blockquote>
+<div id="csv-to-the-rescue" class="section level2">
+<h2><span class="header-section-number">3.1</span> CSV to the rescue</h2>
+<p>The main data format in R is the <strong>CSV</strong> <em>(comma-separated values)</em>. A <strong>CSV</strong> is a simple text file that can be opened in R and most other stats software, including Excel.</p>
+<p>Here’s how the example cat table looks when it is saved as a <strong>.CSV</strong> file.</p>
+<p><strong>my_cats.csv</strong></p>
+<pre><code>Cat Name,Cat Age,Cat Color  
+Mr. Sauce,3,Salt-n-pepper  
+Two Face,2,Tabby  
+Noodles,6,Calico  </code></pre>
+<p>It looks squished together right now, but that’s okay. When it’s opened in R the text will become a familiar looking table with columns and rows.</p>
+<p><br></p>
+</div>
+<div id="save-excel-to-csv-file" class="section level2">
+<h2><span class="header-section-number">3.2</span> Save Excel to CSV file</h2>
+<p>First, open the Excel cat table by copying this path into a new window or to the Windows search bar - <code>X:\Agency_Files\Outcomes\Risk_Eval_Air_Mod\_Air_Risk_Evaluation\R\R_Camp\Student Folder\my_cats.xlsx</code>.</p>
+<p>And then follow these instructions to save the Excel file as a <em>CSV</em> file.</p>
+<ul>
+<li>Go to <em>File</em><br />
+</li>
+<li><em>Save As</em><br />
+</li>
+<li><em>Browse</em> to your project folder<br />
+</li>
+<li>Create new “data” folder<br />
+</li>
+<li>Save as type: _CSV (Comma Delimited) (*.csv)_
+<ul>
+<li>Any of the <em>CSV</em> options will work<br />
+</li>
+</ul></li>
+<li>Click <strong>Yes</strong><br />
+</li>
+<li>Close Excel (Click “Don’t Save”)</li>
+</ul>
+<p><br></p>
+<p>Now let’s check that it worked. Return to RStudio and open your new data folder by finding it in your <em>Files</em> tab in the lower right window. Click on your <em>CSV</em> file and choose <strong>View File</strong>.</p>
+</div>
+<div id="read-csv-into-r" class="section level2">
+<h2><span class="header-section-number">3.3</span> Read CSV into R</h2>
+<p>Copy the code below to your R script and run the line with the <code>read.csv</code> function (Hit <strong>CTRL + ENTER</strong>). It will return a nice cat data frame called <code>my_cats</code>. The character string <code>&quot;data/my_cats.csv&quot;</code> inside the parentheses of the <code>read.csv()</code> function is the path of the data file.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">read.csv</span>(<span class="st">&quot;data/my_cats.csv&quot;</span>)</code></pre></div>
+<pre><code>##    Cat.Name Cat.Age     Cat.Color
+## 1 Mr. Sauce       3 Salt-n-pepper
+## 2  Sad Face       2         Tabby
+## 3   Noodles       6        Calico</code></pre>
+<p><br></p>
+<p><strong>Note:</strong> The location of the CSV file above will only work if you have your project open. When your project is open, R sets the working directory automatically to your project folder. We will demonstrate reading a file directly from the X-drive a bit later.</p>
+<p><br></p>
+</div>
+<div id="name-your-table" class="section level2">
+<h2><span class="header-section-number">3.4</span> Name your table</h2>
+<p>If you want to work with the data in R, you will need to give it a name by using the assignment operator <code>&lt;-</code>.</p>
+<p>Try the code below.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_cat_file &lt;-<span class="st"> &quot;data/my_cats.csv&quot;</span>
+
+my_cats &lt;-<span class="st"> </span><span class="kw">read.csv</span>(my_cat_file)
+
+<span class="co"># Type the name of the table to view it in the console</span>
+my_cats</code></pre></div>
+<pre><code>##    Cat.Name Cat.Age     Cat.Color
+## 1 Mr. Sauce       3 Salt-n-pepper
+## 2  Sad Face       2         Tabby
+## 3   Noodles       6        Calico</code></pre>
+</div>
+<div id="bonus" class="section level2">
+<h2><span class="header-section-number">3.5</span> Bonus</h2>
+<p>You can save the file path as an object, such as <code>cat_file &lt;- &quot;data/my_cats.csv&quot;</code>. Then you can use that object as a shortcut to the location of your data. Now when you want to load the cat table you can write <code>read.csv(cat_file)</code>. This handy trick will make it easier down the road when you want to update your code to use with new data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Assign the file path character string as an object with the name cat_file.</span>
+cat_file &lt;-<span class="st"> &quot;data/my_cats.csv&quot;</span>
+
+
+<span class="co"># Use read.csv with the object cat_file which refers to &quot;data/my_cats.csv&quot;</span>
+<span class="kw">read.csv</span>(cat_file)</code></pre></div>
+<pre><code>##    Cat.Name Cat.Age     Cat.Color
+## 1 Mr. Sauce       3 Salt-n-pepper
+## 2  Sad Face       2         Tabby
+## 3   Noodles       6        Calico</code></pre>
+</div>
+</div>
+<div id="add-a-new-package" class="section level1">
+<h1><span class="header-section-number">4</span> | Add a new <code>package</code> 📦</h1>
+<hr>
+<blockquote>
+<p><strong>What is a package?</strong></p>
+</blockquote>
+<p>A <em>package</em> is a small add-on for R, like a phone App for your phone. They add capabilities like statistical functions, mapping powers, and special charts. In order to use a new package we first need to install it.</p>
+<div id="readr" class="section level2">
+<h2><span class="header-section-number">4.1</span> <em>readr</em></h2>
+<div class="figure">
+<img src="https://d21ii91i3y6o6h.cloudfront.net/gallery_images/from_proof/9289/medium/1447092171/readr-hexbin-sticker-from-rstudio.png" align="left" style="margin-right:18px;" width="145" />
+
+</div>
+<p><br></p>
+<p>The <em>readr</em> package helps import data into R in different formats. It does extra work for you like cleaning the data of extra white space and formatting tricky dates. Your packages are stored in your R <em>library</em>.</p>
+<p><br> <br></p>
+<p><strong>Add a package to your library</strong></p>
+<ol style="list-style-type: decimal">
+<li>Open <em>RStudio</em></li>
+<li>Type <code>install.packages(&quot;readr&quot;)</code> in the lower left console</li>
+<li>Press Enter</li>
+<li><em>Wait two seconds</em></li>
+<li>Open the <code>Packages</code> tab in the lower right window of RStudio to see the packages in your <em>library</em>
+<ul>
+<li>Use the search bar to find the <code>readr</code> package</li>
+</ul></li>
+</ol>
+<p><br></p>
+<p>The packages tab only shows the available packges that are installed. To use one of them, you will need to load it. Loading a package is like opening an App on your phone. To load a package we need to use the <code>library()</code> function. After loading the <em>readr</em> package you will able to read the cat data with the shiny new function <code>read_csv()</code>. This function is 300% better than <code>read</code>.<code>csv()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;readr&quot;</span>)
+
+my_cat_file &lt;-<span class="st"> &quot;data/my_cats.csv&quot;</span>
+
+<span class="kw">read_csv</span>(my_cat_file)</code></pre></div>
+<pre><code>## Parsed with column specification:
+## cols(
+##   `Cat Name` = col_character(),
+##   `Cat Age` = col_integer(),
+##   `Cat Color` = col_character()
+## )</code></pre>
+<pre><code>## # A tibble: 3 x 3
+##   `Cat Name` `Cat Age` `Cat Color`  
+##   &lt;chr&gt;          &lt;int&gt; &lt;chr&gt;        
+## 1 Mr. Sauce          3 Salt-n-pepper
+## 2 Sad Face           2 Tabby        
+## 3 Noodles            6 Calico</code></pre>
+<p><br></p>
+<div id="pro-tip" class="section level3 unnumbered">
+<h3><i class="fa fa-user-secret" aria-hidden="true" style="color:#040707;"></i> Pro-tip!</h3>
+<p>You may have noticed the row of three letter abbreviations under the column names. These describe the data type of each column.</p>
+<blockquote>
+<p><code>chr</code> stands for <strong>character</strong> vector, or a string of characters. Examples: <em>“apple”</em>, <em>“apple5”</em>, <em>“5 red apples”</em><br />
+<code>int</code> stands for <strong>integer</strong>. Examples: <em>5</em>, <em>34</em>, <em>1071</em></p>
+</blockquote>
+<p>We’ll see more data types, such as <code>dates</code> and <code>logical</code>, in later lessons.</p>
+<div class="quiz">
+<h3 id="pop-quiz-1" class="unnumbered">Pop Quiz!</h3>
+<p><strong>What data type is the <code>Color</code> column?</strong></p>
+<p><input type="radio"> <em>letters</em> <br> <input type="radio"> <em>character</em> <br> <input type="radio"> <em>words</em> <br> <input type="radio"> <em>numbers</em> <br> <input type="radio"> <em>integer</em> <br></p>
+<p><br></p>
+<div class="toggle">
+<button class="btn_code">
+<em>Show solution</em>
+</button>
+<p><br></p>
+<p><i class="fa fa-check" aria-hidden="true" style="color: green;"></i> <code>character</code></p>
+<pre><code>## 
+##  -------------- 
+## Meow! Not too shabby for a tabby. 
+##  --------------
+##       \
+##         \
+##           \
+##             |\___/|
+##             )     (
+##            =\     /=
+##              )===(
+##             /     \
+##             |     |
+##            /       \
+##            \       /
+##       jgs   \__  _/
+##               ( (
+##                ) )
+##               (_(
+## </code></pre>
+</div>
+</div>
+</div>
+<div id="get-help-on-functions" class="section level3">
+<h3><span class="header-section-number">4.1.1</span> Get help on functions</h3>
+<p>Let’s look a bit closer at the <code>read_csv()</code> function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">read_csv</span>(my_cat_file)
+
+<span class="co"># Get help </span>
+?read_csv</code></pre></div>
+<p><br></p>
+<p><strong>Function arguments</strong></p>
+<p>For <code>read_csv()</code>, the character object argument <em>my_cat_file</em> is what the function uses to know where to find the data file to read. Funcitons often have more than one argument. Type <code>?read_csv</code> into your console to see help in the lower-right pane that describes all of the function’s arguments and what they do. Many of the options have default arguments (such as <code>col_names = TRUE</code>), which the function will use if you don’t provide an alternative argument. A short scroll down in the help window will show you more details about the arguments and the values they take.</p>
+<blockquote>
+<p>`function(arg1 = input1, arg2 = input2, arg3…)</p>
+</blockquote>
+<p>The <em>file</em> argument tells us that the function expects a path to a file. It can be many types of files, even a <em>ZIP</em> file. Below that, you’ll see the <em>col_names</em> argument. This argument takes either <code>TRUE</code>, <code>FALSE</code>, or a character vector of column names. The default is <code>TRUE</code>, which means the first row in the CSV is used as the column names for your data.</p>
+<p><strong>Don’t like the column names?</strong> We can give new column names to the <em>col_names</em> argument like this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_cat_file &lt;-<span class="st"> &quot;data/my_cats.csv&quot;</span>
+
+<span class="co">#Assign desired column names as a character vector named column_names</span>
+column_names &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Name&quot;</span>, <span class="st">&quot;Age&quot;</span>, <span class="st">&quot;Color&quot;</span>)
+
+<span class="kw">read_csv</span>(my_cat_file, column_names)</code></pre></div>
+<pre><code>## # A tibble: 4 x 3
+##   Name      Age     Color        
+##   &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt;        
+## 1 Cat Name  Cat Age Cat Color    
+## 2 Mr. Sauce 3       Salt-n-pepper
+## 3 Sad Face  2       Tabby        
+## 4 Noodles   6       Calico</code></pre>
+<p><br></p>
+<p>We now have the column names we want, but now the original column names in our CSV file show up as a row in our data. We want <code>read_csv</code> to ignore the first row. Let’s look through the help window and try to find an argument that can help us. The <code>skip</code> argument looks like it could be helpful. Sure enough, the description is exactly what we’re looking for here. The default is <code>skip = 0</code> (read every line), but we can skip the first line by providing <code>skip = 1</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">column_names &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Name&quot;</span>, <span class="st">&quot;Age&quot;</span>, <span class="st">&quot;Color&quot;</span>)
+
+<span class="kw">read_csv</span>(my_cat_file, column_names, <span class="dt">skip =</span> <span class="dv">1</span>)</code></pre></div>
+<pre><code>## Parsed with column specification:
+## cols(
+##   Name = col_character(),
+##   Age = col_integer(),
+##   Color = col_character()
+## )</code></pre>
+<pre><code>## # A tibble: 3 x 3
+##   Name        Age Color        
+##   &lt;chr&gt;     &lt;int&gt; &lt;chr&gt;        
+## 1 Mr. Sauce     3 Salt-n-pepper
+## 2 Sad Face      2 Tabby        
+## 3 Noodles       6 Calico</code></pre>
+<p><br></p>
+<p><strong>Success!</strong></p>
+<p>You may be wondering why we included <code>skip =</code> for the skip argument, but only provided the objects for the other two arguments. When you pass inputs to a function, R will assume you’ve entered them in the same order that is shown on the ?help page. Let’s say you had a function called <code>feed_pets()</code> with 3 arguments:</p>
+<blockquote>
+<p><code>feed_pets(dogs = &quot;dogfood&quot;, cats = &quot;catnip&quot;, fish = &quot;pellets&quot;)</code>.</p>
+</blockquote>
+<p>A shorthand way to write this would be <code>feed_pets(&quot;dogfood&quot;, &quot;catnip&quot;, &quot;pellets&quot;)</code>. If we write <code>feed_pets(&quot;dogfood&quot;, &quot;pellets&quot;, &quot;catnip&quot;)</code>, the function will send <em>fish pellets</em> to your cat and <em>catnip</em> to your fish. No good. If you really wanted to write “pellets” second, you would need to tell R which food item belongs to each animal, such as <code>feed_pets(&quot;dogfood&quot;, fish = &quot;pellets&quot;, cats = &quot;catnip&quot;)</code>.</p>
+<p>The same thing goes for <code>read_csv()</code>. In <code>read_csv(my_cat_file, column_names, skip = 1)</code>, R assumes the file is <code>my_cat_file</code> and that the col_names should be set to <code>column_names</code>. The <code>skip =</code> argument has to be included explicitly because <em>skip</em> is the <strong>10th</strong> argument in <code>read_csv()</code>. If we don’t include <code>skip =</code>, R will assume the value we entered is meant for the function’s <strong>3rd</strong> argument.</p>
+</div>
+<div id="pro-tip-1" class="section level3 unnumbered">
+<h3><i class="fa fa-user-secret" aria-hidden="true" style="color:#040707;"></i> Pro-tip!</h3>
+<p>A handy shortcut to see the arguments of a function is to enter the name of the function in the console and the first parenthesis, such as <code>read_csv(</code>, and then hit <code>TAB</code> on the keyboard. This will bring up a drop-down menu of all the available arguments for that function.</p>
+<p><br></p>
+<p><strong>Key terms</strong></p>
+<p><code>package</code> An add-on for R that contains new functions someone created to help you. It’s like an App for R.<br />
+<code>library</code> The name of the folder that stores all your packages, and the function used to load a package.</p>
+<div class="quiz">
+<h3 id="pop-quiz-2" class="unnumbered">Pop Quiz!</h3>
+<p><br></p>
+<p><strong>What package does <code>read_csv()</code> come from?</strong></p>
+<p><input type="radio"> <em>dinosaur</em> <br> <input type="radio"> <em>get_data</em> <br> <input type="radio"> <em>readr</em> <br> <input type="radio"> <em>dplyr</em> <br> <input type="radio"> <em>tidyr</em> <br></p>
+<br>
+<div class="toggle">
+<button class="btn_code">
+<em>Show solution</em>
+</button>
+<p><br></p>
+<p><i class="fa fa-check" aria-hidden="true" style="color: green;"></i> <code>readr</code></p>
+<p><em>Great job! You’re fur real.</em></p>
+</div>
+<p><br><br><br></p>
+<p><strong>How would you load the package <code>catfinder</code>?</strong></p>
+<p><input type="radio"> <em>catfinder()</em> <br> <input type="radio"> <em>library(“catfinder”)</em> <br> <input type="radio"> <em>load(“catfinder”)</em> <br> <input type="radio"> <em>package(“catfinder”)</em> <br></p>
+<br>
+<div class="toggle">
+<button class="btn_code">
+<em>Show solution</em>
+</button>
+<p><br></p>
+<p><i class="fa fa-check" aria-hidden="true" style="color: green;"></i> <code>library(&quot;catfinder&quot;)</code></p>
+<p><em>Excellent! Keep the streak going.</em></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="data-exploration" class="section level1 unnumbered">
+<h1>Data exploration</h1>
+</div>
+<div id="pet-detective" class="section level1">
+<h1><span class="header-section-number">5</span> | Pet detective</h1>
+<hr>
+<div id="the-case-of-the-mopey-cat" class="section level2">
+<h2><span class="header-section-number">5.1</span> <em>The case of the mopey cat</em></h2>
+<p><img src="http://pre15.deviantart.net/653f/th/pre/i/2016/006/5/9/cat_in_the_rain_by_northumbrianartist-d9mzdda.jpg", align="right" width="250" style="margin-left:15px;"></p>
+<p>On your way home from work you find a <em>wet</em> and <em>mopey</em> cat sitting on your front stoop. Oh my! It looks so sad, maybe you can bring it inside and give it a treat.</p>
+<p>When you pick up the cat you notice a collar with a <strong>number</strong> on it.</p>
+<blockquote>
+<p><em>HINT: Your cat’s tag number is the same as the last digit of your birthday. Weird coincidence right?</em></p>
+</blockquote>
+<p>This gives you an idea! Your friend recently mentioned a list that has all the missing cats people have reported in the city. Maybe you can use the tag number to help find the lost kitty’s home.</p>
+<p><br></p>
+</div>
+<div id="its-inspector-time" class="section level2">
+<h2><span class="header-section-number">5.2</span> It’s inspector time!</h2>
+<div class="figure">
+<img src="http://orig00.deviantart.net/cf6c/f/2017/054/b/6/inspector_gadget_by_domejohnny-db04gni.png" align="right" style="-webkit-transform: scaleX(-1); transform: scaleX(-1); margin-right: 80px; margin-top: -10px" width="250" />
+
+</div>
+<p>Let’s get our script ready for some detective work. Since we bill by the hour we’re going to be very thorough with our documentation.</p>
+<p><strong>Script comments</strong></p>
+<p>Add a brief description of your new case to the top of the script using the comment symbol <code>#</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># This file documents my search for the home of a lost cat I found this evening.</span>
+
+<span class="co"># What I know so far</span>
+animal  &lt;-<span class="st"> &quot;cat&quot;</span>
+
+tag_num &lt;-<span class="st"> </span><span class="dv">444</span>
+
+pet_detective &lt;-<span class="st"> &quot;Agent Cooper&quot;</span>
+
+<span class="co"># Next steps</span>
+<span class="co"># 1. Find the missing cat database.</span>
+<span class="co"># 2. Load the cat data.</span>
+<span class="co">#</span></code></pre></div>
+<p><br></p>
+<p>Now let’s find ourselves some clues.</p>
+</div>
+</div>
+<div id="all-the-cats" class="section level1">
+<h1><span class="header-section-number">6</span> | All the cats!</h1>
+<hr>
+<p>Thanks to your friend, you can download a list of all the missing cats in your town. Follow the steps below to read the cat data into R.</p>
+<div id="find-the-files-location" class="section level2 unnumbered">
+<h2>Find the file’s location</h2>
+<p>Open this URL in your browser <a href="https://github.com/MPCA-air/RCamp/tree/master/data" class="uri">https://github.com/MPCA-air/RCamp/tree/master/data</a>, and find the file <code>missing_cat_list.csv</code>. To download, <strong>Right click</strong> on your cat’s file and select <strong>Save Link As…</strong>. Navigate to your project folder and save the file into a folder named <code>data\</code>. Don’t have a <code>data</code> folder? Go ahead and create a new one.</p>
+</div>
+<div id="add-the-file-location-to-your-script" class="section level2 unnumbered">
+<h2>Add the file location to your script</h2>
+<p>Now you can paste the file’s location into the <code>read_csv()</code> function. Here’s a code snippet to get you started.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;readr&quot;</span>)
+
+<span class="co"># Replace the `...` with the name of the file</span>
+all_cats_file &lt;-<span class="st"> &quot;data/...&quot;</span>
+
+
+<span class="co"># Replace the `...` with &#39;all_cats_file&#39;</span>
+all_cats &lt;-<span class="st"> </span><span class="kw">read_csv</span>(...)</code></pre></div>
+<p><br></p>
+<div class="toggle">
+<button class="btn_code">
+<em>Show solution</em>
+</button>
+<p><br></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;readr&quot;</span>)
+
+all_cats_file &lt;-<span class="st"> &quot;X:/Agency_Files/Outcomes/Risk_Eval_Air_Mod/_Air_Risk_Evaluation/R/R_Camp/Student Folder/missing_cat_list.csv&quot;</span>
+
+all_cats  &lt;-<span class="st"> </span><span class="kw">read_csv</span>(all_cats_file)</code></pre></div>
+<pre><code>## Parsed with column specification:
+## cols(
+##   name = col_character(),
+##   color = col_character(),
+##   age = col_integer(),
+##   gender = col_character(),
+##   country = col_character(),
+##   grumpy = col_integer(),
+##   fearful_of_people = col_integer(),
+##   playful = col_integer(),
+##   friendly_to_people = col_integer(),
+##   clumsy = col_integer(),
+##   greedy = col_integer(),
+##   owner_phone = col_character()
+## )</code></pre>
+</div>
+<div class="tip">
+<h2 id="copy-a-files-location" class="unnumbered">Copy a file’s location</h2>
+<p>In <em>Windows</em> there’s a handy trick to copy the path to a file on your computer:</p>
+<ul>
+<li>Hold Shift + Right click on the file name. Select “Copy as path” from the menu.</li>
+</ul>
+</div>
+<div id="pro-tip-2" class="section level3 unnumbered">
+<h3><i class="fa fa-user-secret" aria-hidden="true" style="color:#040707;"></i> Pro-tip!</h3>
+<blockquote>
+<p>File paths in R use forward slashes (<code>/</code>). In Windows you’ll need to switch backslashes (<code>\</code>) to forward slashes (<code>/</code>). A file on your desktop located at <code>C:\Desktop\file.csv</code> would be read into R as <code>read_csv(&quot;C:/Desktop/file.csv&quot;)</code></p>
+<p>One trick to quickly fix a long path name is to press <strong>CTRL + F</strong>. Then you can use search tool to find any (<code>\</code>) and replace it with (<code>/</code>).</p>
+</blockquote>
+<p><br></p>
+<p><strong>NOTE:</strong> It’s good practice to load the packages you will need at the top of your script. You will need to run these lines <strong>every</strong> time you open R or switch projects. If you forget, you’re likely to see this error message.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">read_csv</span>(my_cat_file)</code></pre></div>
+<pre><code>## Error in read_csv(my_cat_file): could not find function &quot;read_csv&quot;</code></pre>
+<p><br></p>
+<div class="figure">
+<img src="images/errors.png" width="380" />
+
+</div>
+</div>
+</div>
+<div id="view-the-cats" class="section level2 unnumbered">
+<h2>View the cats</h2>
+<p>Look in the upper right hand window of RStudio. This is the <em>Environment</em> window that shows all of the data frames you have created this session. You can see the names of the data frames, the number of observations (rows), and the number of variables (columns). This is helpful if you ever need to count your data (<em>Hint</em> <em>Hint</em>).</p>
+<p>To see <strong>all</strong> the cat data click on the table called <code>all_cats</code> in the <em>Environment</em> window.</p>
+<blockquote>
+<p>“There’s over 2,000 missing cats!”</p>
+</blockquote>
+<p>That’s a lot of cats. And there’s more bad news. There’s no column for tag numbers. So which cat is yours? Let’s see… Does your cat look more like a <em>Mr. Buttons</em> or a <em>Furry Potter</em>? That’s a tough call. We need more information!</p>
+<p>Let’s explore the missing cat data a bit more. Hopefully we can find some way to pick out your cat.</p>
+<div class="quiz">
+<h3 id="pop-quiz-hotshot-1" class="unnumbered">Pop Quiz, hotshot!</h3>
+<p><strong>What is the second column in the <code>all_cats</code> data frame?</strong></p>
+<p><input type="radio"> <em>age</em> <br> <input type="radio"> <em>gender</em> <br> <input type="radio"> <em>nametag</em> <br> <input type="radio"> <em>color</em> <br> <input type="radio"> <em>fur</em> <br></p>
+<p><br></p>
+<div class="toggle">
+<button class="btn_code">
+<em>Show solution</em>
+</button>
+<p><br></p>
+<p><i class="fa fa-check" aria-hidden="true" style="color: green;"></i> <code>color</code></p>
+<p><em>You sure aren’t kitten around! Great work!</em></p>
+</div>
+</div>
+</div>
+</div>
+<div id="dplyr" class="section level1">
+<h1><span class="header-section-number">7</span> | <strong>dplyr</strong></h1>
+<hr>
+<div class="figure">
+<img src="https://d33wubrfki0l68.cloudfront.net/071952491ec4a6a532a3f70ecfa2507af4d341f9/c167c/images/hex-dplyr.png" align="left" style="margin-right: 20px; margin-top: 8px" width="120" />
+
+</div>
+<p><br></p>
+<p><em>You’ve unlocked a new package!</em></p>
+<p>The <em>dplyr</em> package is the go-to tool for exploring, re-arranging, and summarizing data.</p>
+<p><br><br></p>
+<p>Use <code>install.packages(&quot;dplyr&quot;)</code> to add <em>dplyr</em> to your detective library.</p>
+<p><br></p>
+<p><strong>Quick stretch break <i class="fa fa-hourglass-half" aria-hidden="true" style="color:#040707;"></i></strong></p>
+<p>Stand up. Move around.</p>
+<p><br></p>
+<p><strong>Your analysis toolbox:</strong> The key <em>dplyr</em> functions</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Function</th>
+<th align="left">Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>select()</code></td>
+<td align="left">select individual columns to drop, keep, or reorder</td>
+</tr>
+<tr class="even">
+<td align="left"><code>arrange()</code></td>
+<td align="left">reorder or sort rows by value of a column</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>mutate()</code></td>
+<td align="left">Add new columns or update existing columns</td>
+</tr>
+<tr class="even">
+<td align="left"><code>filter()</code></td>
+<td align="left">pick a subset of rows by the value of a column</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>group_by()</code></td>
+<td align="left">split data into groups by values in a column</td>
+</tr>
+<tr class="even">
+<td align="left"><code>summarize()</code></td>
+<td align="left">calculate a single summary row for the entire table</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+</div>
+<div id="select" class="section level1">
+<h1><span class="header-section-number">8</span> | <code>select()</code></h1>
+<hr>
+<p>Use the <code>select()</code> function to drop a column you no longer need, to select a few columns to create a new sub-table, or rearrange the order of your table’s columns.</p>
+<p><strong>Drop a single column with a minus sign</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;dplyr&quot;</span>)
+
+<span class="co"># Drop the grumpy column</span>
+<span class="kw">select</span>(all_cats, <span class="op">-</span>grumpy)</code></pre></div>
+<pre><code>## # A tibble: 2,785 x 11
+##    name      color            age gender country  fearful_of_peop~ playful
+##    &lt;chr&gt;     &lt;chr&gt;          &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;               &lt;int&gt;   &lt;int&gt;
+##  1 Latte     grey and brown     3 Male   Austral~                2       5
+##  2 Othello   butterscotch      15 Female Thailand                1       7
+##  3 Hershey   tabby              5 Male   Peru                    1       6
+##  4 Aboulomri brown              3 Female UK                      1       2
+##  5 Scratches white             11 Male   Canada                  1       5
+##  6 Tuna      salt and pepp~    NA Male   Germany                 1       7
+##  7 Zonker    white              4 Female China                   5       5
+##  8 Ovidius   brown             10 Male   Spain                   2       5
+##  9 Delia     tabby              2 Female Canada                  4       5
+## 10 Hotdog    salt and pepp~     8 Female Spain                   4       6
+## # ... with 2,775 more rows, and 4 more variables:
+## #   friendly_to_people &lt;int&gt;, clumsy &lt;int&gt;, greedy &lt;int&gt;,
+## #   owner_phone &lt;chr&gt;</code></pre>
+<p><strong>Drop multiple columns with <code>-c(col_1, col_2)</code></strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Drop the grumpy and greedy columns</span>
+<span class="kw">select</span>(all_cats, <span class="op">-</span><span class="kw">c</span>(grumpy, greedy))</code></pre></div>
+<pre><code>## # A tibble: 2,785 x 10
+##    name      color            age gender country  fearful_of_peop~ playful
+##    &lt;chr&gt;     &lt;chr&gt;          &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;               &lt;int&gt;   &lt;int&gt;
+##  1 Latte     grey and brown     3 Male   Austral~                2       5
+##  2 Othello   butterscotch      15 Female Thailand                1       7
+##  3 Hershey   tabby              5 Male   Peru                    1       6
+##  4 Aboulomri brown              3 Female UK                      1       2
+##  5 Scratches white             11 Male   Canada                  1       5
+##  6 Tuna      salt and pepp~    NA Male   Germany                 1       7
+##  7 Zonker    white              4 Female China                   5       5
+##  8 Ovidius   brown             10 Male   Spain                   2       5
+##  9 Delia     tabby              2 Female Canada                  4       5
+## 10 Hotdog    salt and pepp~     8 Female Spain                   4       6
+## # ... with 2,775 more rows, and 3 more variables:
+## #   friendly_to_people &lt;int&gt;, clumsy &lt;int&gt;, owner_phone &lt;chr&gt;</code></pre>
+<p><strong>Keep only three columns</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Keep the name, grumpy and greedy columns</span>
+<span class="kw">select</span>(all_cats, <span class="kw">c</span>(name, grumpy, greedy))</code></pre></div>
+<pre><code>## # A tibble: 2,785 x 3
+##    name      grumpy greedy
+##    &lt;chr&gt;      &lt;int&gt;  &lt;int&gt;
+##  1 Latte          2      2
+##  2 Othello        2      2
+##  3 Hershey        1      3
+##  4 Aboulomri      7      7
+##  5 Scratches      3      7
+##  6 Tuna           1      2
+##  7 Zonker         3      3
+##  8 Ovidius        3      6
+##  9 Delia          5      6
+## 10 Hotdog         3      3
+## # ... with 2,775 more rows</code></pre>
+<p><strong>Rearrange: Move the <code>age</code> and <code>country</code> columns directly after <code>name</code></strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Move the `age` and `country` columns directly after `name`</span>
+<span class="co"># Leave `everything()` else in same order</span>
+<span class="kw">select</span>(all_cats, name, age, country, <span class="kw">everything</span>())</code></pre></div>
+<pre><code>## # A tibble: 2,785 x 12
+##    name      age country  color     gender grumpy fearful_of_peop~ playful
+##    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;   &lt;int&gt;            &lt;int&gt;   &lt;int&gt;
+##  1 Latte       3 Austral~ grey and~ Male        2                2       5
+##  2 Othello    15 Thailand buttersc~ Female      2                1       7
+##  3 Hershey     5 Peru     tabby     Male        1                1       6
+##  4 Aboulo~     3 UK       brown     Female      7                1       2
+##  5 Scratc~    11 Canada   white     Male        3                1       5
+##  6 Tuna       NA Germany  salt and~ Male        1                1       7
+##  7 Zonker      4 China    white     Female      3                5       5
+##  8 Ovidius    10 Spain    brown     Male        3                2       5
+##  9 Delia       2 Canada   tabby     Female      5                4       5
+## 10 Hotdog      8 Spain    salt and~ Female      3                4       6
+## # ... with 2,775 more rows, and 4 more variables:
+## #   friendly_to_people &lt;int&gt;, clumsy &lt;int&gt;, greedy &lt;int&gt;,
+## #   owner_phone &lt;chr&gt;</code></pre>
+</div>
+<div id="arrange" class="section level1">
+<h1><span class="header-section-number">9</span> | <code>arrange()</code></h1>
+<hr>
+<p>Use the <code>arrange()</code> function to sort data based on one or more of the columns in the table. Let’s use <code>arrange()</code> to answer some questions about the missing cats.</p>
+<ul>
+<li>Which cats are the most grumpy?</li>
+<li>Which cats are the oldest?</li>
+<li>Are there cats from Australia?</li>
+<li>What are the oldest cats from Australia?</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;dplyr&quot;</span>)
+
+<span class="co"># Sort by the grumpy column</span>
+all_cats &lt;-<span class="st"> </span><span class="kw">arrange</span>(all_cats, grumpy)
+
+<span class="co"># Enter the table name to view the ordered data</span>
+all_cats</code></pre></div>
+<pre><code>## # A tibble: 2,785 x 12
+##    name     color      age gender country  grumpy fearful_of_peop~ playful
+##    &lt;chr&gt;    &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;     &lt;int&gt;            &lt;int&gt;   &lt;int&gt;
+##  1 Hershey  tabby        5 Male   Peru          1                1       6
+##  2 Tuna     salt an~    NA Male   Germany       1                1       7
+##  3 Ludwig   white       15 Male   Peru          1                3       6
+##  4 Beastie  peaches~    13 Male   Thailand      1                2       5
+##  5 Hayley   grey an~     1 Female USA           1                6       7
+##  6 Fuzzina~ peaches~     5 Male   New Zea~      1                2       6
+##  7 Desiree  black        9 Male   Thailand      1                1       7
+##  8 Zoloft   butters~    20 Female UK            1                2       7
+##  9 Dinky    salt an~     4 Male   Peru          1                1       7
+## 10 Butters~ brown        6 Male   Thailand      1                1       7
+## # ... with 2,775 more rows, and 4 more variables:
+## #   friendly_to_people &lt;int&gt;, clumsy &lt;int&gt;, greedy &lt;int&gt;,
+## #   owner_phone &lt;chr&gt;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># To sort in descending order (highest to lowest) </span>
+<span class="co"># Add desc() around the column name</span>
+all_cats &lt;-<span class="st"> </span><span class="kw">arrange</span>(all_cats, <span class="kw">desc</span>(grumpy))
+
+
+<span class="co"># View the top 5 rows using head()</span>
+<span class="kw">head</span>(all_cats)</code></pre></div>
+<pre><code>## # A tibble: 6 x 12
+##   name    color         age gender country grumpy fearful_of_peop~ playful
+##   &lt;chr&gt;   &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;int&gt;            &lt;int&gt;   &lt;int&gt;
+## 1 Aboulo~ brown           3 Female UK           7                1       2
+## 2 Abigail grey and b~     5 Male   Canada       7                3       7
+## 3 Broody  brown          17 Female China        7                1       7
+## 4 Albert  butterscot~    15 Male   Canada       7                7       1
+## 5 Barbra  striped        11 Female Thaila~      7                1       6
+## 6 Alfred  peaches an~    14 Male   Peru         7                7       5
+## # ... with 4 more variables: friendly_to_people &lt;int&gt;, clumsy &lt;int&gt;,
+## #   greedy &lt;int&gt;, owner_phone &lt;chr&gt;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Find the Aussie cats</span>
+
+
+<span class="co"># Find the ancient Aussie cats</span></code></pre></div>
+<p><br></p>
+<div id="pro-tip-3" class="section level3 unnumbered">
+<h3><i class="fa fa-user-secret" aria-hidden="true" style="color:#040707;"></i> Pro-tip!</h3>
+<blockquote>
+<p>When you save an arranged data table it maintains its order. This is perfect for sending people a quick <strong>Top 10</strong> list of pollutants or sites.</p>
+</blockquote>
+</div>
+</div>
+<div id="filter" class="section level1">
+<h1><span class="header-section-number">10</span> | <code>filter()</code></h1>
+<hr>
+<p>The <code>filter()</code> function creates a subset of the data based on the value of one or more columns. Use <code>filter()</code> to answer the questions below.</p>
+<p><br></p>
+<p><em>What are the cat names that are only 1 year old?</em></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">filter</span>(all_cats, age <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</code></pre></div>
+<div id="pro-tip-4" class="section level3 unnumbered">
+<h3><i class="fa fa-user-secret" aria-hidden="true" style="color:#040707;"></i> Pro-tip!</h3>
+<blockquote>
+<p>We use a <code>==</code> (double equals sign) for comparing values. A <code>==</code> makes the comparison “is it equal to?” and returns a True or False answer. So the code above returns all the rows where the condition <code>age == 1</code> is TRUE.</p>
+<p>A single equals sign (<code>=</code>) is used within functions to set options, for example <code>read_csv(file = &quot;mydata.csv&quot;)</code>. Don’t worry too much. If you use the wrong symbol R is often helpful and will let you know which one is needed.</p>
+</blockquote>
+</div>
+<div id="comparisons" class="section level2">
+<h2><span class="header-section-number">10.1</span> Comparisons</h2>
+<p>To use filtering effectively you’ll want to know how to select observations using various comparison operators.</p>
+<p><em>Key comparison operators</em></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Symbol</th>
+<th align="left">Comparison</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>&gt;</code></td>
+<td align="left">greater than</td>
+</tr>
+<tr class="even">
+<td align="left"><code>&gt;=</code></td>
+<td align="left">greater than or equal to</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>&lt;</code></td>
+<td align="left">less than</td>
+</tr>
+<tr class="even">
+<td align="left"><code>&lt;=</code></td>
+<td align="left">less than or equal to</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>==</code></td>
+<td align="left">equal to</td>
+</tr>
+<tr class="even">
+<td align="left"><code>!=</code></td>
+<td align="left">not equal to</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>%in%</code></td>
+<td align="left">value is in a list</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><em>What are the cat names that have a grumpy score greater than 6?</em></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">filter</span>(all_cats, grumpy ...)</code></pre></div>
+<p><br></p>
+<p><em>What are the cat names that are either <code>striped</code> or <code>orange</code> in color?</em></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">filter</span>(all_cats, color <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;striped&quot;</span>))</code></pre></div>
+<p><br></p>
+<blockquote>
+<p><strong>What is that <code>c()</code> thing all about again?</strong></p>
+</blockquote>
+<p>You can put multiple values inside <code>c()</code> to make a vector of items. Each item in the vector is separated by a comma. Let’s create a short vector of your favorite colors.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># This is an example vector</span>
+my_fave_colors &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;green&quot;</span>, <span class="st">&quot;orange&quot;</span>, <span class="st">&quot;cornflower&quot;</span>)
+
+my_fave_colors</code></pre></div>
+<pre><code>## [1] &quot;green&quot;      &quot;orange&quot;     &quot;cornflower&quot;</code></pre>
+<p><br></p>
+</div>
+<div id="multiple-filters" class="section level2">
+<h2><span class="header-section-number">10.2</span> Multiple filters</h2>
+<div id="exercise" class="section level3 unnumbered">
+<h3>Exercise <i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i></h3>
+<p>Create a small table called <code>uk_oldies</code> that only has cats from the UK and are older than 20.</p>
+<p><em>Work with your neighbor to create the table.</em></p>
+<div class="quiz">
+<h3 id="pop-quiz-hotshot-2" class="unnumbered">Pop Quiz, hotshot!</h3>
+<p><strong>Are there more cats with the color <code>striped</code> or <code>butterscotch</code>?</strong></p>
+<p><input type="radio"> <em>more butterscotch</em> <br> <input type="radio"> <em>more striped</em> <br> <input type="radio"> <em>same amount in both groups</em> <br></p>
+<p><br> <em>Hint: Start by creating a new table called <code>striped</code> using the code <code>filter(all_cats, color == ...)</code></em> <br></p>
+<div class="toggle">
+<button class="btn_code">
+<em>Show solution</em>
+</button>
+<p><br> <i class="fa fa-check" aria-hidden="true" style="color: green;"></i> <code>more striped</code></p>
+<p><em>Feline fine after that exercise! Great job!</em></p>
+</div>
+</div>
+</div>
+</div>
+<div id="cat-challenge" class="section level2">
+<h2><span class="header-section-number">10.3</span> Cat challenge 🐱</h2>
+<blockquote>
+<p>Ask your neighbor a question about the cat data that requires the <strong>%in%</strong> operator.</p>
+<p>Try to answer your neighbor’s question.</p>
+</blockquote>
+<p><br></p>
+</div>
+<div id="cat-challenge-2" class="section level2">
+<h2><span class="header-section-number">10.4</span> Cat challenge #2 🐱 🐱</h2>
+<hr>
+<p>Team up with your neighbor to think of a summary question to ask the table next to you about the missing cat data. Ask them the question and they’ll ask you a question about the cats in return.</p>
+<p><br></p>
+<blockquote>
+<p><em>Work with your neighbor to find the answer.</em></p>
+</blockquote>
+<p><br></p>
+<div id="play-time" class="section level3">
+<h3><span class="header-section-number">10.4.1</span> Play time</h3>
+<p>Now that you are more familiar with the data, maybe you can use the personality traits of the missing cats to find which one is yours.</p>
+<blockquote>
+<p>If only you knew the personality of your cat.</p>
+</blockquote>
+<p>Spend some time getting to know your cat. Is it already hiding from you under the couch? Does it seem Australian? Is it a young cat? Once you’ve gotten to know your cat, move on to the next section.</p>
+<p><br></p>
+</div>
+</div>
+</div>
+<div id="lost-cat-traits" class="section level1">
+<h1><span class="header-section-number">11</span> | Lost cat traits</h1>
+<hr>
+<p><em>Congratulations! You’ve unlocked your cat’s personality.</em></p>
+<p>Thanks to all the quality time you spent with your cat, you were able to collect some high quality data describing your cat’s personality. You can use your cat’s tag number to find the CSV file for your cat. Download your file from the <a href="https://github.com/MPCA-air/RCamp/tree/master/data/found_cats">Cat personality files</a>.</p>
+<p>To download, <strong>Right click</strong> on your cat’s file and select <strong>Save Link As…</strong>. Navigate to your project folder and save the file into a folder named <code>data\</code>.</p>
+<p><br></p>
+<p>Now you can read in the file with the personality traits of your cat.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;readr&quot;</span>)
+
+<span class="co"># Replace the `##` with your tag number</span>
+my_cat &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/foundcat_tag##.csv&quot;</span>)</code></pre></div>
+<p><br></p>
+<p>Take a minute to explore your cat’s personality traits. Can you guess its name?</p>
+<p><br></p>
+<div id="find-your-cat" class="section level2">
+<h2><span class="header-section-number">11.1</span> Find your cat</h2>
+<hr>
+<p>Almost there! Now you can use <code>filter()</code> to check if the <em>all_cats</em> table has a cat with a similar personality as yours. Let’s hope so.</p>
+<p><br></p>
+<p><strong>Use <code>filter()</code> to find your cat in the big <em>all_cats</em> table.</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Replace the `?` marks with your cat&#39;s personality traits</span>
+the_one &lt;-<span class="st"> </span><span class="kw">filter</span>(all_cats, 
+                  greedy  <span class="op">==</span><span class="st"> </span>?, 
+                  playful <span class="op">==</span><span class="st"> </span>?, 
+                  age    ...)</code></pre></div>
+<p><br></p>
+<blockquote>
+<p><em>Hint: You can also use the cat’s <code>age</code> range to help narrow down the number of potential cats.</em></p>
+</blockquote>
+<p><br><br></p>
+<div id="success" class="section level3 unnumbered">
+<h3>Success!</h3>
+<br>
+<hr>
+<p>Great work! You found your cat and you’ve earned yourself a detective badge.</p>
+<p><br></p>
+<p><strong>Let’s celebrate!</strong></p>
+<div class="toggle">
+<button class="btn_code">
+~ Receive your badge ~
+</button>
+<p><br></p>
+<p><img src="https://ih0.redbubble.net/image.92273350.5722/sticker,220x200-bg,ffffff-pad,220x200,ffffff.u5.jpg" width="200" align="left" style="margin-top: -20px; margin-right: 30px;"></p>
+</div>
+<p><br><br></p>
+<p><span style="font-size: 22px;"> <i class="fa fa-group" aria-hidden="true" style="color:black;"></i>  <strong>Meet the R cats</strong>   <i class="fa fa-group" aria-hidden="true" style="color:black;"></i></span></p>
+<p>Let’s introduce our rescued cats.</p>
+<div>
+<div class="figure">
+<img src="images/longmire2.png" align="left" style="margin-right:40px;" width="240" />
+
+</div>
+</div>
+<p>Possible topics:</p>
+<blockquote>
+<ul>
+<li>Your found cat’s name and best personality trait.<br />
+</li>
+<li>Your name or detective name.<br />
+</li>
+<li>Something you want to learn to do with data?<br />
+</li>
+<li>Are you a Cat person? Dog person? Lizard person? Fish person? Plant person?</li>
+</ul>
+</blockquote>
+<br><br><br><br><br><br><br>
+<div style="margin-top: 55px;">
+ 
+</div>
+<p><br><br></p>
+<blockquote>
+<p><i class="fa fa-hourglass-half" aria-hidden="true" style="color:#040707;"></i> <strong>RECAP:</strong></p>
+<ul>
+<li><p>What packages have we added to our <code>library</code>?</p></li>
+<li><p>What new functions have we learned?</p></li>
+</ul>
+</blockquote>
+</div>
+</div>
+</div>
+<div id="bonus-level" class="section level1 unnumbered">
+<h1><i class="fa fa-star" style="color:#ffff00"></i> <i class="fa fa-star" style="color:#ffff00"></i> Bonus level!! <i class="fa fa-star" style="color:#ffff00"></i> <i class="fa fa-star" style="color:#ffff00"></i></h1>
+<p>R wasn’t made to only look at cat data, but if that’s your thing there’s certainly more great cat data to be found. Other free data sets are also available online and in R packages <em>(try typing <code>starwars</code> after you’ve loaded the <strong>dplyr</strong> package)</em>. One big advantage of CSVs is that you can easily share them online. Once there, researchers and collaborators can easily read your data directly into their own R session using the data’s URL.</p>
+<p>Kaggle <a href="https://www.kaggle.com/datasets">datasets</a> is one great resource for interesting data. The example below shows a data set of the top 5,000 rated movies on IMDB.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;readr&quot;</span>)
+
+<span class="co"># Below is a IMDB movie file stored on the internet as a CSV</span>
+movie_url &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/MPCA-air/RCamp/master/data/movies/IMDB.csv&quot;</span>
+
+
+<span class="co"># Read the IMDB movie data and save as `movies`</span>
+movies &lt;-<span class="st"> </span><span class="kw">read_csv</span>(movie_url)</code></pre></div>
+<p><br></p>
+<p>Your challenge is to load the movie data (or use one of your own) and to practice using the <code>filter()</code>, <code>arrange()</code>, <code>mutate()</code>, and <code>summarize()</code> functions. When you’ve run out of time, save your script as “my_name.R” to this folder — <code>X:\Agency_Files\Data_Services\DAU\Data Analytics User Group\Shared\r\training\RCamp\Day1\Student scripts</code>.</p>
+<blockquote>
+<p>Add your data file as well if it isn’t already on the X-drive.</p>
+</blockquote>
+<p><br></p>
+<p><strong>Create a new R script that answers a few questions about your data set: </strong></p>
+<ol style="list-style-type: decimal">
+<li>How many rows are in your data set?</li>
+<li>What are the column names?</li>
+<li>Find a mean of a single column.</li>
+<li>Use <code>group_by()</code> to summarize()` the values of a column based on a group it’s in.</li>
+<li>Use <code>mutate()</code> to convert one of your columns into a different unit (e.g. <code>lbs</code> to <code>Millions of lbs</code> or <code>grams</code> to <code>kilograms</code>).</li>
+<li><code>filter()</code> your data to a single category.</li>
+<li>Use <code>%in%</code> to filter your data to a few categories.</li>
+<li>Make up a question of your own and try to answer it using the data.</li>
+</ol>
+<blockquote>
+<p><em>Did answering these questions raise new questions about your data?</em></p>
+</blockquote>
+<p>Add some of these questions to your script using comments <code>#</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Why does Facility A have no emissions?</span>
+<span class="co"># What happened to the County value for some monitors?</span>
+<span class="co"># Is this site really a million times bigger than that site??</span></code></pre></div>
+<p><strong>Some additional movie questions if you’re using the IMDB data: </strong></p>
+<ol style="list-style-type: decimal">
+<li>What were the highest and lowest grossing movies in this database?</li>
+<li>What actor or actress appears the most times in this database as actor1?</li>
+<li>How many Facebook likes has this actor or actress received?</li>
+<li>Filter the data set to your favorite movie, or a movie you have seen. What is the duration of that movie?<br />
+</li>
+<li>What movie has the longest duration? the shortest? Make a table including only the directors and the mean duration of their movies.</li>
+</ol>
+<p><br></p>
+</div>
+<div id="survey-says" class="section level1 unnumbered">
+<h1>Survey says</h1>
+<br>
+<hr>
+<p>On the <strong>front</strong> of your sticky note answer one of these:</p>
+<ul>
+<li>Something you really liked learning today?</li>
+<li>A useful thing you learned?</li>
+<li>A new skill you are you excited about using?</li>
+</ul>
+<p>On the <strong>back</strong>:</p>
+<ul>
+<li>A lingering question you have about the material.</li>
+<li>A topic that was confusing and could use more clarification?</li>
+</ul>
+<p>We will compile the questions and send out answers before next class. If you think of something later, please e-mail us any questions you have. If you’re uncertain about something I guarantee someone else is as well. So help a friend, and ask a question.</p>
+</div>
+<div id="shutdown-complete" class="section level1 unnumbered">
+<h1>Shutdown complete</h1>
+<p>When you close RStudio it will ask you about saving your <em>workspace</em> and other files. This can get tiresome after awhile. Follow the steps below to set these options once and for always.</p>
+<p>Turn off <strong>“Save Workspace”</strong></p>
+<ul>
+<li>Go to <strong>Tools</strong> on the top RStudio navigation bar.</li>
+<li>Choose <code>Global Options...</code>.</li>
+<li>On the first screen:
+<ul>
+<li>Set <em>Save workspace to .RData on exit:</em> to “Never”.</li>
+<li>Uncheck <em>Always save history</em></li>
+<li>Uncheck <em>Restore .Rdata into workspace at startup</em></li>
+</ul></li>
+</ul>
+<div id="congratulations-youve-completed-day-1." class="section level2 unnumbered">
+<h2>Congratulations! You’ve completed day 1.</h2>
+<br>
+<hr>
+<div class="figure">
+<img src="https://s5.favim.com/orig/69/balloons-cat-colours-cute-Favim.com-623053.jpg" />
+
+</div>
+<p>Return to <a href="index.html">RCamp</a></p>
+<p><br></p>
+<script>
+  $(".btn_code").click(function() {
+    $(this.parentNode).toggleClass("open");
+  });
+</script>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

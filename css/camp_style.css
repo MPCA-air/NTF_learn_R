@@ -1,0 +1,163 @@
+
+code {color: #535353 !important;} 
+  
+hr { 
+  margin-top: -24px;
+  margin-bottom: 24px;
+}  
+
+
+.row3
+{
+    width: 100%; 
+    overflow: hidden;
+    margin-top: 12px;
+}
+
+.column3
+{
+    float: left;
+    margin-right: 1%;
+    margin-left: 2%;
+    width: 30%;
+    overflow: hidden;
+}
+
+
+blockquote
+{
+     background-color: #f0f7fb;
+     line-height: 18px;
+     font-size: 15px;
+     overflow: hidden;
+     padding: 14px;
+}
+
+.note
+{
+     background-color: #f0f7fb;
+     border-left: solid 4px #3498db;
+     font-size: 14px;
+     line-height: 18px;
+     overflow: hidden;
+     padding: 14px;
+     padding-bottom: 2px;
+}
+
+
+.tip
+{
+     background-color: #d2f0c6;
+     border-left: solid 4px #86af49;
+     font-size: 14px;
+     line-height: 18px;
+     overflow: hidden;
+     padding: 14px;
+     padding-bottom: 2px;
+}
+
+
+.quiz
+{
+     background: #f5f5f5;
+     border-left: solid 8px #ff3860; /* #00d1b2; */    
+     border-radius: 25px;
+     font-size: 14px;
+     line-height: 16px;
+     overflow: hidden;
+     padding: 10px;
+     padding-top: 0px;
+     padding-bottom: 14px;
+     margin-top: 75px;
+     margin-bottom: 85px;
+     padding-left: 22px;
+}
+
+#oneline {
+  text-align: justify;
+  font-size: 0.1px; /* IE 9/10 don't like font-size: 0; */
+  min-width: 700px;
+  height: 50px;
+}
+
+#oneline div { 
+  font-size: 30px; 
+  font-weight: 600; 
+  margin-top: -2px; 
+  margin-left: 85px;
+  width: 180px;
+  height: 125px;
+  display: inline-block;
+}
+
+
+.btn_code {
+      display: inline-block;
+      padding: 6px 12px;
+      margin-bottom: 0;
+      font-size: 12px;
+      color: #fff;
+      background-color: #e53256;  /* #00d1b2; #ff3860; */
+      border-color: #992139;
+      line-height: 1.43;
+      text-align: center;
+      border: 1px solid transparent;
+      border-radius: 6px;
+}
+
+.btn_code_blue {
+      display: inline-block;
+      padding: 6px 12px;
+      margin-bottom: 0;
+      font-size: 12px;
+      color: #fff;
+      background-color: #337ab7;
+      border-color: #2e6da4;
+      line-height: 1.43;
+      text-align: center;
+      border: 1px solid transparent;
+      border-radius: 6px;
+}
+
+.btn_code:focus, .btn_code:active:focus, .btn_code.active:focus {
+    outline: 0 none;
+}
+  
+.btn_code_blue:focus, .btn_code:active:focus, .btn_code.active:focus {
+    outline: 0 none;
+}  
+  
+.btn_code_blue:hover, .btn_code.hover {
+    background-color: #22527b;
+}
+ 
+.btn_code:hover, .btn_code.hover {
+    background-color: #22527b;
+}
+
+.toggle {
+    height: 2.3em;
+    overflow-y: hidden;
+}
+  
+.toggle.open {
+    height: auto;
+}
+  
+h1 {
+  margin-top: 72px;
+  margin-bottom: 30px;
+}
+
+h2 {
+  margin-top: 64px;
+  margin-bottom: 26px;
+}
+
+
+h3 {
+  margin-top: 26px;
+  margin-bottom: 16px;
+}
+  
+

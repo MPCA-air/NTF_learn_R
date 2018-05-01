@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>R Camp</title>
+
+<script src="index_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="index_files/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="index_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="index_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="index_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="index_files/navigation-1.1/tabsets.js"></script>
+<link href="index_files/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="css\camp_style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">R Camp</h1>
+
+</div>
+
+
+<style> code {color: #535353 !important;} </style>
+<div id="get-r" class="section level2">
+<h2>Get R!</h2>
+<hr>
+<p>Go to — <a href="https://mpca-air.github.io/RCamp/00-Install.html">Install R</a> — for instructions on installing the latest and greatest versions of <strong>R</strong> and <strong>RStudio</strong>.</p>
+</div>
+<div id="intro-to-r" class="section level2">
+<h2>Intro to R</h2>
+<hr>
+<p>This series of tutorials teaches the basics of importing data, using new packages, cleaning and summarizing data with “tidy” tools, and using <code>ggplot2</code> to make charts and data visualizations.</p>
+<div class="row3" style="margin-top: 20px;">
+<div class="column3">
+<span style="margin-left: 36%;"><i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i> <strong>Day 1</strong> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i></span>
+</div>
+<div class="column3">
+<span style="margin-left: 36%;&gt;&lt;i class=" fa="" fa-star"="" aria-hidden="true" style="color: yellow;"><i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i> <strong>Day 2</strong> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i></span>
+</div>
+<div class="column3">
+<span style="margin-left: 36%;&gt;&lt;i class=" fa="" fa-star"="" aria-hidden="true" style="color: yellow;"><i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i> <strong>Day 3</strong> <i class="fa fa-star" aria-hidden="true" style="color: yellow;"></i></span>
+</div>
+</div>
+<div class="row3">
+<div class="column3" style="border: 1px solid grey; height: 270px; max-height: 270px;">
+<p><a href="01-Day1_lost_cats.html"><img src="images/lego_cat1.png"></a></p>
+</div>
+<div class="column3" style="border: 1px solid grey; height: 270px; max-height: 270px;">
+<p><a href="02_Day2_ggplot_charts.html"><img src="images/lego_cat2.png"></a></p>
+</div>
+<div class="column3" style="border: 1px solid grey; height: 270px; max-height: 270px;">
+<p><a href="03_Day3_finish_ggplot.html"><img src="images/lego_cat3.png"></a></p>
+</div>
+</div>
+<div class="row3" style="margin-top: 30px;">
+<div class="column3">
+<ol style="list-style-type: decimal">
+<li>Create a new RStudio project and R script.</li>
+<li>Install new R packages.</li>
+<li>Create variables, lists, data frames.</li>
+<li>Read data into R.</li>
+<li>Arrange and filter your data.</li>
+<li>Solve a cat mystery.</li>
+<li>Become a pet detective.</li>
+</ol>
+<p>Packages: <code>readr</code>, <code>dplyr</code></p>
+</div>
+<div class="column3">
+<ol style="list-style-type: decimal">
+<li>Data transformations
+<ul>
+<li>Add new columns.</li>
+<li>Summarize your data.</li>
+<li>Split groups and categories in your data.</li>
+<li>Save data.</li>
+</ul></li>
+<li>Make <strong>plots</strong>.
+<ul>
+<li>Scatter plots and transparency.</li>
+<li>Add a smoothed trend line to the plot.</li>
+<li>Add titles, colors, and axis labels.</li>
+<li>Bar charts.</li>
+<li>Histograms.</li>
+</ul></li>
+</ol>
+<p>Packages: <code>ggplot2</code></p>
+</div>
+<div class="column3">
+<ol style="list-style-type: decimal">
+<li>Read data from Excel.</li>
+<li>Make more <strong>plots</strong>.
+<ul>
+<li>Add titles, colors, and axis labels.</li>
+<li>Box plots.</li>
+<li>Bar plots.</li>
+<li>Label points.</li>
+<li>Log transform your chart axis.</li>
+<li>Save charts to different formats.</li>
+</ul></li>
+<li>Connect to <strong>TEMPO</strong>.
+<ul>
+<li>View tables.</li>
+<li>Read data.</li>
+</ul></li>
+</ol>
+<p>Packages: <code>readxl</code>, <code>tidyr</code>, <code>RODBC</code>, <code>lubridate</code></p>
+</div>
+</div>
+</div>
+<div id="workshops" class="section level2">
+<h2>Workshops</h2>
+<hr>
+<p>Each workshop dives into more detail on a common data anlaysis or visualization task.</p>
+<div class="row3" style="margin-top: 20px;">
+<div class="column3">
+<a href="01-workshop_tidy.html"> <span style="margin-left: 30%;"><i class="fa fa-cogs" aria-hidden="true" style="color: gray;"></i> Tidy data <i class="fa fa-cogs" aria-hidden="true" style="color: gray;"></i> </span> </a>
+</div>
+<div class="column3">
+<span style="margin-left: 32%;"><i class="fa fa-cogs" aria-hidden="true" style="color: white;"></i> Writing functions </span>
+</div>
+<div class="column3">
+<span style="margin-left: 34%;"> Maps and shapefiles </span>
+</div>
+</div>
+<div class="row3">
+<div class="column3" style="height: 190px; max-height: 190px; width: 275px; max-width: 275px; border: 1px solid grey; overflow: hidden;">
+<div style="height: 190px; max-height: 190px; width: 275px; max-width: 275px; position: relative;">
+<p><a href="01-workshop_tidy.html"> <img src="images/space_dog.gif" width="280" style="width: 275px; max-width: 275px;"> </a></p>
+</div>
+</div>
+</div>
+<div class="row3" style="margin-top: 30px;">
+<div class="column3">
+<ol style="list-style-type: decimal">
+<li>Collapse data spread across many columns.</li>
+<li>Fill in empty rows from Excel.</li>
+<li>Reorder ggplots from highest to lowest.</li>
+<li>Read a whole folder of files at once.</li>
+<li>Clean spaces and special characters from column names.</li>
+<li>Parse dates into season, month, quarter, day of the year.</li>
+<li>Read a set range of cells from Excel.</li>
+</ol>
+<p>Packages: <code>tidyr</code>, <code>readxl</code>, <code>lubridate</code>, <code>forcats</code>, <code>ggplot2</code></p>
+</div>
+</div>
+</div>
+<div id="section" class="section level2">
+<h2><i class="fa fa-cogs" aria-hidden="true" style="color: white;"></i></h2>
+<p><br></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
