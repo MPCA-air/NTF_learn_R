@@ -26,13 +26,16 @@ htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 
 <br>
 
->First day on the job. You are given a lap top with one folder on it. In the folder is an Excel file. On this first day of work you also receive an email asking what you think of the data and that the data isn't a full set and will be updated within the current season. You are told that once the data set is full, you will have 1 day to complete your analysis. The MISSION IMPOSSIBLE begins. 
+>First day on the job. You are given a lap top with one folder on it. In the folder are two Excel files and the folder is named "PM_and_Ozone". On this first overwhelming day of work you also receive an email asking what you think of the PM and Ozone data. The person on the other side of the phone call also says that the data isn't a full set and will be updated within the current season. Furthermore, the final data set will include measurements near a petroleum refinery explosion and that once you receive it you will have 1 day to complete your analysis of th situation. MISSION IMPOSSIBLE begins (you think briefly about your brother who sells ice cream in California and wonder what that would be like...). 
 
 >First things first, let's load this data set into R.
 
->R is a language that is written in packages. In order to complete certain commands, you need to load these packages. 
+>R is a language bundled into packages. Packages can be written by anyone, anywhere, which is the power of R. Imagine 1000s of graduate students providing you with tools to analyze and visualize your data, that is exactly what is happening RIGHT NOW.
 
-> This is an Excel file. So, we will load _read_excel_ to read in the data.
+>In order to complete certain commands, you need to load these packages. So, let's do that first.
+
+> The data are stored in Excel files. So, we will load _readxl_ to pull in the data and complete our mission.
+
 
 install.packages("readxl")
 library(readxl)
