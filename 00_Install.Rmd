@@ -2,6 +2,7 @@
 title: "R | Installation"
 output: 
  html_document:
+    self_contained: false
     toc: true
     toc_depth: 2
     toc_float: true

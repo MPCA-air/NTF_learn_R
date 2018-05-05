@@ -1,0 +1,13 @@
+name: Metro_shiny_roses
+title: Metro_shiny_roses
+username:
+account: air-data
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 337527
+bundleId: 1356317
+url: https://air-data.shinyapps.io/Metro_shiny_roses/
+when: 1525459770.98011
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: 00_Install.html|00_Install.Rmd|01_NTF_Air_Demo.html|01_NTF_Air_Demo.Rmd|app.R|data_prep.R|Demo_leftovers.Rmd|index.html|index.Rmd|LICENSE|MET_data_2012-2017.csv|NTF_Demo.html|NTF_Demo.Rmd|README.md|css/camp_style.css|R/Convert map.R|R/encourage.R|R/Prepare Cat Data.R|R/PrepBookData.R|R/weather_alerts.R|01_NTF_Air_Demo_files|data|images|index_files
