@@ -88,7 +88,7 @@ Everyone would prioritize this list differently, so ignore the order!
 # 1| Dynamic tools
 
 
-[![](images/pollution_rose_1.png){width="65%"}](https://air-data.shinyapps.io/Metro_shiny_roses/)
+[![](images/pollution_rose_1.png){width="66%"}](https://air-data.shinyapps.io/Metro_shiny_roses/)
 
 
 _It all started with a_ [Pollution Rose](https://air-data.shinyapps.io/Metro_shiny_roses/).
