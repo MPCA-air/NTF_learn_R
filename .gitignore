@@ -25,3 +25,4 @@ vignettes/*.pdf
 *.knit.md
 .Rproj.user
 MET_data_2012-2017.csv
+AQS_FondduLac.xlsx
