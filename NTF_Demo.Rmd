@@ -18,7 +18,7 @@ output:
 
 class: inverse
 
-# How do I analyze my data?
+# How can I analyze my data?
 
 <br>
 
@@ -234,7 +234,7 @@ __Let's Google it!__
 ---
 
 
-![:scale 65%](images\google_readxl.png)
+![:scale 55%](images\google_readxl.png)
 
 
 
@@ -324,7 +324,7 @@ __Let's try it.__
 
 # Back at our day job. 
 
-First take a gander at the data. It's sitting online [HERE](https://github.com/MPCA-air/NTF_learn_R/raw/master/data/PM_and_Ozone/Hourly_Fond_Du_Lac.xlsx).
+First take a gander at the data. It's sitting online [HERE](https://github.com/MPCA-air/NTF_learn_R/raw/master/data/Hourly/AQS_1hr_FondduLac.xlsx).
 
 --
 
@@ -332,18 +332,18 @@ Now load the Excel data into R:
 
 `1.` Download the file:
 ```{r, eval=F, message=F, warning=F}
-download.file("https://github.com/MPCA-air/NTF_learn_R/raw/master/data/PM_and_Ozone/Hourly_Fond_Du_Lac.xlsx", "data/Fond_data.xlsx", mode = "wb")
+download.file("https://github.com/MPCA-air/NTF_learn_R/raw/master/data/Hourly/AQS_1hr_FondduLac.xlsx", "AQS_FondduLac.xlsx", mode = "wb")
 ```
 
 `2.` Read the __2014__ tab:
 ```{r, message=F, warning=F}
-data_2014 <- read_excel("data/Fond_data.xlsx", sheet = "2014")
+data_2014 <- read_excel("AQS_FondduLac.xlsx", sheet = "2014")
 ```
 
 
 `3.` Read the __2015__ tab:
 ```{r, eval=T, message=F, warning=F}
-data_2015 <- read_excel("data/Fond_data.xlsx", sheet = "2015")
+data_2015 <- read_excel("AQS_FondduLac.xlsx", sheet = "2015")
 ```
 
 
@@ -368,12 +368,12 @@ Here's what we do to read a large text file:
 
 `1.` Download the file:
 ```{r, echo=T, eval=F, cache=T, message=F, warning=F}
-url <- "https://github.com/MPCA-air/NTF_learn_R/raw/master/data/PM_and_Ozone/BIG_MET_data.zip"
+url <- "https://github.com/MPCA-air/NTF_learn_R/raw/master/data/BIG_MET_data.zip"
 
-download.file(url, "data/BIG_MET_data.zip")
+download.file(url, "BIG_MET_data.zip")
 
 # It's a zip file, so we can run the unzip() function
-unzip("data/BIG_MET_data.zip", file = "MET_data_2012-2017.csv")
+unzip("BIG_MET_data.zip", file = "MET_data_2012-2017.csv")
 ```
 
 ```{r, eval=F, echo=T, message=F, warning=F}
@@ -704,7 +704,7 @@ It looks like one mean might be higher than the other, but we can't really tell 
 
 # Box plots
 
-```{r, echo=T, eval=T, message=F, warning=F, out.height="410px", out.width="500px"}
+```{r, echo=T, eval=T, message=F, warning=F, out.height="400px", out.width="470px"}
 ggplot(data = air_met, aes(x = site_catid, y = Conc)) +
 geom_boxplot()
 ```
@@ -715,17 +715,18 @@ geom_boxplot()
 
 Let's add some color and __ALL 25,000__ of the original data points.
 
-```{r, echo=T, eval=T, message=F, warning=F, out.height="420px", out.width="500px"}
+```{r, echo=T, eval=T, message=F, warning=F, out.height="400px", out.width="490px"}
 ggplot(data = air_met, aes(x = site_catid, y = Conc, fill = site_catid)) +
    geom_boxplot() +
-   geom_jitter(alpha = 0.03)
+   geom_jitter(alpha = 0.04)
 ```
 
 ---
 
 # Calendar plot
 
-```
+```{r, eval=F, message=F, warning=F}
+
 library(openair)
 
 air_met <- airmet %>%
@@ -733,7 +734,14 @@ select(datetime, Conc) %>%
 rename(date = datetime)
 #openair requires dates to be stored under field name "date"
 
-calendarPlot(air_met, pollutant<- "Concentration", statistic="mean", year = 2015, annotate="value", digits=1, key.footer="ug/m3", main="Daily Average PM2.5 Concentrations in Fond Du Lac, 2015")
+calendarPlot(air_met, 
+             pollutant = "Concentration", 
+             statistic = "mean", 
+             year      = 2015, 
+             annotate  = "value", 
+             digits    = 1, 
+             key.footer="ug/m3", 
+             main = "Daily Average PM2.5 Concentrations in Fond du Lac, 2015")
 
 ```
 
@@ -818,10 +826,9 @@ There was a big refinery explosion close to our monitoring site. We'll be receiv
 We have data for 2014 and 2015, but the explosion just happened now _(in the year 2016)_. Remember our data is stored in one Excel workbook. Since we wrote this in a script form we can change the date in our `read_excel()` to __2016__.
 
 ```{r, echo=T, eval=T, message=F, warning=F}
-download.file("https://github.com/MPCA-air/NTF_learn_R/raw/master/data/PM_and_Ozone/Hourly_Fond_Du_Lac.xlsx", "data/Fond_data.xlsx", mode = "wb")
+#download.file("https://github.com/MPCA-air/NTF_learn_R/raw/master/data/Hourly/AQS_1hr_FondduLac.xlsx", "AQS_Fonddulac.xlsx", mode = "wb")
 
-data_2016 <- read_excel("data/Fond_data.xlsx", sheet = "2016")
-
+data_2016 <- read_excel("AQS_Fonddulac.xlsx", sheet = "2016")
 ```
 
 
@@ -975,7 +982,7 @@ Remember the first pollutant rose we looked at? Let's load the Fond Du Lac data 
 
 ---
 
-# 14| It will compliment you and make jokes 
+# 14| It will compliment you
 
 There are some _just for fun_ R packages. 
 
@@ -1016,16 +1023,17 @@ We like __R__. We aren't computer scientists and you don't need to be either.
 ---
 
 # Back to GitHub
+<br><br>
+
 
 This presentation was made with `Rmarkdown` and Yihui's ` xaringan ` package. 
 
 Return to the project's [GitHub page](https://github.com/MPCA-air/NTF_learn_R).
 
-<br><hr>
 
-![](http://placekitten.com/g/247/252)
 
-<br><hr>
+
+<br><br><hr>
 
 
 

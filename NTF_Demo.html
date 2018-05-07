@@ -31,7 +31,7 @@ class: center, middle, inverse, title-slide
 
 class: inverse
 
-# How do I analyze my data?
+# How can I analyze my data?
 
 &lt;br&gt;
 
@@ -231,7 +231,7 @@ __Let's Google it!__
 ---
 
 
-![:scale 65%](images\google_readxl.png)
+![:scale 55%](images\google_readxl.png)
 
 
 
@@ -324,7 +324,7 @@ __Let's try it.__
 
 # Back at our day job. 
 
-First take a gander at the data. It's sitting online [HERE](https://github.com/MPCA-air/NTF_learn_R/raw/master/data/PM_and_Ozone/Hourly_Fond_Du_Lac.xlsx).
+First take a gander at the data. It's sitting online [HERE](https://github.com/MPCA-air/NTF_learn_R/raw/master/data/Hourly/AQS_1hr_FondduLac.xlsx).
 
 --
 
@@ -333,20 +333,20 @@ Now load the Excel data into R:
 `1.` Download the file:
 
 ```r
-download.file("https://github.com/MPCA-air/NTF_learn_R/raw/master/data/PM_and_Ozone/Hourly_Fond_Du_Lac.xlsx", "data/Fond_data.xlsx", mode = "wb")
+download.file("https://github.com/MPCA-air/NTF_learn_R/raw/master/data/Hourly/AQS_1hr_FondduLac.xlsx", "AQS_FondduLac.xlsx", mode = "wb")
 ```
 
 `2.` Read the __2014__ tab:
 
 ```r
-data_2014 &lt;- read_excel("data/Fond_data.xlsx", sheet = "2014")
+data_2014 &lt;- read_excel("AQS_FondduLac.xlsx", sheet = "2014")
 ```
 
 
 `3.` Read the __2015__ tab:
 
 ```r
-data_2015 &lt;- read_excel("data/Fond_data.xlsx", sheet = "2015")
+data_2015 &lt;- read_excel("AQS_FondduLac.xlsx", sheet = "2015")
 ```
 
 
@@ -372,12 +372,12 @@ Here's what we do to read a large text file:
 `1.` Download the file:
 
 ```r
-url &lt;- "https://github.com/MPCA-air/NTF_learn_R/raw/master/data/PM_and_Ozone/BIG_MET_data.zip"
+url &lt;- "https://github.com/MPCA-air/NTF_learn_R/raw/master/data/BIG_MET_data.zip"
 
-download.file(url, "data/BIG_MET_data.zip")
+download.file(url, "BIG_MET_data.zip")
 
 # It's a zip file, so we can run the unzip() function
-unzip("data/BIG_MET_data.zip", file = "MET_data_2012-2017.csv")
+unzip("BIG_MET_data.zip", file = "MET_data_2012-2017.csv")
 ```
 
 
@@ -973,7 +973,7 @@ ggplot(data = air_met, aes(x = site_catid, y = Conc)) +
 geom_boxplot()
 ```
 
-&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-31-1.png" width="500px" height="410px" /&gt;
+&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-31-1.png" width="470px" height="400px" /&gt;
 
 ---
 
@@ -985,16 +985,17 @@ Let's add some color and __ALL 25,000__ of the original data points.
 ```r
 ggplot(data = air_met, aes(x = site_catid, y = Conc, fill = site_catid)) +
    geom_boxplot() +
-   geom_jitter(alpha = 0.03)
+   geom_jitter(alpha = 0.04)
 ```
 
-&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-32-1.png" width="500px" height="420px" /&gt;
+&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-32-1.png" width="490px" height="400px" /&gt;
 
 ---
 
 # Calendar plot
 
-```
+
+```r
 library(openair)
 
 air_met &lt;- airmet %&gt;%
@@ -1002,16 +1003,29 @@ select(datetime, Conc) %&gt;%
 rename(date = datetime)
 #openair requires dates to be stored under field name "date"
 
-calendarPlot(air_met, pollutant&lt;- "Concentration", statistic="mean", year = 2015, annotate="value", digits=1, key.footer="ug/m3", main="Daily Average PM2.5 Concentrations in Fond Du Lac, 2015")
-
+calendarPlot(air_met, 
+             pollutant = "Concentration", 
+             statistic = "mean", 
+             year      = 2015, 
+             annotate  = "value", 
+             digits    = 1, 
+             key.footer="ug/m3", 
+             main = "Daily Average PM2.5 Concentrations in Fond du Lac, 2015")
 ```
 
 
 ---
 
 # beeswarm
-```
-ggplot()
+
+```r
+library(ggbeeswarm)
+
+  
+  data = mutate(data, AQSID = as.factor(AQSID) )
+  ggplot(filter(data, Pollutant == pollutant, Year == year), aes(y = AQSID, x = Result, color = Censored) ) + 
+    geom_quasirandom(groupOnX = F) +   
+    labs(title = paste(pollutant, year), x = "Result (ug/m^3)" )
 ```
 
 ---
@@ -1082,9 +1096,9 @@ We have data for 2014 and 2015, but the explosion just happened now _(in the yea
 
 
 ```r
-download.file("https://github.com/MPCA-air/NTF_learn_R/raw/master/data/PM_and_Ozone/Hourly_Fond_Du_Lac.xlsx", "data/Fond_data.xlsx", mode = "wb")
+#download.file("https://github.com/MPCA-air/NTF_learn_R/raw/master/data/Hourly/AQS_1hr_FondduLac.xlsx", "AQS_Fonddulac.xlsx", mode = "wb")
 
-data_2016 &lt;- read_excel("data/Fond_data.xlsx", sheet = "2016")
+data_2016 &lt;- read_excel("AQS_Fonddulac.xlsx", sheet = "2016")
 ```
 
 
@@ -1335,8 +1349,8 @@ __Go-Go gadget leaflet!__
 
 &lt;br&gt;
 
-<div id="htmlwidget-789294c523f5eb89bbc7" style="width:78%;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-789294c523f5eb89bbc7">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[46.70527,46.81826],[-92.52377,-92.08936],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,["7417","7550"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[46.70527,46.81826],"lng":[-92.52377,-92.08936]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-3b09515c4628f2afa116" style="width:78%;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3b09515c4628f2afa116">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[46.70527,46.81826],[-92.52377,-92.08936],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,["7417","7550"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[46.70527,46.81826],"lng":[-92.52377,-92.08936]}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -1346,8 +1360,8 @@ __Go-Go gadget leaflet!__
 
 --
 
-<div id="htmlwidget-8943a8e923243ef17ea1" style="width:78%;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-8943a8e923243ef17ea1">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[46.70527,46.81826],[-92.52377,-92.08936],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,["7417","7550"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addPopups","args":[46.6659,-92.478,"<b><a>You are HERE<\/a><\/b>",null,null,{"maxWidth":300,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":false,"className":""}]}],"limits":{"lat":[46.6659,46.81826],"lng":[-92.52377,-92.08936]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-09b512ff0d5b83a27830" style="width:78%;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-09b512ff0d5b83a27830">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[46.70527,46.81826],[-92.52377,-92.08936],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,["7417","7550"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addPopups","args":[46.6659,-92.478,"<b><a>You are HERE<\/a><\/b>",null,null,{"maxWidth":300,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":false,"className":""}]}],"limits":{"lat":[46.6659,46.81826],"lng":[-92.52377,-92.08936]}},"evals":[],"jsHooks":[]}</script>
 
 
 ---
@@ -1389,7 +1403,7 @@ Remember the first pollutant rose we looked at? Let's load the Fond Du Lac data 
 
 ---
 
-# 14| It will compliment you and make jokes 
+# 14| It will compliment you
 
 There are some _just for fun_ R packages. 
 
@@ -1449,16 +1463,17 @@ We like __R__. We aren't computer scientists and you don't need to be either.
 ---
 
 # Back to GitHub
+&lt;br&gt;&lt;br&gt;
+
 
 This presentation was made with `Rmarkdown` and Yihui's ` xaringan ` package. 
 
 Return to the project's [GitHub page](https://github.com/MPCA-air/NTF_learn_R).
 
-&lt;br&gt;&lt;hr&gt;
 
-![](http://placekitten.com/g/247/252)
 
-&lt;br&gt;&lt;hr&gt;
+
+&lt;br&gt;&lt;br&gt;&lt;hr&gt;
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script src="css/macros.js"></script>
