@@ -1,30 +1,40 @@
-.wide {
-  
-  width: 100%;
-  margin-left: 0px;
+img {
+  margin: auto;
+  margin-top: 4px;
+  margin-bottom: 4px;
 }
 
-.remark-slide-number {
-  display: none;
-}
+.italic-text {font-style: italic;}
+
+.scary {color: #F97B64;}
+
+.center-text {margin-right: auto; margin-left: auto;}
+
+.remark-slide-number {display: none;}
 
 
-code {color: #535353;} 
+code {color: #535353;}  
+
   
+.bigtext {font-size: 140%; line-height: 140%;}  
+ 
+.smalltext {font-size: 80%; line-height: 84%; margin-top: -10px;}  
+ 
  
 .remark-slide-content {
-  padding: 15px;
+  padding: 20px;
+  padding-left: 28px;
+  padding-right: 32px;
 }
 
-.size5 {
-  width: 5%;
-  max-width: 5%;
+.indent {
+  margin-left: 10%;
+  font-size: 125%;
 }
 
-hr { 
-  margin-top: -24px;
-  margin-bottom: 24px;
-}  
+.size50 {width: 50%; max-width: 50%;}
+
+hr {margin-top: -24px; margin-bottom: 24px;}  
 
 
 .row3
@@ -60,24 +70,37 @@ blockquote
 .note 
 {
      background-color: #f0f7fb;
-     border-left: solid 4px #3498db;
-     font-size: 29px;
-     line-height: 34px;
+     border-left: solid 7px #3498db;
+     border-radius: 25px;
+     font-size: 27px;
+     line-height: 32px;
      overflow: hidden;
-     padding: 10px;
-     padding-bottom: 10px;
+     padding: 22px;
+     padding-left: 24px;
+     margin-top: 25px;
+     margin-bottom: 25px;
+     width: 77%;
 }
 
 
+.pad-right {margin-right: 20px;}
+
 .tip
 {
+     float: right;
      background-color: #d2f0c6;
-     border-left: solid 4px #86af49;
-     font-size: 29px;
-     line-height: 34px;
+     border-left: solid 7px #86af49;
+     border-radius: 25px;
+     font-size: 27px;
+     line-height: 32px;
      overflow: hidden;
-     padding: 14px;
-     padding-bottom: 2px;
+     padding: 22px;
+     padding-top: 2px;
+     padding-bottom: 8px;
+     margin-top: 40px;
+     margin-bottom: 35px;
+     margin-right: -5%;
+     width: 76%;
 }
 
 
@@ -95,6 +118,7 @@ blockquote
      margin-top: 75px;
      margin-bottom: 85px;
      padding-left: 22px;
+     width: 77%;
 }
 
 #oneline {
@@ -164,26 +188,41 @@ blockquote
     overflow-y: hidden;
 }
   
-.toggle.open {
-    height: auto;
-}
-  
-  
+.toggle.open {height: auto;}
+
+.lower {margin-top: 53%;}
+
+.white {color: #FFF; }  
+
+.inverse {
+  background-color: #000;
+  color: #f3f3f3; 
+} 
+
+.inverse code {color: #3C989E;}  
+
+.float-left {float: left; width: 35%;}
+
+.float-right {float: right; width: 65%;}
+
+
+.pull-left {float: left;}
+
+.pull-right {float: right; width: 57%;}
+
 p {
-  font-size: 28px;
-  line-height: 36px;
-  margin-right: 250px;
+  font-size: 22px;
+  line-height: 24px;
 }  
 
 h1 {
-  margin-top: 72px;
-  margin-bottom: 30px;
+
+margin-top: 6px;
+margin-bottom: 10px;
+ 
 }
 
-h2 {
-  margin-top: 64px;
-  margin-bottom: 26px;
-}
+
 
 
 h3 {

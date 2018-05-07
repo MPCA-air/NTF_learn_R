@@ -1,100 +1,143 @@
 ---
 title: "R Demo | NTFAQ"
-date: <span style="display:block; text-align:center;"><img src="https://pbs.twimg.com/media/DNhps0gUQAAcS55.jpg" width="620"></span>
+subtitle: <span style="display:block; text-align:center;"><img src="https://pbs.twimg.com/media/DNhps0gUQAAcS55.jpg" width="620"></span>
 output:
-  slidy_presentation:
-    self_contained: false
-    highlight: default
-    css: css/camp_style.css
-    monofont: Source Code Pro
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "default-fonts", "css/xari_style.css", "css/fade.css"]
+    nature:
+      ratio: "15:9"
+      slideNumberFormat: ""
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "css/macros.js"
+
 ---
 
 
-```{r setup, include=F, messsage = F, warning = F}
-# Details on R presentations https://support.rstudio.com/hc/en-us/articles/200486468
+class: inverse
 
-library("rmarkdown")
+# How do I analyze my data?
+
+<br>
+
+--
+
+## ...and not want to throw my computer in the lake?
+
+--
+
+## ...the same way as you do?
+
+--
+
+## ...and be able to check my answers?
+
+## ...and remember what I did 2 years ago?
+
+
+--
+
+## ...while you're sleeping?
+
+
+---
+class: inverse
+
+# .scary[R training is coming this Fall...]
+
+```{r setup, include=F, message=F, warning=F}
+# Details on R presentations https://support.rstudio.com/hc/en-us/articles/200486468
+options(htmltools.dir.version = FALSE)
 knitr::opts_chunk$set(echo = TRUE, error = TRUE)
 htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 
 ```
 
-```{r, eval = F, echo = F, include = F, messsage = F, warning = F}
-install.packages("rmarkdown")
-```
+<img src='http://lazerhorse.org/wp-content/uploads/2013/06/Old-Horror-Films-Retro-Film-Posters-The-Brain-Eaters.jpg' width="88%">
 
+---
+class: middle, center
 
-# R trainings are coming this Fall...
+.work[__THIS IS A TRUE STORY__]
 
-![](http://lazerhorse.org/wp-content/uploads/2013/06/Old-Horror-Films-Retro-Film-Posters-The-Brain-Eaters.jpg){width="40%"}
-
-__THIS IS A TRUE STORY.__
-
-_The events depicted in this **flash introduction** to R
-took place in Minnesota in 2015. Dates and locations may have been changed to protect the innocent. The rest will be told exactly as it occurred._
-
-```{r, echo = F, eval = F, messsage = F, warning = F}
-THIS IS A TRUE STORY.
-The events depicted in this film
-took place in Minnesota in 1987.
-At the request of the survivors,
-the names have been changed.
-Out of respect for the dead,
-the rest has been told exactly
-as it occurred.
-```
-
-
-```{r, include=F, eval=F, messsage = F, warning = F}
-# Welcome to R Camp! 
-<hr>
-![](http://placekitten.com/g/247/252)
-![](http://placekitten.com/g/249/251)
-![](http://placekitten.com/g/249/253)
-<hr>
 
 <br>
 
-We are __Kristie__ and __Dorian__.  
+.fade[
+The __events__ depicted took place in __Minnesota__ in 2015. Dates and locations may have changed to protect the innocent. The rest is told __exactly__ as it occurred.
+]
 
-We like __R__.
 
-We are not "computer scientists". 
 
-You will see us make mistakes. Feel free to laugh at us. It is okay.
-```
+---
+class: white, center
+background-image: url("http://blogs.reed.edu/datablog/files/2015/09/RStudio-Ball.png")
+background-position: 50% 50%
+background-size: 87%
 
-# R is community sourced data software
-![](http://blogs.reed.edu/datablog/files/2015/09/RStudio-Ball.png){width="15%"} ![](https://mpca-air.github.io/air-methods/images/cover.jpeg){width="40%"}
 
-<br>
-People all around the world contribute to and maintain R. 
+.lower[.center-text[
+# is community sourced
+]]
 
-Imagine 1,000's of graduate students, non-profit employees, scientists, and data enthusiasts all working to provide you with tools to analyze and visualize your data. 
 
-That is exactly what is happening __RIGHT NOW__. 
+---
 
+<div style="margin-top: -20px;">
+.center[![:scale 72%](images\rladies_map.gif)]
+</div>
+
+People all around the world contribute to and maintain R. A main focus is making it friendlier and easier to use. 
+
+Imagine 1,000's of graduate students, non-profits, scientists, and data enthusiasts all working to provide you with tools to help analyze and visualize your data. 
+
+.center[This is happening __RIGHT NOW__.]
+
+---
 
 # Top 10 reasons to use R
-![](images/letterman_top10.png){width="60%"}
+
+.center[
+![:scale 65%](images/letterman_top10.png)
+]
 
 <br>
-OK, close to 20 reasons. 
 
-Everyone would prioritize this list differently, so ignore the order!
-<br>
+The following slides contain our 10 favorite things about R. R almost rhymes with _share_.
 
+
+
+---
 
 # 1| Dynamic tools
 
 
-[![](images/pollution_rose_1.png){width="66%"}](https://air-data.shinyapps.io/Metro_shiny_roses/)
+[![:scale 100%](images/pollution_rose_1.png)](https://air-data.shinyapps.io/Metro_shiny_roses/)
 
 
-_It all started with a_ [Pollution Rose](https://air-data.shinyapps.io/Metro_shiny_roses/).
+.work[It all started with a [Pollution Rose](https://air-data.shinyapps.io/Metro_shiny_roses/).]
 
-<br>
-A data analysis group from Indiana was using R to show facilities their potential contribution to air exceedances by using R based dynamic tools like the one above.
+
+---
+class: middle
+
+
+<div class="note">
+
+Soooo, we were hooked. <br><br>
+
+We began learning R and we were no longer at the whims of changing budgets because...
+
+</div>
+
+<br><strong><i>...Drum roll please...</strong></i><br>
+
+
+```{r, eval=F, include=F}
+.center-text[
+A data analysis group from Indiana was using R to show facilities their potential contribution to air exceedances by using R based dynamic tools like the one above.]
 
 <div class="note">
 
@@ -102,97 +145,229 @@ Our agency had recently lost funding for the statistical software SPSS. It took 
 
 We saw R as a powerful way to automate our work. 
 </div>
+```
 
-Soooo, we began learning R and we were no longer at the whims of changing budgets, because _...Drum roll please...._
+
+---
 
 # 2| **R is FREE!**
 
+--
+
 __Let's install R.__ [Click here!](https://mpca-air.github.io/NTF_learn_R/00_Install.html)
 
-__You can download R as soon as you get home, or even right now.__
+__You can download R right now. We will wait.__
 
-<div class = "note"> But how does R work?</div>
+
+--
+
+<div class="note"> Ok, but how does R work?</div>
 
 R lets you perform data analysis like you're writing a recipe for chocolate chip cookies. Once you've written your favorite recipe you can use it over and over again or share it with your favorite collaborators and grandkids. 
 
-![](images\recipe_to_cookie.png){width="57%"}
+.center[![:scale 95%](images\recipe_to_cookie.png)]
+
+---
+
+# A data recipe 
+
+<br>
+
+### __Summarized air data__
+
+.smalltext[
+_Servings: 1 to 10_
+]
+
+1. Read the monitoring data in from AQS
+
+2. Look at a plot of the data.
+
+3. Remove the bad data.
+
+4. Make an even better plot of the data.
+
+5. Summarize the data.
+
+6. Save the results.
+
+---
 
 # Our story Begins
 
-![](images\business_cat.jpg){width="40%" align="right" style="margin-left: 60px; margin-right: 40px; max-width: 40%"}
 
+<img src="images\business_cat.jpg" align="right" style="margin-left: 40px; margin-right: -28px; margin-top: -10px; max-width: 54%; width: 54%" />
 
 __It's your first day on the job.__ 
 
 _And you've got new data._
 
-You are given a laptop with one folder on it. In the folder is a single Excel file. Shortly after sitting down you receive a phone call. The person on the other end of the phone tells you that the data set isn't complete and will be updated on a weekly basis. Also, there is a potential need for weekly data analysis updates. _(You think briefly about your brother who sells ice cream on a beach and wonder what that would be like)._  
+--
 
-The __MISSION IMPOSSIBLE__ begins. 
+You are given a laptop with one folder on it. In the folder is a single Excel file. Shortly after sitting down you receive a phone call. The person on the other end of the phone tells you that the data set isn't complete and will be updated on a weekly basis. Also, there is a potential need for weekly data analysis updates.
 
+_(You think briefly about your brother who sells ice cream on a beach and wonder what that would be like)._  
 
-So we've got data. Now how do we get it into R?
-
-
-# 3| There's a gift wrapped package for you
-
-__We've heard there are something called packages in R.__
-
-When someone wants to share their recipe or add a new tool to R, they wrap everything together into a package. Packages in R are like Apps for your phone -- you need to load them each time you want to use them.
+__MISSION IMPOSSIBLE begins.__ 
 
 
-![](https://www.rstudio.com/wp-content/uploads/2017/05/readxl-400x464.png){width="345" align="left" style="margin-right: 40px;"}
+---
+class: inverse, center, middle
 
-Since the data at our new job is stored in an Excel file we can load the __readxl__ package to give R the power to read data from Excel.
+![:scale 10%](https://windowsfileviewer.com/images/types/xlsx.png)
+
+.bigtext[We've got data.] 
+
+--
+<br>
+.bigtext[Now how do we get it into R?]
+
+--
+<br><br>
+_Pfff... I don't know. Do you?_ 
+
+--
+<br><br>
+__Let's Google it!__
+
+
+---
+
+
+![:scale 65%](images\google_readxl.png)
 
 
 
-```{r, eval=F, messsage = F, warning = F}
+---
+
+# 3| There's a new package waiting for you
+
+
+When someone shares their analysis recipe or new tool in R, they wrap everything together into a __package__. Packages in R are like Apps for your phone -- you load them each time you want to do something special.
+
+
+
+<img src="https://www.rstudio.com/wp-content/uploads/2017/05/readxl-400x464.png" width="345" align="left" style="margin-right: 40px; margin-top: 10px;">
+
+<br>
+
+Since this data is stored in an Excel file we can load the __readxl__ package, which gives R the power to read data from Excel. 
+
+
+```{r, eval=F, message=F, warning=F}
 install.packages("readxl")
 ```
 
-```{r, eval=T, warnings = F, messsage = F, warning = F}
+```{r, eval=T, warnings=F, message=F, warning=F}
 library(readxl)
 ```
 
+```{r, eval=F, message=F, warning=F}
+data <- read_excel("data.xlsx", sheet = "2014")
+```
+
+
+---
+
+# Package stickers 
+
+
+__readxl__ is only one of many helpful R packages out there. Here's a sample of our favorites.
+
+We have lots of stickers and you should take some with you. Many are for a variety of R communities.
+
+---
 
 
 # 4| Read all kinds of data
 
-## Load the data
+These packages give R the ability to read data in from almost any place it might be stored. R can talk to SQL databases, read data saved from other statistical software, or pull data directly from the internet.
 
-Let's take a quick look at the data. It's available online [HERE](https://github.com/MPCA-air/NTF_learn_R/raw/master/data/PM_and_Ozone/Hourly_Fond_Du_Lac.xlsx).
+--
 
-There are a series of commands within each package. Since we have an `.xlsx` file we'll be using the ` read_excel() ` command.
+### Places to get data
 
-Pulling data into R looks like this
+- AirNow
 
+--
+
+- AQS
+
+--
+
+- NOAA
+
+--
+
+- Dropbox
+
+--
+
+- FTP sites
+
+--
+
+- SQL databases
+
+--
+
+- .scary[Floppy disks]
+
+
+--
+
+__Let's try it.__
+
+
+
+---
+
+# Back at our day job. 
+
+First take a gander at the data. It's sitting online [HERE](https://github.com/MPCA-air/NTF_learn_R/raw/master/data/PM_and_Ozone/Hourly_Fond_Du_Lac.xlsx).
+
+--
+
+Now load the Excel data into R:
 
 `1.` Download the file:
-```{r, eval=F, messsage = F, warning = F}
-download.file("https://github.com/MPCA-air/NTF_learn_R/raw/master/data/PM_and_Ozone/Hourly_Fond_Du_Lac.xlsx", "data/Fond_data.xlsx", mode="wb")
+```{r, eval=F, message=F, warning=F}
+download.file("https://github.com/MPCA-air/NTF_learn_R/raw/master/data/PM_and_Ozone/Hourly_Fond_Du_Lac.xlsx", "data/Fond_data.xlsx", mode = "wb")
 ```
 
-`2.` Read year __2014__:
-```{r, messsage = F, warning = F}
+`2.` Read the __2014__ tab:
+```{r, message=F, warning=F}
 data_2014 <- read_excel("data/Fond_data.xlsx", sheet = "2014")
 ```
 
 
-`3.` Read year __2015__:
-```{r, eval = T, messsage = F, warning = F}
+`3.` Read the __2015__ tab:
+```{r, eval=T, message=F, warning=F}
 data_2015 <- read_excel("data/Fond_data.xlsx", sheet = "2015")
 ```
 
 
+---
 
 # 5| Read all the rows
 
-That data loading went well. What about when you have a _HUGE_ file? Excel is limited to around a million rows.
+What if you have a ** _HUGE_ ** file? 
 
-_Our MET data comes from an online source and has more than a million rows. Here's how to load it from the web._
+<br>
 
-```{r, echo = T, eval = F, cache = T, messsage = F, warning = F}
+Good timing! We just requested MET data from the weather people down the hall, and they sent us a text file with over million rows of data. 
+
+That's nice of them, but _don't they know_ Excel is limited to around a million rows?
+
+---
+
+## We will open it.
+
+Here's what we do to read a large text file:
+
+
+`1.` Download the file:
+```{r, echo=T, eval=F, cache=T, message=F, warning=F}
 url <- "https://github.com/MPCA-air/NTF_learn_R/raw/master/data/PM_and_Ozone/BIG_MET_data.zip"
 
 download.file(url, "data/BIG_MET_data.zip")
@@ -201,11 +376,13 @@ download.file(url, "data/BIG_MET_data.zip")
 unzip("data/BIG_MET_data.zip", file = "MET_data_2012-2017.csv")
 ```
 
-```{r, eval = F, echo = T, messsage = F, warning = F}
+```{r, eval=F, echo=T, message=F, warning=F}
 install.packages("readr")
 ```
 
-```{r, echo = T, eval = F, messsage = F, warning = F, results = 'hide'}
+
+`2.` Read the data with __ ` read_csv() ` __:
+```{r, echo=T, eval=F, message=F, warning=F, results='hide'}
 # Inside the ZIP file is a huge csv text file.
 # For this we can run read_csv() from the readr package.
 # This package has lots of data reading functions.
@@ -215,51 +392,90 @@ library(readr)
 big_met <- read_csv("MET_data_2012-2017.csv")
 ```
 
-```{r, include = F, eval = T, results = 'hide'}
+```{r, include=F, eval=T, results='hide', warning=F, message=F}
 # Inside the ZIP file is a huge csv text file.
 # For this we can run read_csv() from the readr package.
 # This package has lots of data reading functions.
 
 library(readr)
 
-big_met <- suppressMessages(read_csv("MET_data_2012-2017.csv"))
+big_met <- read_csv("MET_data_2012-2017.csv")
 ```
 
 
-And we can look at the data in a couple of ways in R.
-```{r, eval = F, echo = T, messsage = F, warning = F}
+---
+
+# Did it work?
+
+
+### How many rows are there?
+```{r, eval=T}
+nrows(big_met)
+```
+
+
+We can look at the data in a couple of ways:
+```{r, eval=F, echo=T, message=F, warning=F}
+#This package has lots of data processing functions.
 install.packages("dplyr")
 ```
 
-```{r, eval = T, echo = T, messsage = F, warning = F, results = 'hide'}
-#This package has lots of data processing functions.
+```{r, eval=T, include=F}
+library(dplyr)
+```
+
+---
+
+# `glimpse()` the data
+
+```{r, eval=T, echo=T, message=F, warning=F}
 library(dplyr)
 
 glimpse(big_met)
+```
+
+<br>
+
+---
+
+# `summary()` of all columns
+
+```{r, eval=T, echo=T, message=F, warning=F}
+
 summary(big_met)
 ```
 
+---
 
-and `filter()` it to a met site near Fond Du Lac.
-```{r, echo = T, eval = T, messsage = F, warning = F}
+# ` filter() ` to a single site
 
-# The filter() function is from the package dplyr
+
+```{r, echo=T, eval=T, message=F, warning=F}
+library(knitr)
+
+# The filter() function is in the package dplyr
 fonddulac_met <- filter(big_met, site_catid == "27-017-7417")
+
+
+kable(head(fonddulac_met, 5), 'html')
 ```
+
+
+---
 
 # 6| Join related data tables with 1 line
 
-Since it looks like our concentration data has the same format and only the year is changing, we can bind the two tables together with the function `bind_rows()`.
+Since our concentration data has the same format and only the year is changing, we can bind the two tables together with the function `bind_rows()`.
 
-```{r, eval = T, echo = T, messsage = F, warning = F}
+```{r, eval=T, echo=T, message=F, warning=F}
 air_data <- bind_rows(data_2015, data_2014)
 ```
 
-```{r, eval = F, echo = T, messsage = F, warning = F}
+```{r, eval=F, echo=T, message=F, warning=F}
 install.packages("lubridate")
 ```
 
-```{r, eval = T, echo = T, include = F, messsage = F, warning = F, results = 'hide'}
+```{r, eval=T, echo=T, include=F, message=F, warning=F, results='hide'}
 
 # Format the dates for both tables
 library(lubridate)
@@ -275,78 +491,93 @@ fonddulac_met$site_catid <- NULL
 ```
 
 
+---
+
 We can `left_join()` the weather and concentration data by the __date__ column in each table.
 
-```{r, echo = T, eval = T, messsage = F, warning = F}
+```{r, echo=T, eval=T, message=F, warning=F}
 
 air_met <- left_join(air_data, fonddulac_met, by = c("date_time" = "time"))
-
-# We didn't join on site identification codes because met and air concentration sites have different IDs.
 ```
+
+_We didn't join on site identification codes because the sites in the MET and AQS data have different IDs._
+
 
 Here's what the first few rows look like.
 ```{r}
 library(knitr)
 
-kable(head(mutate(air_met, date_time = as.character(date_time))))
+air_met <- arrange(air_met, -Date)
+
+kable(head(select(air_met, -date_time, -Time, -icon), 1), 'html')
 ```
 
 
-```{r, eval = T,  include = F, messsage = F, warning = F}
+```{r, eval=T,  include=F, message=F, warning=F}
 write_csv(air_met, "air_met.csv")
 ```
 
 
+---
 
 # 7| Documentation and transparency
 
-### ToDo List
+
+.indent[
+## **To do list**
 
 1. Analyze data
 2. ?
 3. ??
+]
 
-I hate documenting my work, and much of my documentation looks like the above list. But in R, I have written each step into a text file script and __voila!__ There's documentation for myself and others.
+Documentation is hard work and much of my documentation looks like the above list. But in R, I have written each step into a text file script and __voila!__ There's documentation for myself and others.
 
 <div class="tip">
 
-One of the best things about R is that you can copy the scripts for analyses and charts that someone else has already completed. _(This is highly encouraged.)_ 
+.pad-right[
+You are encouraged to copy and share analyses and charts with others.
 
-You may even end up copying yourself, from 2 years ago.
+It's especially fun to copy yourself from 2 years ago.
+]
 </div>
 
 
+
+---
+
 # 8| You can't break your data
-
-
 
 <div class="quiz">
 
-## Pop Quiz, hotshots! 
+.work[
+## Pop Quiz, hotshots!  
 
-__Which of these things have we done? _(Hint: It may be more than one of them.)_ __
+<br>
+<strong>Which of these things have we done?</strong><br>
+<i>(Hint: It may be more than one of them.)</i>
+]
 
-<input type="radio"> _Lost a data file._ <br> 
-<input type="radio"> _Accidently replaced a value in Excel with a random keyboard key or the letter 'z'._ <br> 
-<input type="radio"> _Forgotten which file housed the original data._ <br> 
-<input type="radio"> _Saved over something important._      <br> 
-<input type="radio"> _Lost an entire folder of data._   <br>
+
+<input type="radio"> Lost a data file. <br>
+<input type="radio"> Accidently replaced a value in Excel with a random letter like 'z'. <br> 
+<input type="radio"> Forgotten which file housed the original data. <br> 
+<input type="radio"> Saved over something important. <br> 
+<input type="radio"> Lost an entire folder of data.  <br>
+<input type="radio"> Forgotten which monitoring days I dropped and why. <br>
 
 </div>
 
-```{r, eval=F, include=F}
-### Things I have done
 
-1. Lost a data file.
-1. Replaced a value in Excel with the letter 'f'.
-1. Forgotten which file or tab was the original data.
-```
-
-We now have a joined table with met and concentrations but the original data files have not been changed. We have retained a record of our raw data.
-
-When we receive updated concentration or MET data we can run the same script to append the data and proceed with our analysis.
+---
 
 # 8| You can't break your data
+
+
+So far we have joined a table of MET data with concentration data, and the original data files have not been changed. The raw data is still safe.
+
+When we receive updated data we can run the same script to append the data and proceed with our analysis.
+
 
 You will notice that when we're in R, we always use a name for the data and then tell R to do something to the named object.
 
@@ -356,109 +587,237 @@ It looks like this:
 data <- read_excel("data.csv")
 ```
 
-These R commands are always acting on a **copy** of the data and aren't changing the original file. No more worries! To look at subsets of data or to store summary results we can create copies of things in the R environment, all without creating lots of different copies of the data.
+These R commands always act on a **copy** of the data and aren't changing the original file. So no more worries! 
 
+To look at subsets of data or to store summary results we can create copies of things in the R environment, all without creating lots of different copies of the data.
+
+
+
+---
 
 # 8| You can't break your data
 
-If you ever need to input data from scratch, you can give it a name.
+If you want to create data from scratch, give the value a name. 
 
-```{r, echo = T, eval = T, messsage = F, warning = F}
+
+Let's make some values for the temperature and this conference.
+```{r, echo=T, eval=T, message=F, warning=F}
 current_temp <- 70
 
 this_conference <- "NTFAQ"
 ```
 
-Then when we type the names into the R console it will tell us what is stored there.
+<br>
+
+Now when we type the names into the R console it will tell us what is stored there.
 
 Hey R, what's the `current_temp`?
-```{r, echo = T, eval = T, messsage = F, warning = F}
+
+```{r, echo=T, eval=T, message=F, warning=F}
 current_temp
-this_conference
 ```
 
 
+--
+
+__Thanks R!__
+
+
+
+---
 
 # 9| Missing values
 
 Let's look at a `summary()` for PM2.5 concentrations and wind speed.
 
 
-```{r, echo = T, eval = T, messsage = F, warning = F}
+```{r, echo=T, eval=T, message=F, warning=F}
 
 # The summary() function provides min, max, means, etc of each numeric variable in the data set.
-# It also tells us what each column type is, letting you know wheter the data is
+# It also tells us what each column type is, letting you know whether the data is
 # stored as characters, integers, decimals, or date objects.
 
-summary(air_met)
+select(air_met, Conc, windSpeed) %>% summary()
 ```
-
 
 You can see the mean of the "Conc" column and we see no missing values.
 
 If we look at the summary for wind speed, we see many missing values (shown as ` NA ` in R).
-We need to know this. We don't want to take means of data where most of it is missing. Other programs ignore this, or throw an error.
+We need to know this. We don't want to take means of data where most of it is missing. Other programs may ignore these values, or throw an error at you.
+
+---
+
+# 9| Missing values
 
 
-```{r, echo = T, eval = T, messsage = F, warning = F}
+<div class="note">
+But I only want one number. Is that too much to ask!?
+</div>
+
+```{r, echo=T, eval=T, message=F, warning=F, results='hide'}
 # The summarize() function reduces your data down to a statistical summary
 # mean(), max(), min(), percentile(), range(), etc.
 
-fonddulac_mean <- summarize(air_met, mean_pm25 = mean(Conc, na.rm = T))
+fonddulac_mean <- summarize(air_met, mean_pm25 = mean(Conc, na.rm = TRUE))
 
 fonddulac_mean
 ```
 
 
+Okay, here's your answer _(if we drop all the `NAs`)_.
+
+The average PM2.5 concentration is:  __.scary[.bigtext[`r round(fonddulac_mean$mean_pm25, 3)` _ug/m3_]]__
+
+
+
+---
 
 # 10| Any plot for any data
 
-![](https://datasciencedojo.com/wp-content/uploads/12_R-and-GGPLOT2-01-845x321.png)
+![:scale 66%](https://datasciencedojo.com/wp-content/uploads/12_R-and-GGPLOT2-01-845x321.png)
 
+<br>
 
 The _ggplot2_ package has functions that can make almost any plot you can think of. It can also layer plots on top of each other to add multiple elements.
 
-```{r, echo = T, eval = F, include = F, messsage = F, warning = F}
+__The fun will start now.__ `r icon::fa("rocket", animate="spin")`
+
+```{r, echo=T, eval=F, include=F, message=F, warning=F}
 install.packages("ggplot2")
 ```
 
-```{r, echo = T, eval = T, messsage = F, warning = F}
+
+---
+class: inverse
+
+# The classic `geom_bar()` plot
+```{r, echo=T, eval=T, message=F, warning=F, out.height="410px", out.width="450px"}
 library(ggplot2)
 
 ggplot(data = air_met, aes(x = site_catid, y = Conc)) +
    geom_bar(stat = "identity")
 ```
 
-It looks like one mean might be higher than the other, but we can't really tell until we can see some error bars.
+It looks like one mean might be higher than the other, but we can't really tell until we can see more of the data.
 
-```{r, echo = T, eval = T, messsage = F, warning = F}
+---
+
+# Box plots
+
+```{r, echo=T, eval=T, message=F, warning=F, out.height="410px", out.width="500px"}
 ggplot(data = air_met, aes(x = site_catid, y = Conc)) +
 geom_boxplot()
 ```
 
+---
+
+# More box plots
+
 Let's add some color and __ALL 25,000__ of the original data points.
 
-```{r, echo = T, eval = T, messsage = F, warning = F}
+```{r, echo=T, eval=T, message=F, warning=F, out.height="420px", out.width="500px"}
 ggplot(data = air_met, aes(x = site_catid, y = Conc, fill = site_catid)) +
    geom_boxplot() +
    geom_jitter(alpha = 0.03)
 ```
 
+---
 
-# 11| Automate it all - _easily update your analysis with new data_
+# Calendar plot
 
-__EXPLOSIONS!!!__
+```
+library(openair)
 
-![](images\explosion.jpg){width=66%}
+air_met <- airmet %>%
+select(datetime, Conc) %>%
+rename(date = datetime)
+#openair requires dates to be stored under field name "date"
+
+calendarPlot(air_met, pollutant<- "Concentration", statistic="mean", year = 2015, annotate="value", digits=1, key.footer="ug/m3", main="Daily Average PM2.5 Concentrations in Fond Du Lac, 2015")
+
+```
 
 
-Oh crap. There was a big refinery explosion close to our monitoring site and we'll be receiving new monitoring data in the next hour. Our task is to to let people know if we see anything that suggests smoke from the explosion is reaching the air monitor.
+---
 
-----
+# beeswarm
+```{r, eval = F}
+library(ggbeeswarm)
 
-We have data for 2014 and 2015, but we are currently living in the year 2016. Remember our data is stored in one Excel workbook. Since we wrote this in a script form, we can change the date in our `read_excel()` function as follows:
+  
+  data = mutate(data, AQSID = as.factor(AQSID) )
+  ggplot(filter(data, Pollutant == pollutant, Year == year), aes(y = AQSID, x = Result, color = Censored) ) + 
+    geom_quasirandom(groupOnX = F) +   
+    labs(title = paste(pollutant, year), x = "Result (ug/m^3)" )
+```
 
-```{r, echo = T, eval = T, messsage = F, warning = F}
+---
+
+# Time series
+
+```
+ggplot()
+```
+
+---
+
+# Nature journal
+
+```
+ggpomological()
+```
+
+---
+class: inverse, middle, center
+
+# Chart finale...
+
+---
+
+# .work[the **XKCD** plot]
+
+```
+ggplot()
+```
+
+---
+
+# 10.5|  R gives you a language for data
+
+It's nice to have words. 
+
+How would you describe going from data in a __wide__ format to data in a __tall__ format?
+
+<br>
+
+A collection data words:
+
+- gather
+- spread
+- mutate
+- filter
+
+---
+
+# 11| Automate - _update with new data_
+
+__Explosions!!!__
+
+.center[
+![:scale 70%](images\explosion.jpg)
+]
+
+
+There was a big refinery explosion close to our monitoring site. We'll be receiving new monitoring data in the next hour. We need to let people know if anything suggests smoke from the explosion is reaching the air monitor.
+
+---
+
+# 11| Automate - _update with new data_
+
+
+We have data for 2014 and 2015, but the explosion just happened now _(in the year 2016)_. Remember our data is stored in one Excel workbook. Since we wrote this in a script form we can change the date in our `read_excel()` to __2016__.
+
+```{r, echo=T, eval=T, message=F, warning=F}
 download.file("https://github.com/MPCA-air/NTF_learn_R/raw/master/data/PM_and_Ozone/Hourly_Fond_Du_Lac.xlsx", "data/Fond_data.xlsx", mode = "wb")
 
 data_2016 <- read_excel("data/Fond_data.xlsx", sheet = "2016")
@@ -466,11 +825,16 @@ data_2016 <- read_excel("data/Fond_data.xlsx", sheet = "2016")
 ```
 
 
-We changed the _year_ to 2016 and __BOOM!__ we've got updated data.
+We changed the _year_ and __BOOM!__ we've got updated data.
+
+---
+
+# Update the charts and roses
+
 Now we can follow the same steps we used before to bind the tables togehter and join the MET data.
 
 
-```{r, echo = T, eval = T, messsage = F, warning = F}
+```{r, echo=T, eval=T, message=F, warning=F}
 
 air_data <- bind_rows(data_2014, data_2015)
 ```
@@ -478,39 +842,38 @@ air_data <- bind_rows(data_2014, data_2015)
 
 
 Then we join the met data:
-```{r, eval=T, include=F, messsage = F, warning = F}
+```{r, eval=T, include=T, message=F, warning=F}
+
+# Set date formats
 air_data$date_time <-  paste(ymd(air_data$Date), hms(paste(air_data$Hour, ":00:00")))
 
 air_data$date_time <-  ymd_hms(air_data$date_time)
 
-```
-
-
-```{r, echo = T, eval = T, messsage = F, warning = F}
+# Join
 air_met <- left_join(air_data, fonddulac_met, by = c("date_time" = "time")) %>% select(-Time)
 
-summary(air_met)
+# View table
+kable(head(air_met, 5), 'html')
 ```
 
-
-If you're ever wondering what tabs are available in an Excel workbook, you can run the function `excel_sheets()`.
-
-```{r}
-excel_sheets("data/Fond_data.xlsx")
-```
-
+---
 
 # 12| Make maps and never get lost again
 
-Where is that Fond Du Lac site again?
-Was it close to the explosion? Let's take a quick look.
+Where is the Fond Du Lac monitor again? 
 
-```{r, eval = F, echo = T, include = F, messsage = F, warning = F}
+Was it close to the explosion? 
+
+--
+
+Let's take a look.
+
+```{r, eval=F, echo=T, include=F, message=F, warning=F}
 install.packages("leaflet")
-
 ``` 
 
-```{r, eval = T, echo = T, messsage = F, warning = F}
+
+```{r, eval=F, echo=T, message=F, warning=F}
 library(leaflet)
 
 # Reduce the table to a single row for each monitoring site
@@ -518,115 +881,151 @@ air_sites <- group_by(air_met, site_catid) %>% slice(1)
 
 # Quick interactive map
 leaflet(data = air_sites) %>%
-        addTiles() %>%
-        addMarkers(label = ~as.character(SiteNum), labelOptions = labelOptions(noHide = T))
+   addTiles() %>%
+   addMarkers(label = ~as.character(SiteNum), 
+              labelOptions = labelOptions(noHide = T))
 ``` 
 
-Leaflet is friendly enough to guess your coordinate column names (Latitude and Longitude) whether they're in caps or lower case. __Go leaflet!__
+<br>
 
-```{r, eval=F, include=F}
-![](https://camo.githubusercontent.com/5f5e0d9aac32bd5d0b49b5c6dfece9efe2ad577a/68747470733a2f2f7261772e6769746875622e636f6d2f706572727967656f2f6c6561666c65742d73696d706c652d6373762f6d61737465722f696d672f73637265656e73686f74312e706e67){width="60%"}
-```
+__Go-Go gadget leaflet!__
 
 
-----
+
+---
+
+# 12| Make maps and never get lost again
+
+<br>
+
+```{r, eval=T, echo=F, message=F, warning=F, out.width="78%"}
+library(leaflet)
+
+# Reduce the table to a single row for each monitoring site
+air_sites <- group_by(air_met, site_catid) %>% slice(1)
+
+# Quick interactive map
+leaflet(data = air_sites) %>%
+   addTiles() %>%
+   addMarkers(label = ~as.character(SiteNum), 
+              labelOptions = labelOptions(noHide = T))
+``` 
+
+---
+
+# 12| Make maps and never get lost again
+
+#### Let's add where we are right now.
+
+--
+
+```{r, eval=T, echo=F, message=FALSE, warning=FALSE, out.width="78%"}
+library(leaflet)
+
+# Reduce the table to a single row for each monitoring site
+air_sites <- group_by(air_met, site_catid) %>% slice(1)
+
+# Quick interactive map
+leaflet(data = air_sites) %>%
+   addTiles() %>%
+   addMarkers(label = ~as.character(SiteNum), 
+              labelOptions = labelOptions(noHide = T)) %>%
+    addPopups(-92.478, 46.6659,
+              "<b><a>You are HERE</a></b>",
+              options = popupOptions(closeButton = FALSE))
+``` 
+
+
+---
+
+
+
+# Return of the roses
 
 Remember the first pollutant rose we looked at? Let's load the Fond Du Lac data set into the tool to see if the refinery explosion could have potentially impacted the PM2.5 concentrations.
 
 [Pollution rose for any data](https://air-data.shinyapps.io/pollution-roses/)
 
 
+---
 
-# 13| Online community + us
-
-## Join the R community
-
-![](images\rladies_map.gif){width="60%" align="right" style="margin-right:180px;"}
+# 13| Online community + Us + You
 
 
-![](https://pbs.twimg.com/profile_images/611535712710729728/ZrqMrN21_400x400.jpg)
+.bigtext[**Join the R community**]
 
-- `#rstats` Twitter
-- RLadies
-- Local R User groups
-- Online courses and blogs
-- International conferences
+.float-left[
+![:scale 93%](https://pbs.twimg.com/profile_images/611535712710729728/ZrqMrN21_400x400.jpg)
+]
 
-```{r, eval=F, include=F}
-![](https://k-roz.com/img/rladies-dashboard.png)
-```
+.float-right[
+
+- #### `#rstats` Twitter
+- #### Local R User groups
+- #### Online courses and blogs: Coursera, Data Camp, Kaggle
+- #### R conferences _(all types of data)_
+- #### RLadies Global
+
+.center[
+![:scale 90%](https://k-roz.com/img/rladies-dashboard.png)
+]
+
+]
 
 
-# 14| Great stickers
-We have some stickers that you should take with you. 
+---
 
-Many of the stickers are for packages or a variety of R communities.
-
-
-# 15| It will compliment you and make jokes 
+# 14| It will compliment you and make jokes 
 
 There are some _just for fun_ R packages. 
 
-```{r, eval = F, echo = T, include = F, messsage = F, warning = F}
+```{r, eval=F, echo=T, include=F, message=F, warning=F}
 install.packages("cowsay")
 install.packages("fortunes")
 ``` 
 
 _cowsay_ outputs a variety of animals saying the quotes of your choice.
 
-```{r, echo=T, eval=T, messsage = F, warning = F}
+```{r, echo=T, eval=T, message=T, warning=F}
 library(cowsay)
-say("Meow, meow. You deserve a break.", "cat")
+say("Meowww. You deserve a break.", "cat")
 ```
 
 
-_fortunes_ will return fortunes or data-related quotes
 
-```{r, echo = T, eval = T, messsage = F, warning = F}
-set.seed(42)
-library(fortunes)
-fortune()
-```
-
-And for baseball fans there is an R package for baseball stats _Lahman_ and _pitchRx_. Good luck!
-
+---
 
 # Congratulations! 
 
-![](https://assets.wired.com/photos/w_2048/wp-content/uploads/2015/02/catinbox_simba_by-jacme31.jpg){width="64%" align="right" style="margin-left: 35px; max-width: 64%"}
+<img src="https://assets.wired.com/photos/w_2048/wp-content/uploads/2015/02/catinbox_simba_by-jacme31.jpg" width="61%" align="right" style="margin-left: 35px; max-width: 64%" />
 
-You've completed the Super fast R Intro. 
+You've completed the Super fast R Intro and are ready for Day 1 of R Camp. 
 
-You are officially ready for Day 1 of R Camp. 
-
-In the mean time you can find help on _R-Bloggers_, download the package _swirl_, Google R related questions, and take a Coursera course at https://www.coursera.org/specializations/jhu-data-science.
-
-<br>
-
-We want to meet you. Talk to us. Send us an e-mail. 
-
-We are  Kristie.Ellickson@state.mn.us and Dorian.Kvale@state.mn.us
-
-We like __R__. 
-
-We aren't computer scientists and you don't need to be either.
+In the mean time you can find help on _R-Bloggers_, download the package _swirl_, Google R related questions, or take this [Coursera](https://www.coursera.org/specializations/jhu-data-science) course.
 
 
+There's also an R intro for __pirates__. If you are a pirate you can sail the high seas [Here](http://tryr.codeschool.com/).
+
+We want to meet you. Come talk to us. Send us an e-mail. 
+
+We are  [Kristie.Ellickson@state.mn.us]() and [Dorian.Kvale@state.mn.us]()
+
+We like __R__. We aren't computer scientists and you don't need to be either.
+
+
+---
 
 # Back to GitHub
 
-Return to this project's [GitHub page](https://github.com/MPCA-air/NTF_learn_R).
+This presentation was made with `Rmarkdown` and Yihui's ` xaringan ` package. 
 
-<br>
-<hr>
+Return to the project's [GitHub page](https://github.com/MPCA-air/NTF_learn_R).
+
+<br><hr>
 
 ![](http://placekitten.com/g/247/252)
 
 <br><hr>
 
 
-<script>
-  $(".btn_code").hover(function() {
-    $(this.parentNode).toggleClass("open");
-  });
-</script> 
+
