@@ -224,7 +224,7 @@ class: inverse, center, middle
 
 --
 <br><br>
-_Pfff... I don't know. Do you?_ 
+_I don't know._ 
 
 --
 <br><br>
@@ -258,7 +258,7 @@ Since this data is stored in an Excel file we can load the __readxl__ package, w
 install.packages("readxl")
 ```
 
-```{r, eval=T, warnings=F, message=F, warning=F}
+```{r, eval=T, message=F, warning=F}
 library(readxl)
 ```
 
@@ -285,7 +285,7 @@ These packages give R the ability to read data in from almost any place it might
 
 --
 
-### Places to get data
+### R can talk data with:
 
 - AirNow
 
@@ -311,7 +311,7 @@ These packages give R the ability to read data in from almost any place it might
 
 --
 
-- .scary[Floppy disks]
+- .scary[ZIP files, large text files, modeling output]
 
 
 --
@@ -408,15 +408,15 @@ big_met <- read_csv("MET_data_2012-2017.csv")
 # Did it work?
 
 
-### How many rows are there?
+### Let's count the rows.
 ```{r, eval=T}
-nrows(big_met)
+nrow(big_met)
 ```
 
 
 We can look at the data in a couple of ways:
 ```{r, eval=F, echo=T, message=F, warning=F}
-#This package has lots of data processing functions.
+# This package has lots of data processing functions.
 install.packages("dplyr")
 ```
 
@@ -475,7 +475,7 @@ air_data <- bind_rows(data_2015, data_2014)
 install.packages("lubridate")
 ```
 
-```{r, eval=T, echo=T, include=F, message=F, warning=F, results='hide'}
+```{r, eval=T, echo=T, message=F, warning=F, results='hide'}
 
 # Format the dates for both tables
 library(lubridate)
@@ -506,8 +506,6 @@ _We didn't join on site identification codes because the sites in the MET and AQ
 Here's what the first few rows look like.
 ```{r}
 library(knitr)
-
-air_met <- arrange(air_met, -Date)
 
 kable(head(select(air_met, -date_time, -Time, -icon), 1), 'html')
 ```
@@ -618,11 +616,6 @@ current_temp
 ```
 
 
---
-
-__Thanks R!__
-
-
 
 ---
 
@@ -680,11 +673,12 @@ The average PM2.5 concentration is:  __.scary[.bigtext[`r round(fonddulac_mean$m
 
 The _ggplot2_ package has functions that can make almost any plot you can think of. It can also layer plots on top of each other to add multiple elements.
 
-__The fun will start now.__ `r icon::fa("rocket", animate="spin")`
-
-```{r, echo=T, eval=F, include=F, message=F, warning=F}
+```{r, echo=T, eval=F, message=F, warning=F}
 install.packages("ggplot2")
 ```
+
+__The fun can start now.__ `r icon::fa("rocket", animate="spin")`
+
 
 
 ---
@@ -704,7 +698,7 @@ It looks like one mean might be higher than the other, but we can't really tell 
 
 # Box plots
 
-```{r, echo=T, eval=T, message=F, warning=F, out.height="400px", out.width="470px"}
+```{r, echo=T, eval=T, message=F, warning=F, out.height="380px", out.width="450px"}
 ggplot(data = air_met, aes(x = site_catid, y = Conc)) +
 geom_boxplot()
 ```
@@ -715,21 +709,26 @@ geom_boxplot()
 
 Let's add some color and __ALL 25,000__ of the original data points.
 
-```{r, echo=T, eval=T, message=F, warning=F, out.height="400px", out.width="490px"}
+```{r, echo=T, eval=T, message=F, warning=F, out.height="360px", out.width="460px"}
 ggplot(data = air_met, aes(x = site_catid, y = Conc, fill = site_catid)) +
    geom_boxplot() +
    geom_jitter(alpha = 0.04)
 ```
 
+
+
 ---
 
 # Calendar plot
 
-```{r, eval=F, message=F, warning=F}
+```{r, echo=T, eval=F}
+install.packages("openair")
+```
 
+```{r, eval=F, message=F, warning=F}
 library(openair)
 
-air_met <- airmet %>%
+air_met <- air_met %>%
 select(datetime, Conc) %>%
 rename(date = datetime)
 #openair requires dates to be stored under field name "date"
@@ -740,7 +739,7 @@ calendarPlot(air_met,
              year      = 2015, 
              annotate  = "value", 
              digits    = 1, 
-             key.footer="ug/m3", 
+             key.footer= "ug/m3", 
              main = "Daily Average PM2.5 Concentrations in Fond du Lac, 2015")
 
 ```
@@ -749,43 +748,83 @@ calendarPlot(air_met,
 ---
 
 # beeswarm
-```{r, eval = F}
+
+
+```{r, echo = T, eval = F}
+install.packages("ggbeeswarm")
+```
+
+```{r, eval = F, warning=F, message=F}
 library(ggbeeswarm)
 
-  
-  data = mutate(data, AQSID = as.factor(AQSID) )
-  ggplot(filter(data, Pollutant == pollutant, Year == year), aes(y = AQSID, x = Result, color = Censored) ) + 
+ggplot(air_met, aes(y = site_catid, x = Conc)) + 
     geom_quasirandom(groupOnX = F) +   
-    labs(title = paste(pollutant, year), x = "Result (ug/m^3)" )
+    labs(title = "PM2.5 Result (ug/m^3)")
 ```
+
 
 ---
 
 # Time series
-
+ 
+```{r, echo=F}
+theme_set(theme_grey(base_size = 22)) 
+# scale_x_date(date_breaks = "2 months", date_labels = "%b") +
 ```
-ggplot()
+ 
+```{r, echo=T, eval=T, message=F, warning=F, fig.width=30, fig.height=9.7}
+filter(data_2014, SiteNum == 7417) %>% group_by(Date) %>% 
+  summarize(Conc = median(Conc, na.rm = T)) %>% 
+  ggplot(aes(x = as.Date(Date), y = Conc, na.rm = T)) + 
+         geom_line(size = 1, color = "tomato", alpha = 0.8) +
+         geom_point(alpha = 0.5) + geom_smooth() +
+         ylab("Concentration (ug/m3)") + xlab("") + ggtitle("PM2.5 at Fond du Lac in 2014") + 
+         geom_label(aes(x = as.Date("2014-06-11"), y = 0.0527), fill = "#3C989E", 
+                    label = "May 25th: the BIG EVENT", size = 7) 
 ```
 
 ---
 
-# Nature journal
+# Time series - _split by hour_
 
+```{r, echo=T, eval=T, message=F, warning=F, fig.width=30, fig.height=10}
+filter(data_2014, SiteNum == 7417) %>%
+  ggplot(aes(x = Hour, y = Conc)) +
+         geom_point(alpha = 0.5) +
+         geom_smooth() +
+         ylab("Concentration (ug/m3)") + xlab("HOUR") + ggtitle("PM2.5 at Fond du Lac in 2014") +
+         facet_wrap(~month(Date, label = T), ncol = 4)
 ```
-ggpomological()
+
+
+---
+
+# Time series - _split by weekday_
+```{r, echo=T, eval=T, message=F, warning=F, fig.width=30, fig.height=10}
+filter(data_2014, SiteNum == 7417) %>% 
+  mutate(color = ifelse(wday(Date) == 5 & month(Date) == 4, "Clustered day", "Normal day")) %>%
+  ggplot(aes(x = wday(Date, label = T), y = Conc)) +
+    geom_boxplot(aes(fill = color), outlier.alpha = 0, show.legend = F) + 
+    geom_jitter(alpha = 0.2) +
+    ylab("Concentration (ug/m3)") + xlab("") + ggtitle("PM2.5 at Fond du Lac in 2014") + 
+    facet_wrap(~month(Date, label = T), ncol = 4)
 ```
+
+
+
 
 ---
 class: inverse, middle, center
 
-# Chart finale...
+# ...Chart finale...
 
 ---
 
-# .work[the **XKCD** plot]
+# A calming nature journal
 
 ```
-ggplot()
+ggpomological()
+
 ```
 
 ---
@@ -798,18 +837,25 @@ How would you describe going from data in a __wide__ format to data in a __tall_
 
 <br>
 
+
 A collection data words:
 
-- gather
-- spread
-- mutate
-- filter
+- gather()
+- spread()
+- mutate()
+- filter()
 
+```{r, eval=F, echo=F, warning=F}
+long_met <-
+  
+big_met %>% gather(Parameter, Result, -time, -summary, -icon, -site_catid)
+```
 ---
+
 
 # 11| Automate - _update with new data_
 
-__Explosions!!!__
+__Explosions!__
 
 .center[
 ![:scale 70%](images\explosion.jpg)
@@ -820,7 +866,7 @@ There was a big refinery explosion close to our monitoring site. We'll be receiv
 
 ---
 
-# 11| Automate - _update with new data_
+# 1| Automate - _update with new data_
 
 
 We have data for 2014 and 2015, but the explosion just happened now _(in the year 2016)_. Remember our data is stored in one Excel workbook. Since we wrote this in a script form we can change the date in our `read_excel()` to __2016__.
@@ -843,7 +889,7 @@ Now we can follow the same steps we used before to bind the tables togehter and 
 
 ```{r, echo=T, eval=T, message=F, warning=F}
 
-air_data <- bind_rows(data_2014, data_2015)
+air_data <- bind_rows(data_2016, air_data)
 ```
 
 
@@ -858,16 +904,24 @@ air_data$date_time <-  ymd_hms(air_data$date_time)
 
 # Join
 air_met <- left_join(air_data, fonddulac_met, by = c("date_time" = "time")) %>% select(-Time)
-
-# View table
-kable(head(air_met, 5), 'html')
 ```
+
+```{r, eval=F}
+# View table
+head(air_met, 2)
+```
+
+```{r, eval=T, echo=F}
+# View table
+kable(head(air_met, 2), 'html')
+```
+
 
 ---
 
 # 12| Make maps and never get lost again
 
-Where is the Fond Du Lac monitor again? 
+Where is the Fond du Lac monitor again? 
 
 Was it close to the explosion? 
 
@@ -884,7 +938,7 @@ install.packages("leaflet")
 library(leaflet)
 
 # Reduce the table to a single row for each monitoring site
-air_sites <- group_by(air_met, site_catid) %>% slice(1)
+air_sites <- group_by(air_met, site_catid) %>% slice(1) %>% filter(SiteNum != 7001)
 
 # Quick interactive map
 leaflet(data = air_sites) %>%
@@ -909,13 +963,12 @@ __Go-Go gadget leaflet!__
 library(leaflet)
 
 # Reduce the table to a single row for each monitoring site
-air_sites <- group_by(air_met, site_catid) %>% slice(1)
+air_sites <- group_by(air_met, site_catid) %>% slice(1) %>% filter(SiteNum != 7001)
 
 # Quick interactive map
 leaflet(data = air_sites) %>%
    addTiles() %>%
-   addMarkers(label = ~as.character(SiteNum), 
-              labelOptions = labelOptions(noHide = T))
+   addMarkers(label = ~as.character(SiteNum), labelOptions = labelOptions(noHide = T))
 ``` 
 
 ---
@@ -926,20 +979,13 @@ leaflet(data = air_sites) %>%
 
 --
 
-```{r, eval=T, echo=F, message=FALSE, warning=FALSE, out.width="78%"}
-library(leaflet)
-
-# Reduce the table to a single row for each monitoring site
-air_sites <- group_by(air_met, site_catid) %>% slice(1)
-
-# Quick interactive map
+```{r, eval=T, echo=T, message=FALSE, warning=FALSE, out.width="78%"}
+# Label our location
 leaflet(data = air_sites) %>%
    addTiles() %>%
    addMarkers(label = ~as.character(SiteNum), 
               labelOptions = labelOptions(noHide = T)) %>%
-    addPopups(-92.478, 46.6659,
-              "<b><a>You are HERE</a></b>",
-              options = popupOptions(closeButton = FALSE))
+    addPopups(-92.478, 46.6659, "<b><a>You are HERE</a></b>")
 ``` 
 
 
@@ -949,7 +995,7 @@ leaflet(data = air_sites) %>%
 
 # Return of the roses
 
-Remember the first pollutant rose we looked at? Let's load the Fond Du Lac data set into the tool to see if the refinery explosion could have potentially impacted the PM2.5 concentrations.
+Remember the first pollutant rose we looked at? Let's load the Fond du Lac data set into the tool to see if the refinery explosion could have potentially impacted the PM2.5 concentrations.
 
 [Pollution rose for any data](https://air-data.shinyapps.io/pollution-roses/)
 
@@ -1023,7 +1069,8 @@ We like __R__. We aren't computer scientists and you don't need to be either.
 ---
 
 # Back to GitHub
-<br><br>
+
+<br><hr><br><br>
 
 
 This presentation was made with `Rmarkdown` and Yihui's ` xaringan ` package. 
@@ -1033,7 +1080,7 @@ Return to the project's [GitHub page](https://github.com/MPCA-air/NTF_learn_R).
 
 
 
-<br><br><hr>
+<br><br><br><br><br><hr>
 
 
 

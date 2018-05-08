@@ -221,7 +221,7 @@ class: inverse, center, middle
 
 --
 &lt;br&gt;&lt;br&gt;
-_Pfff... I don't know. Do you?_ 
+_I don't know._ 
 
 --
 &lt;br&gt;&lt;br&gt;
@@ -285,7 +285,7 @@ These packages give R the ability to read data in from almost any place it might
 
 --
 
-### Places to get data
+### R can talk data with:
 
 - AirNow
 
@@ -311,7 +311,7 @@ These packages give R the ability to read data in from almost any place it might
 
 --
 
-- .scary[Floppy disks]
+- .scary[ZIP files, large text files, modeling output]
 
 
 --
@@ -406,21 +406,21 @@ big_met &lt;- read_csv("MET_data_2012-2017.csv")
 # Did it work?
 
 
-### How many rows are there?
+### Let's count the rows.
 
 ```r
-nrows(big_met)
+nrow(big_met)
 ```
 
 ```
-## Error in nrows(big_met): could not find function "nrows"
+## [1] 1401457
 ```
 
 
 We can look at the data in a couple of ways:
 
 ```r
-#This package has lots of data processing functions.
+# This package has lots of data processing functions.
 install.packages("dplyr")
 ```
 
@@ -668,6 +668,18 @@ install.packages("lubridate")
 ```
 
 
+```r
+# Format the dates for both tables
+library(lubridate)
+
+air_data$date_time &lt;-  paste(ymd(air_data$Date), hms(paste(air_data$Hour, ":00:00")))
+
+air_data$date_time &lt;-  ymd_hms(air_data$date_time)
+
+fonddulac_met$time &lt;- ymd_hms(fonddulac_met$time)
+
+fonddulac_met$site_catid &lt;- NULL
+```
 
 
 ---
@@ -687,14 +699,6 @@ Here's what the first few rows look like.
 ```r
 library(knitr)
 
-air_met &lt;- arrange(air_met, -Date)
-```
-
-```
-## Error in arrange_impl(.data, dots): Evaluation error: unary '-' is not defined for "POSIXt" objects.
-```
-
-```r
 kable(head(select(air_met, -date_time, -Time, -icon), 1), 'html')
 ```
 
@@ -868,11 +872,6 @@ current_temp
 ```
 
 
---
-
-__Thanks R!__
-
-
 
 ---
 
@@ -942,8 +941,12 @@ The average PM2.5 concentration is:  __.scary[.bigtext[0.026 _ug/m3_]]__
 
 The _ggplot2_ package has functions that can make almost any plot you can think of. It can also layer plots on top of each other to add multiple elements.
 
-__The fun will start now.__ <i class="fas  fa-rocket fa-spin "></i>
 
+```r
+install.packages("ggplot2")
+```
+
+__The fun can start now.__ <i class="fas  fa-rocket fa-spin "></i>
 
 
 
@@ -973,7 +976,7 @@ ggplot(data = air_met, aes(x = site_catid, y = Conc)) +
 geom_boxplot()
 ```
 
-&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-31-1.png" width="470px" height="400px" /&gt;
+&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-31-1.png" width="450px" height="380px" /&gt;
 
 ---
 
@@ -988,7 +991,9 @@ ggplot(data = air_met, aes(x = site_catid, y = Conc, fill = site_catid)) +
    geom_jitter(alpha = 0.04)
 ```
 
-&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-32-1.png" width="490px" height="400px" /&gt;
+&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-32-1.png" width="460px" height="360px" /&gt;
+
+
 
 ---
 
@@ -996,9 +1001,14 @@ ggplot(data = air_met, aes(x = site_catid, y = Conc, fill = site_catid)) +
 
 
 ```r
+install.packages("openair")
+```
+
+
+```r
 library(openair)
 
-air_met &lt;- airmet %&gt;%
+air_met &lt;- air_met %&gt;%
 select(datetime, Conc) %&gt;%
 rename(date = datetime)
 #openair requires dates to be stored under field name "date"
@@ -1009,7 +1019,7 @@ calendarPlot(air_met,
              year      = 2015, 
              annotate  = "value", 
              digits    = 1, 
-             key.footer="ug/m3", 
+             key.footer= "ug/m3", 
              main = "Daily Average PM2.5 Concentrations in Fond du Lac, 2015")
 ```
 
@@ -1018,43 +1028,90 @@ calendarPlot(air_met,
 
 # beeswarm
 
+
+
+```r
+install.packages("ggbeeswarm")
+```
+
+
 ```r
 library(ggbeeswarm)
 
-  
-  data = mutate(data, AQSID = as.factor(AQSID) )
-  ggplot(filter(data, Pollutant == pollutant, Year == year), aes(y = AQSID, x = Result, color = Censored) ) + 
+ggplot(air_met, aes(y = site_catid, x = Conc)) + 
     geom_quasirandom(groupOnX = F) +   
-    labs(title = paste(pollutant, year), x = "Result (ug/m^3)" )
+    labs(title = "PM2.5 Result (ug/m^3)")
 ```
+
 
 ---
 
 # Time series
+ 
 
+ 
+
+```r
+filter(data_2014, SiteNum == 7417) %&gt;% group_by(Date) %&gt;% 
+  summarize(Conc = median(Conc, na.rm = T)) %&gt;% 
+  ggplot(aes(x = as.Date(Date), y = Conc, na.rm = T)) + 
+         geom_line(size = 1, color = "tomato", alpha = 0.8) +
+         geom_point(alpha = 0.5) + geom_smooth() +
+         ylab("Concentration (ug/m3)") + xlab("") + ggtitle("PM2.5 at Fond du Lac in 2014") + 
+         geom_label(aes(x = as.Date("2014-06-11"), y = 0.0527), fill = "#3C989E", 
+                    label = "May 25th: the BIG EVENT", size = 7) 
 ```
-ggplot()
-```
+
+![](NTF_Demo_files/figure-html/unnamed-chunk-38-1.png)&lt;!-- --&gt;
 
 ---
 
-# Nature journal
+# Time series - _split by hour_
 
+
+```r
+filter(data_2014, SiteNum == 7417) %&gt;%
+  ggplot(aes(x = Hour, y = Conc)) +
+         geom_point(alpha = 0.5) +
+         geom_smooth() +
+         ylab("Concentration (ug/m3)") + xlab("HOUR") + ggtitle("PM2.5 at Fond du Lac in 2014") +
+         facet_wrap(~month(Date, label = T), ncol = 4)
 ```
-ggpomological()
+
+![](NTF_Demo_files/figure-html/unnamed-chunk-39-1.png)&lt;!-- --&gt;
+
+
+---
+
+# Time series - _split by weekday_
+
+```r
+filter(data_2014, SiteNum == 7417) %&gt;% 
+  mutate(color = ifelse(wday(Date) == 5 &amp; month(Date) == 4, "Clustered day", "Normal day")) %&gt;%
+  ggplot(aes(x = wday(Date, label = T), y = Conc)) +
+    geom_boxplot(aes(fill = color), outlier.alpha = 0, show.legend = F) + 
+    geom_jitter(alpha = 0.2) +
+    ylab("Concentration (ug/m3)") + xlab("") + ggtitle("PM2.5 at Fond du Lac in 2014") + 
+    facet_wrap(~month(Date, label = T), ncol = 4)
 ```
+
+![](NTF_Demo_files/figure-html/unnamed-chunk-40-1.png)&lt;!-- --&gt;
+
+
+
 
 ---
 class: inverse, middle, center
 
-# Chart finale...
+# ...Chart finale...
 
 ---
 
-# .work[the **XKCD** plot]
+# A calming nature journal
 
 ```
-ggplot()
+ggpomological()
+
 ```
 
 ---
@@ -1067,18 +1124,21 @@ How would you describe going from data in a __wide__ format to data in a __tall_
 
 &lt;br&gt;
 
+
 A collection data words:
 
-- gather
-- spread
-- mutate
-- filter
+- gather()
+- spread()
+- mutate()
+- filter()
+
 
 ---
 
+
 # 11| Automate - _update with new data_
 
-__Explosions!!!__
+__Explosions!__
 
 .center[
 ![:scale 70%](images\explosion.jpg)
@@ -1089,7 +1149,7 @@ There was a big refinery explosion close to our monitoring site. We'll be receiv
 
 ---
 
-# 11| Automate - _update with new data_
+# 1| Automate - _update with new data_
 
 
 We have data for 2014 and 2015, but the explosion just happened now _(in the year 2016)_. Remember our data is stored in one Excel workbook. Since we wrote this in a script form we can change the date in our `read_excel()` to __2016__.
@@ -1113,7 +1173,7 @@ Now we can follow the same steps we used before to bind the tables togehter and 
 
 
 ```r
-air_data &lt;- bind_rows(data_2014, data_2015)
+air_data &lt;- bind_rows(data_2016, air_data)
 ```
 
 
@@ -1128,9 +1188,12 @@ air_data$date_time &lt;-  ymd_hms(air_data$date_time)
 
 # Join
 air_met &lt;- left_join(air_data, fonddulac_met, by = c("date_time" = "time")) %&gt;% select(-Time)
+```
 
+
+```r
 # View table
-kable(head(air_met, 5), 'html')
+head(air_met, 2)
 ```
 
 &lt;table&gt;
@@ -1167,152 +1230,69 @@ kable(head(air_met, 5), 'html')
 &lt;tbody&gt;
   &lt;tr&gt;
    &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 137 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 7417 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 46.70527 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; -92.52377 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2014-04-01 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.038 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 27-017-7417 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2014 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2014-04-01 06:00:00 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Flurries &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; snow &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.0029 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.09 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 33.34 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 26.77 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 32.78 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.98 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7.51 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 5.24 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.71369 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -92.51172 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2016-01-01 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 27-137-7417 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2016 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 137 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7417 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.71369 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -92.51172 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2016-01-01 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 997.57 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; snow &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.022 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7417 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 46.70527 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; -92.52377 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2014-04-01 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.035 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 27-017-7417 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2014 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2014-04-01 07:00:00 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Clear &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; clear-night &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.0012 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.02 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 33.12 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 27.64 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 32.59 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.98 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 5.90 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.59 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 997.23 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; snow &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.009 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7417 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 46.70527 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; -92.52377 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2014-04-01 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.029 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 27-017-7417 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2014 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2014-04-01 08:00:00 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Light Snow &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; snow &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.0178 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.59 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 31.44 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 22.12 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 29.21 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.91 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 11.90 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 328 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 4.10 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 997.59 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; snow &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.142 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7417 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 46.70527 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; -92.52377 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2014-04-01 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.024 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 27-017-7417 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2014 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2014-04-01 09:00:00 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Snow &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; snow &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.0280 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.65 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 27.02 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 14.72 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 24.74 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.91 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 16.28 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 323 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2.52 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 998.46 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; snow &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.301 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7417 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 46.70527 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; -92.52377 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2014-04-01 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.025 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 27-017-7417 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2014 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2014-04-01 10:00:00 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Light Snow &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; snow &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.0021 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 19.97 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6.10 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 16.95 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.88 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 15.16 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 313 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.75 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 999.15 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; snow &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.033 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 27-137-7417 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2016 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2016-01-01 01:00:00 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Partly Cloudy &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; partly-cloudy-night &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.08 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.55 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.97 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.77 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.19 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 260 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.21 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1018.85 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
+
 
 ---
 
 # 12| Make maps and never get lost again
 
-Where is the Fond Du Lac monitor again? 
+Where is the Fond du Lac monitor again? 
 
 Was it close to the explosion? 
 
@@ -1328,7 +1308,7 @@ Let's take a look.
 library(leaflet)
 
 # Reduce the table to a single row for each monitoring site
-air_sites &lt;- group_by(air_met, site_catid) %&gt;% slice(1)
+air_sites &lt;- group_by(air_met, site_catid) %&gt;% slice(1) %&gt;% filter(SiteNum != 7001)
 
 # Quick interactive map
 leaflet(data = air_sites) %&gt;%
@@ -1349,8 +1329,8 @@ __Go-Go gadget leaflet!__
 
 &lt;br&gt;
 
-<div id="htmlwidget-3b09515c4628f2afa116" style="width:78%;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3b09515c4628f2afa116">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[46.70527,46.81826],[-92.52377,-92.08936],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,["7417","7550"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[46.70527,46.81826],"lng":[-92.52377,-92.08936]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-4efca95501cf2b4a4d2e" style="width:78%;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4efca95501cf2b4a4d2e">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[46.713694,46.713694,46.77107,46.81826,46.743657],[-92.511722,-92.511722,-92.11732,-92.08936,-92.165998],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,["7417","7417","7549","7550","7554"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[46.713694,46.81826],"lng":[-92.511722,-92.08936]}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -1360,8 +1340,18 @@ __Go-Go gadget leaflet!__
 
 --
 
-<div id="htmlwidget-09b512ff0d5b83a27830" style="width:78%;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-09b512ff0d5b83a27830">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[46.70527,46.81826],[-92.52377,-92.08936],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,["7417","7550"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addPopups","args":[46.6659,-92.478,"<b><a>You are HERE<\/a><\/b>",null,null,{"maxWidth":300,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":false,"className":""}]}],"limits":{"lat":[46.6659,46.81826],"lng":[-92.52377,-92.08936]}},"evals":[],"jsHooks":[]}</script>
+
+```r
+# Label our location
+leaflet(data = air_sites) %&gt;%
+   addTiles() %&gt;%
+   addMarkers(label = ~as.character(SiteNum), 
+              labelOptions = labelOptions(noHide = T)) %&gt;%
+    addPopups(-92.478, 46.6659, "&lt;b&gt;&lt;a&gt;You are HERE&lt;/a&gt;&lt;/b&gt;")
+```
+
+<div id="htmlwidget-d7136b5f234af6b4421f" style="width:78%;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d7136b5f234af6b4421f">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[46.713694,46.713694,46.77107,46.81826,46.743657],[-92.511722,-92.511722,-92.11732,-92.08936,-92.165998],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,["7417","7417","7549","7550","7554"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addPopups","args":[46.6659,-92.478,"<b><a>You are HERE<\/a><\/b>",null,null,{"maxWidth":300,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"className":""}]}],"limits":{"lat":[46.6659,46.81826],"lng":[-92.511722,-92.08936]}},"evals":[],"jsHooks":[]}</script>
 
 
 ---
@@ -1370,7 +1360,7 @@ __Go-Go gadget leaflet!__
 
 # Return of the roses
 
-Remember the first pollutant rose we looked at? Let's load the Fond Du Lac data set into the tool to see if the refinery explosion could have potentially impacted the PM2.5 concentrations.
+Remember the first pollutant rose we looked at? Let's load the Fond du Lac data set into the tool to see if the refinery explosion could have potentially impacted the PM2.5 concentrations.
 
 [Pollution rose for any data](https://air-data.shinyapps.io/pollution-roses/)
 
@@ -1463,7 +1453,8 @@ We like __R__. We aren't computer scientists and you don't need to be either.
 ---
 
 # Back to GitHub
-&lt;br&gt;&lt;br&gt;
+
+&lt;br&gt;&lt;hr&gt;&lt;br&gt;&lt;br&gt;
 
 
 This presentation was made with `Rmarkdown` and Yihui's ` xaringan ` package. 
@@ -1473,7 +1464,7 @@ Return to the project's [GitHub page](https://github.com/MPCA-air/NTF_learn_R).
 
 
 
-&lt;br&gt;&lt;br&gt;&lt;hr&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;hr&gt;
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script src="css/macros.js"></script>
