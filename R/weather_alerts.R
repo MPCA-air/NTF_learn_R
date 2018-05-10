@@ -1,9 +1,8 @@
-
 library(tidyverse)
 library(weatherAlerts)
 library(leaflet)
 
-alerts <- getAlerts("MN") # takes about 20 seconds
+alerts <- getAlerts("LA") # takes about 20 seconds
 
 severity <- alerts@data$severity
 
@@ -17,4 +16,4 @@ severityColors <- unname(colorMap[severity])
 
 leaflet() %>%
   addTiles() %>%
-  addPolygons(data = alerts, color = "black", fillColor = severityColors, weight = 1)
+  addPolygons(data = alerts, color = "black", fillColor = severityColors, weight = 1, popup = ~paste0("<strong>", event, "</strong>", "<br><br>", summary))

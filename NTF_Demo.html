@@ -11,9 +11,10 @@
     <link href="libs/leaflet/leaflet.css" rel="stylesheet" />
     <script src="libs/leaflet/leaflet.js"></script>
     <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
+    <link href="libs/leaflet-label/leaflet.label.css" rel="stylesheet" />
+    <script src="libs/leaflet-label/leaflet.label.js"></script>
     <script src="libs/Proj4Leaflet/proj4-compressed.js"></script>
     <script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
-    <link href="libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
     <script src="libs/leaflet-binding/leaflet.js"></script>
     <link rel="stylesheet" href="css\xari_style.css" type="text/css" />
     <link rel="stylesheet" href="css\fade.css" type="text/css" />
@@ -41,18 +42,13 @@ class: inverse
 
 --
 
-## ...the same way as you do?
+## ...and be able to show you what I did?
 
 --
 
-## ...and be able to check my answers?
-
-## ...and remember what I did 2 years ago?
+## ...and have it still make sense 2 years from now?
 
 
---
-
-## ...while you're sleeping?
 
 
 ---
@@ -276,16 +272,24 @@ __readxl__ is only one of many helpful R packages out there. Here's a sample of 
 
 We have lots of stickers and you should take some with you. Many are for a variety of R communities.
 
-&lt;img src="https://i.pinimg.com/736x/e6/50/80/e650804e9948b5b8b9c231285a576f1b--gears-stickers.jpg" width="345" align="center" style="margin-right: 40px; margin-top: 10px;"&gt;
+&lt;img src="https://i.pinimg.com/736x/e6/50/80/e650804e9948b5b8b9c231285a576f1b--gears-stickers.jpg" width="335"  align="left" style="margin-left: 70px; margin-top: 50px;"&gt;
+
+
+&lt;img src="https://www.rstudio.com/wp-content/uploads/2017/05/readxl-400x464.png" width="120" align="right" style="margin-right: 180px; margin-top: 280px;"&gt;
+
+
+
+
+
+
 
 
 
 ---
 
+# 4| Read all flavors of data
 
-# 4| Read all kinds of data
-
-These packages give R the ability to read data in from almost any place it might be stored. R can talk to SQL databases, read data saved from other statistical software, or pull data directly from the internet.
+These packages give R the ability to read data from almost any place it may be stored. R can talk to SQL databases, read data saved from other statistical software, and pull data directly from the internet.
 
 --
 
@@ -322,6 +326,106 @@ These packages give R the ability to read data in from almost any place it might
 
 __Let's try it.__
 
+---
+
+
+# AirNow | Today's AQI
+
+```r
+library(tidyverse)
+```
+
+```
+## -- Attaching packages ---------------------------------------------------- tidyverse 1.2.1 --
+```
+
+```
+## v ggplot2 2.2.1     v purrr   0.2.4
+## v tibble  1.4.2     v dplyr   0.7.4
+## v tidyr   0.8.0     v stringr 1.2.0
+## v readr   1.1.1     v forcats 0.2.0
+```
+
+```
+## -- Conflicts ------------------------------------------------------- tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+```
+
+```r
+# Connect to AirNow data site to get current air observations
+airnow_link &lt;- paste0("https://s3-us-west-1.amazonaws.com//files.airnowtech.org/airnow/today/HourlyData_",
+                       format(Sys.time() -60*75, "%Y%m%d%H", tz = "GMT"), ".dat")
+  
+# Read a "|" delimited file that has no column names (Thanks EPA!)
+aqi_now   &lt;- read_delim(airnow_link, "|", col_names = F)
+```
+
+```
+## Parsed with column specification:
+## cols(
+##   X1 = col_character(),
+##   X2 = col_time(format = ""),
+##   X3 = col_character(),
+##   X4 = col_character(),
+##   X5 = col_integer(),
+##   X6 = col_character(),
+##   X7 = col_character(),
+##   X8 = col_double(),
+##   X9 = col_character()
+## )
+```
+
+```r
+# Add column names as a list
+names(aqi_now) &lt;- c("date", "time", "aqsid", "city", "local_time", "parameter", "units", "concentration", "agency")
+
+# Filter to Ozone and PM2.5 results
+aqi_now &lt;- filter(aqi_now, parameter %in% c("OZONE", "PM2.5"), aqsid == "270177417")
+
+# Show table
+aqi_now
+```
+
+
+
+```
+## Warning: package 'knitr' was built under R version 3.4.4
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; city &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; date &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; time &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; local_time &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; parameter &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; concentration &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; units &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Fond du Lac &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 05/10/18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 18:00:00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; OZONE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PPB &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Fond du Lac &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 05/10/18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 18:00:00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PM2.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; UG/M3 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 
 ---
@@ -354,9 +458,244 @@ data_2015 &lt;- read_excel("AQS_FondduLac.xlsx", sheet = "2015")
 ```
 
 
+
 ---
 
-# 5| Read all the rows
+# 5| Any plot for any data
+
+![:scale 66%](https://datasciencedojo.com/wp-content/uploads/12_R-and-GGPLOT2-01-845x321.png)
+
+&lt;br&gt;
+
+The _ggplot2_ package has functions that can make almost any plot you can think of. It can also layer plots on top of each other to add multiple elements.
+
+
+```r
+install.packages("ggplot2")
+```
+
+__The fun can start now.__ <i class="fas  fa-rocket "></i>
+
+
+
+---
+class: inverse
+
+# A `geom_bar()` plot
+
+```r
+library(ggplot2)
+
+ggplot(data = date_2014, aes(x = site_catid, y = Conc)) +
+   geom_bar(stat = "identity")
+```
+
+```
+## Error in ggplot(data = date_2014, aes(x = site_catid, y = Conc)): object 'date_2014' not found
+```
+
+---
+
+# AQI summary
+
+
+```r
+source("https://raw.githubusercontent.com/dKvale/aqi-watch/master/R/aqi_convert.R")
+
+data_2014 &lt;- mutate(data_2014, 
+                   aqi_color = conc2aqi(Conc, "Ozone") %&gt;% aqi2color())
+
+ggplot(data = date_2014, aes(x = site_catid, y = Conc)) +
+   geom_bar(stat = "identity", aes(fill = aqi_color))
+```
+
+```
+## Error in ggplot(data = date_2014, aes(x = site_catid, y = Conc)): object 'date_2014' not found
+```
+
+
+
+---
+
+# Box plots
+
+
+```r
+ggplot(data = air_met, aes(x = site_catid, y = Conc)) +
+geom_boxplot()
+```
+
+```
+## Error in ggplot(data = air_met, aes(x = site_catid, y = Conc)): object 'air_met' not found
+```
+
+---
+
+# More box plots
+
+Let's add some color and __ALL 25,000__ of the original data points.
+
+
+```r
+ggplot(data = air_met, aes(x = site_catid, y = Conc, fill = site_catid)) +
+   geom_boxplot() +
+   geom_jitter(alpha = 0.04)
+```
+
+```
+## Error in ggplot(data = air_met, aes(x = site_catid, y = Conc, fill = site_catid)): object 'air_met' not found
+```
+
+
+
+---
+
+# Calendar plot
+
+
+```r
+install.packages("openair")
+```
+
+
+```r
+library(openair)
+
+air_met &lt;- air_met %&gt;% rename(date = Date,
+                              Concentration = Conc)
+
+# openair requires dates to be stored under field name "date"
+
+calendarPlot(air_met, 
+             pollutant = "Concentration", 
+             statistic = "mean", 
+             year      = 2015, 
+             annotate  = "value", 
+             digits    = 1, 
+             key.footer= "ug/m3", 
+             main = "Daily Average PM2.5 Concentrations in Fond du Lac, 2015")
+```
+
+
+---
+
+# beeswarm
+
+
+
+```r
+install.packages("ggbeeswarm")
+```
+
+
+```r
+library(ggbeeswarm)
+
+ggplot(air_met, aes(y = site_catid, x = Concentration)) + 
+    geom_quasirandom(groupOnX = F) +   
+    labs(title = "PM2.5 Result (ug/m^3)")
+```
+
+```
+## Error in ggplot(air_met, aes(y = site_catid, x = Concentration)): object 'air_met' not found
+```
+
+
+---
+
+# Time series
+ 
+
+ 
+
+```r
+filter(data_2014, SiteNum == 7417) %&gt;% group_by(Date) %&gt;% 
+  summarize(Conc = median(Conc, na.rm = T)) %&gt;% 
+  ggplot(aes(x = as.Date(Date), y = Conc, na.rm = T)) + 
+         geom_line(size = 1, color = "tomato", alpha = 0.8) +
+         geom_point(alpha = 0.5) + geom_smooth() +
+         ylab("Concentration (ug/m3)") + xlab("") + ggtitle("PM2.5 at Fond du Lac in 2014") + 
+         geom_label(aes(x = as.Date("2014-06-14"), y = 0.0527), fill = "#3C989E", 
+                    label = "May 25th: the BIG EVENT", size = 10) 
+```
+
+![](NTF_Demo_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+
+---
+
+
+# Time series - _split by hour_
+
+```r
+filter(data_2014, SiteNum == 7417) %&gt;%
+  ggplot(aes(x = Hour, y = Conc)) +
+         geom_point(alpha = 0.5) +
+         geom_smooth() +
+         ylab("Concentration (ug/m3)") + xlab("HOUR") + 
+         ggtitle("PM2.5 at Fond du Lac in 2014") +
+         facet_wrap(~month(Date, label = T), ncol = 4)
+```
+
+```
+## Error in month(Date, label = T): could not find function "month"
+```
+
+![](NTF_Demo_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+
+
+---
+
+# Time series - _split by weekday_
+
+```r
+filter(data_2014, SiteNum == 7417) %&gt;% 
+  mutate(color = ifelse(wday(Date) == 5 &amp; month(Date) == 4, "Clustered day", "Normal day")) %&gt;%
+  ggplot(aes(x = wday(Date, label = T), y = Conc)) +
+    geom_boxplot(aes(fill = color), outlier.alpha = 0, show.legend = F) + 
+    geom_jitter(alpha = 0.2) +
+    ylab("Concentration (ug/m3)") + xlab("") + ggtitle("PM2.5 at Fond du Lac in 2014") + 
+    facet_wrap(~month(Date, label = T), ncol = 4)
+```
+
+```
+## Error in mutate_impl(.data, dots): Evaluation error: could not find function "wday".
+```
+
+
+
+
+---
+class: inverse, middle, center
+
+# ...Chart finale...
+
+---
+
+# A nature journal
+
+
+
+```r
+library(ggpomological)
+
+nature_plot &lt;- ggplot(data_2014, aes(x = Date, y = Conc)) +
+                 geom_point(aes(color = as.factor(month(Date))), alpha = 0.8) + stat_smooth(geom = "line", color = "#C0C0C0", alpha = 0.7) +
+                 scale_color_pomological() + theme_pomological_fancy() +
+                 labs(title = "Air monitoring results") + theme(legend.position = "none")
+
+paint_pomological(nature_plot, res = 120, width = 1200, height = 400)
+```
+
+```
+## Error in month(Date): could not find function "month"
+```
+
+
+
+
+---
+
+# 6| Read all the rows
 
 What if you have a ** _HUGE_ ** file? 
 
@@ -420,15 +759,28 @@ nrow(big_met)
 ## [1] 1401457
 ```
 
+---
 
-We can look at the data in a couple of ways:
+# dplyr gives you powerful words
 
-```r
-# This package has lots of data processing functions.
-install.packages("dplyr")
-```
+![](https://www.kdnuggets.com/wp-content/uploads/hex-dplyr.jpg)
+We can look at the data in many ways:
 
 
+
+
+__Your analysis toolbox:__ The key _dplyr_ functions
+
+| Function      | Returns                                             |  
+|:--------------|:----------------------------------------------------|  
+| `select()`    | select individual columns to drop, keep, or reorder |  
+| `arrange()`   | reorder or sort rows by value of a column           |  
+| `mutate()`    | Add new columns or update existing columns          | 
+| `filter()`    | pick a subset of rows by the value of a column      | 
+| `group_by()`  | split data into groups by values in a column        |  
+| `summarize()` | calculate a single summary row for the entire table |  
+
+##Let's use some of these words!
 
 ---
 
@@ -657,48 +1009,55 @@ kable(head(fonddulac_met, 5), 'html')
 
 ---
 
-# 6| Join related data tables with 1 line
+# 7| Join related data tables with 1 line
 
 Since our concentration data has the same format and only the year is changing, we can bind the two tables together with the function `bind_rows()`.
 
+![](https://cdn-images-1.medium.com/max/1600/1*uG1vjoSQj7gMm8craCj2xA.png)
 
-```r
-air_data &lt;- bind_rows(data_2015, data_2014)
-```
 
 
 ```r
 install.packages("lubridate")
 ```
 
+and it looks like this
 
-```r
-# Format the dates for both tables
-library(lubridate)
 
-air_data$date_time &lt;-  paste(ymd(air_data$Date), hms(paste(air_data$Hour, ":00:00")))
-
-air_data$date_time &lt;-  ymd_hms(air_data$date_time)
-
-fonddulac_met$time &lt;- ymd_hms(fonddulac_met$time)
-
-fonddulac_met$site_catid &lt;- NULL
 ```
+## # A tibble: 6 x 12
+##   StateCode CountyCode SiteNum Latitude Longitude Date               
+##       &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;dttm&gt;             
+## 1        27         17    7417     46.7     -92.5 2015-04-01 00:00:00
+## 2        27         17    7417     46.7     -92.5 2015-04-01 00:00:00
+## 3        27         17    7417     46.7     -92.5 2015-04-01 00:00:00
+## 4        27         17    7417     46.7     -92.5 2015-04-01 00:00:00
+## 5        27         17    7417     46.7     -92.5 2015-04-01 00:00:00
+## 6        27         17    7417     46.7     -92.5 2015-04-01 00:00:00
+## # ... with 6 more variables: Time &lt;dttm&gt;, Hour &lt;dbl&gt;, Conc &lt;dbl&gt;,
+## #   site_catid &lt;chr&gt;, Year &lt;dbl&gt;, aqi_color &lt;chr&gt;
+```
+
+
+
 
 
 ---
 
-We can `left_join()` the weather and concentration data by the __date__ column in each table.
+# dplyr gives us a variety of joins
+
+A left_join() can pull together two tables like this
 
 
-```r
-air_met &lt;- left_join(air_data, fonddulac_met, by = c("date_time" = "time"))
-```
-
-_We didn't join on site identification codes because the sites in the MET and AQS data have different IDs._
+![](https://mgimond.github.io/ES218/img/left_join.png)
 
 
-Here's what the first few rows look like.
+
+
+`left_join()` pulls together our weather and concentration data by the __date__ column in each table.
+
+Now our data looks like this
+
 
 ```r
 library(knitr)
@@ -719,6 +1078,7 @@ kable(head(select(air_met, -date_time, -Time, -icon), 1), 'html')
    &lt;th style="text-align:right;"&gt; Conc &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; site_catid &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; Year &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; aqi_color &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; summary &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; precipIntensity &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; precipProbability &lt;/th&gt;
@@ -747,6 +1107,7 @@ kable(head(select(air_met, -date_time, -Time, -icon), 1), 'html')
    &lt;td style="text-align:right;"&gt; 0.037 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 27-017-7417 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 2015 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Partly Cloudy &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
@@ -769,9 +1130,12 @@ kable(head(select(air_met, -date_time, -Time, -icon), 1), 'html')
 
 
 
+
+
+
 ---
 
-# 7| Documentation and transparency
+# 8| Documentation and transparency
 
 
 .indent[
@@ -797,7 +1161,7 @@ It's especially fun to copy yourself from 2 years ago.
 
 ---
 
-# 8| You can't break your data
+# 9| You can't break your data
 
 &lt;div class="quiz"&gt;
 
@@ -822,7 +1186,7 @@ It's especially fun to copy yourself from 2 years ago.
 
 ---
 
-# 8| You can't break your data
+# 10| You can't break your data
 
 
 So far we have joined a table of MET data with concentration data, and the original data files have not been changed. The raw data is still safe.
@@ -847,7 +1211,7 @@ To look at subsets of data or to store summary results we can create copies of t
 
 ---
 
-# 8| You can't break your data
+# 10| You can't break your data
 
 If you want to create data from scratch, give the value a name. 
 
@@ -879,7 +1243,7 @@ current_temp
 
 ---
 
-# 9| Missing values
+# 11| Missing values
 
 Let's look at a `summary()` for PM2.5 concentrations and wind speed.
 
@@ -911,7 +1275,7 @@ We need to know this. We don't want to take means of data where most of it is mi
 
 ---
 
-# 9| Missing values
+# 11| Missing values
 
 
 &lt;div class="note"&gt;
@@ -937,210 +1301,11 @@ The average PM2.5 concentration is:  __.scary[.bigtext[0.026 _ug/m3_]]__
 
 ---
 
-# 10| Any plot for any data
-
-![:scale 66%](https://datasciencedojo.com/wp-content/uploads/12_R-and-GGPLOT2-01-845x321.png)
-
-&lt;br&gt;
-
-The _ggplot2_ package has functions that can make almost any plot you can think of. It can also layer plots on top of each other to add multiple elements.
-
-
-```r
-install.packages("ggplot2")
-```
-
-__The fun can start now.__ <i class="fas  fa-rocket fa-spin "></i>
-
-
-
----
-class: inverse
-
-# The classic `geom_bar()` plot
-
-```r
-library(ggplot2)
-
-ggplot(data = air_met, aes(x = site_catid, y = Conc)) +
-   geom_bar(stat = "identity")
-```
-
-&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-30-1.png" width="450px" height="410px" /&gt;
-
-It looks like one mean might be higher than the other, but we can't really tell until we can see more of the data.
-
----
-
-# Box plots
-
-
-```r
-ggplot(data = air_met, aes(x = site_catid, y = Conc)) +
-geom_boxplot()
-```
-
-&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-31-1.png" width="450px" height="380px" /&gt;
-
----
-
-# More box plots
-
-Let's add some color and __ALL 25,000__ of the original data points.
-
-
-```r
-ggplot(data = air_met, aes(x = site_catid, y = Conc, fill = site_catid)) +
-   geom_boxplot() +
-   geom_jitter(alpha = 0.04)
-```
-
-&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-32-1.png" width="460px" height="360px" /&gt;
-
-
-
----
-
-# Calendar plot
-
-
-```r
-install.packages("openair")
-```
-
-
-```r
-library(openair)
-
-air_met &lt;- air_met %&gt;% rename(date = Date,
-                              Concentration = Conc)
-
-# openair requires dates to be stored under field name "date"
-
-calendarPlot(air_met, 
-             pollutant = "Concentration", 
-             statistic = "mean", 
-             year      = 2015, 
-             annotate  = "value", 
-             digits    = 1, 
-             key.footer= "ug/m3", 
-             main = "Daily Average PM2.5 Concentrations in Fond du Lac, 2015")
-```
-
-
----
-
-# beeswarm
-
-
-
-```r
-install.packages("ggbeeswarm")
-```
-
-
-```r
-library(ggbeeswarm)
-
-ggplot(air_met, aes(y = site_catid, x = Concentration)) + 
-    geom_quasirandom(groupOnX = F) +   
-    labs(title = "PM2.5 Result (ug/m^3)")
-```
-
-```
-## Error in FUN(X[[i]], ...): object 'Concentration' not found
-```
-
-![](NTF_Demo_files/figure-html/unnamed-chunk-36-1.png)&lt;!-- --&gt;
-
-
----
-
-# Time series
- 
-
- 
-
-```r
-filter(data_2014, SiteNum == 7417) %&gt;% group_by(Date) %&gt;% 
-  summarize(Conc = median(Conc, na.rm = T)) %&gt;% 
-  ggplot(aes(x = as.Date(Date), y = Conc, na.rm = T)) + 
-         geom_line(size = 1, color = "tomato", alpha = 0.8) +
-         geom_point(alpha = 0.5) + geom_smooth() +
-         ylab("Concentration (ug/m3)") + xlab("") + ggtitle("PM2.5 at Fond du Lac in 2014") + 
-         geom_label(aes(x = as.Date("2014-06-14"), y = 0.0527), fill = "#3C989E", 
-                    label = "May 25th: the BIG EVENT", size = 10) 
-```
-
-![](NTF_Demo_files/figure-html/unnamed-chunk-38-1.png)&lt;!-- --&gt;
-
----
-
-# Time series - _split by hour_
-
-
-```r
-filter(data_2014, SiteNum == 7417) %&gt;%
-  ggplot(aes(x = Hour, y = Conc)) +
-         geom_point(alpha = 0.5) +
-         geom_smooth() +
-         ylab("Concentration (ug/m3)") + xlab("HOUR") + ggtitle("PM2.5 at Fond du Lac in 2014") +
-         facet_wrap(~month(Date, label = T), ncol = 4)
-```
-
-![](NTF_Demo_files/figure-html/unnamed-chunk-39-1.png)&lt;!-- --&gt;
-
-
----
-
-# Time series - _split by weekday_
-
-```r
-filter(data_2014, SiteNum == 7417) %&gt;% 
-  mutate(color = ifelse(wday(Date) == 5 &amp; month(Date) == 4, "Clustered day", "Normal day")) %&gt;%
-  ggplot(aes(x = wday(Date, label = T), y = Conc)) +
-    geom_boxplot(aes(fill = color), outlier.alpha = 0, show.legend = F) + 
-    geom_jitter(alpha = 0.2) +
-    ylab("Concentration (ug/m3)") + xlab("") + ggtitle("PM2.5 at Fond du Lac in 2014") + 
-    facet_wrap(~month(Date, label = T), ncol = 4)
-```
-
-![](NTF_Demo_files/figure-html/unnamed-chunk-40-1.png)&lt;!-- --&gt;
-
-
-
-
----
-class: inverse, middle, center
-
-# ...Chart finale...
-
----
-
-# A calming nature journal
-
-
-
-```r
-library(ggpomological)
-
-nature_plot &lt;- ggplot(data_2014, aes(x = Date, y = Conc)) +
-                 geom_point(aes(color = as.factor(month(Date)), fill = as.factor(month(Date))), alpha = 0.8) + 
-                 scale_color_pomological() + scale_fill_pomological() + 
-                 theme_pomological_fancy() +
-                 labs(title = "Air monitoring results") + theme(legend.position = "none")
-
-paint_pomological(nature_plot, res = 120, width = 1200, height = 400)
-```
-
-&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-42-1.png" width="1600" height="410px" /&gt;
-
----
-
-# 10.5|  R gives you a language for data
+# 12|  R gives you a language for data
 
 It's nice to have words. 
 
+ 
 
 
 1. Let's describe going from data in a __wide__ format to data in a __tall__ format as gather().
@@ -1168,7 +1333,7 @@ view(wide_met)
 ---
 
 
-# 11| Automate - _update with new data_
+# 13| Automate - _update with new data_
 
 __Explosions!__
 
@@ -1181,7 +1346,7 @@ There was a big refinery explosion close to our monitoring site. We'll be receiv
 
 ---
 
-# 1| Automate - _update with new data_
+# 13| Automate - _update with new data_
 
 
 We have data for 2014 and 2015, but the explosion just happened now _(in the year 2016)_. Remember our data is stored in one Excel workbook. Since we wrote this in a script form we can change the date in our `read_excel()` to __2016__.
@@ -1210,17 +1375,7 @@ air_data &lt;- bind_rows(data_2016, air_data)
 
 
 
-Then we join the met data:
 
-```r
-# Set date formats
-air_data$date_time &lt;-  paste(ymd(air_data$Date), hms(paste(air_data$Hour, ":00:00")))
-
-air_data$date_time &lt;-  ymd_hms(air_data$date_time)
-
-# Join
-air_met &lt;- left_join(air_data, fonddulac_met, by = c("date_time" = "time")) %&gt;% select(-Time)
-```
 
 
 ```r
@@ -1228,6 +1383,7 @@ air_met &lt;- left_join(air_data, fonddulac_met, by = c("date_time" = "time")) %
 head(air_met, 2)
 ```
 
+and then it looks like this,
 &lt;table&gt;
  &lt;thead&gt;
   &lt;tr&gt;
@@ -1241,6 +1397,7 @@ head(air_met, 2)
    &lt;th style="text-align:right;"&gt; Conc &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; site_catid &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; Year &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; aqi_color &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; date_time &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; summary &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; icon &lt;/th&gt;
@@ -1274,6 +1431,7 @@ head(air_met, 2)
    &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
@@ -1299,6 +1457,7 @@ head(air_met, 2)
    &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 27-137-7417 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 2016 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 2016-01-01 01:00:00 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Partly Cloudy &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; partly-cloudy-night &lt;/td&gt;
@@ -1322,7 +1481,7 @@ head(air_met, 2)
 
 ---
 
-# 12| Make maps and never get lost again
+# 14| Make maps and never get lost again
 
 Where is the Fond du Lac monitor again? 
 
@@ -1357,25 +1516,24 @@ __Go-Go gadget leaflet!__
 
 ---
 
-# 12| Make maps and never get lost again
+# 14| Make maps and never get lost again
 
 &lt;br&gt;
 
 
 ```
-## Assuming "Longitude" and "Latitude" are longitude and latitude, respectively
+## Assuming 'Longitude' and 'Latitude' are longitude and latitude, respectively
 ```
 
-<div id="htmlwidget-bcb5118d69c971474c04" style="width:77%;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-bcb5118d69c971474c04">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[46.713694,46.713694,46.77107,46.81826,46.743657],[-92.511722,-92.511722,-92.11732,-92.08936,-92.165998],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,["7417","7417","7549","7550","7554"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[46.713694,46.81826],"lng":[-92.511722,-92.08936]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-02c460fe58549a3a1430" style="width:77%;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-02c460fe58549a3a1430">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"maxNativeZoom":null,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"continuousWorld":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[46.713694,46.713694,46.77107,46.81826,46.743657],[-92.511722,-92.511722,-92.11732,-92.08936,-92.165998],10,null,null,{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2,"dashArray":null},null,null,null,null,["7417","7417","7549","7550","7554"],{"clickable":false,"noHide":true,"direction":"right","opacity":1,"offset":[12,-15],"textsize":"10px","textOnly":false,"style":null,"zoomAnimation":true,"className":""},null]}],"limits":{"lat":[46.713694,46.81826],"lng":[-92.511722,-92.08936]}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
-# 12| Make maps and never get lost again
+# 14| Make maps and never get lost again
 
 #### Let's add where we are right now.
 
---
 
 
 ```r
@@ -1385,13 +1543,45 @@ leaflet(data = air_sites) %&gt;% addTiles() %&gt;%
   addPopups(-92.48, 46.66, "&lt;a&gt;You are HERE&lt;/a&gt;")
 ```
 
-<div id="htmlwidget-e6da96b5f788808b2462" style="width:77%;height:390px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e6da96b5f788808b2462">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[46.713694,46.713694,46.77107,46.81826,46.743657],[-92.511722,-92.511722,-92.11732,-92.08936,-92.165998],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,["7417","7417","7549","7550","7554"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addPopups","args":[46.66,-92.48,"<a>You are HERE<\/a>",null,null,{"maxWidth":300,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"className":""}]}],"limits":{"lat":[46.66,46.81826],"lng":[-92.511722,-92.08936]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-8cc6d9574aaa1216a8ed" style="width:77%;height:390px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8cc6d9574aaa1216a8ed">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"maxNativeZoom":null,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"continuousWorld":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[46.713694,46.713694,46.77107,46.81826,46.743657],[-92.511722,-92.511722,-92.11732,-92.08936,-92.165998],10,null,null,{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2,"dashArray":null},null,null,null,null,["7417","7417","7549","7550","7554"],{"clickable":false,"noHide":true,"direction":"right","opacity":1,"offset":[12,-15],"textsize":"10px","textOnly":false,"style":null,"zoomAnimation":true,"className":""},null]},{"method":"addPopups","args":[46.66,-92.48,"<a>You are HERE<\/a>",null,null,{"maxWidth":300,"minWidth":50,"maxHeight":null,"autoPan":true,"keepInView":false,"closeButton":true,"zoomAnimation":true,"closeOnClick":null,"className":""}]}],"limits":{"lat":[46.66,46.81826],"lng":[-92.511722,-92.08936]}},"evals":[],"jsHooks":[]}</script>
+
+--
 
 
 ---
 
+# 14| Map weather alerts
 
+.center[
+![](images/flood_map.png)
+]
+
+
+```r
+library(tidyverse)
+library(weatherAlerts)
+library(leaflet)
+
+alerts &lt;- getAlerts("LA") # takes about 20 seconds
+
+severity &lt;- alerts@data$severity
+
+colorMap &lt;- c(Minor    = "green",
+              Moderate = "yellow",
+              Severe   = "red",
+              Extreme  = "magenta",
+              Unknown  = "grey")
+
+severityColors &lt;- unname(colorMap[severity])
+
+leaflet() %&gt;%
+  addTiles() %&gt;%
+  addPolygons(data = alerts, color = "black", fillColor = severityColors, weight = 1, popup = ~paste0("&lt;strong&gt;", event, "&lt;/strong&gt;", "&lt;br&gt;&lt;br&gt;", summary))
+```
+
+
+---
 
 # Return of the roses
 
@@ -1402,7 +1592,7 @@ Remember the first pollutant rose we looked at? Let's load the Fond du Lac data 
 
 ---
 
-# 13| Online community + Us + You
+# 15| Online community + Us + You
 
 
 .bigtext[**Join the R community**]
@@ -1428,7 +1618,7 @@ Remember the first pollutant rose we looked at? Let's load the Fond du Lac data 
 
 ---
 
-# 14| It will compliment you
+# 16| It will compliment you
 
 There are some _just for fun_ R packages. 
 

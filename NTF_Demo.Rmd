@@ -28,18 +28,13 @@ class: inverse
 
 --
 
-## ...the same way as you do?
+## ...and be able to show you what I did?
 
 --
 
-## ...and be able to check my answers?
-
-## ...and remember what I did 2 years ago?
+## ...and have it still make sense 2 years from now?
 
 
---
-
-## ...while you're sleeping?
 
 
 ---
@@ -276,16 +271,24 @@ __readxl__ is only one of many helpful R packages out there. Here's a sample of 
 
 We have lots of stickers and you should take some with you. Many are for a variety of R communities.
 
-<img src="https://i.pinimg.com/736x/e6/50/80/e650804e9948b5b8b9c231285a576f1b--gears-stickers.jpg" width="345" align="center" style="margin-right: 40px; margin-top: 10px;">
+<img src="https://i.pinimg.com/736x/e6/50/80/e650804e9948b5b8b9c231285a576f1b--gears-stickers.jpg" width="335"  align="left" style="margin-left: 70px; margin-top: 50px;">
+
+
+<img src="https://www.rstudio.com/wp-content/uploads/2017/05/readxl-400x464.png" width="120" align="right" style="margin-right: 180px; margin-top: 280px;">
+
+
+
+
+
+
 
 
 
 ---
 
+# 4| Read all flavors of data
 
-# 4| Read all kinds of data
-
-These packages give R the ability to read data in from almost any place it might be stored. R can talk to SQL databases, read data saved from other statistical software, or pull data directly from the internet.
+These packages give R the ability to read data from almost any place it may be stored. R can talk to SQL databases, read data saved from other statistical software, and pull data directly from the internet.
 
 --
 
@@ -322,6 +325,36 @@ These packages give R the ability to read data in from almost any place it might
 
 __Let's try it.__
 
+---
+
+
+# AirNow | Today's AQI
+```{r, eval = T, results = 'hide'}
+library(tidyverse)
+
+# Connect to AirNow data site to get current air observations
+airnow_link <- paste0("https://s3-us-west-1.amazonaws.com//files.airnowtech.org/airnow/today/HourlyData_",
+                       format(Sys.time() -60*75, "%Y%m%d%H", tz = "GMT"), ".dat")
+  
+# Read a "|" delimited file that has no column names (Thanks EPA!)
+aqi_now   <- read_delim(airnow_link, "|", col_names = F)
+                        
+# Add column names as a list
+names(aqi_now) <- c("date", "time", "aqsid", "city", "local_time", "parameter", "units", "concentration", "agency")
+
+# Filter to Ozone and PM2.5 results
+aqi_now <- filter(aqi_now, parameter %in% c("OZONE", "PM2.5"), aqsid == "270177417")
+
+# Show table
+aqi_now
+```
+
+
+```{r, echo = F}
+library(knitr)
+# Show table
+select(aqi_now, city, date, time, local_time, parameter, concentration, units, -aqsid, -agency) %>% kable("html")
+```
 
 
 ---
@@ -351,325 +384,10 @@ data_2015 <- read_excel("AQS_FondduLac.xlsx", sheet = "2015")
 ```
 
 
----
-
-# 5| Read all the rows
-
-What if you have a ** _HUGE_ ** file? 
-
-<br>
-
-Good timing! We just requested MET data from the weather people down the hall, and they sent us a text file with over million rows of data. 
-
-That's nice of them, but _don't they know_ Excel is limited to around a million rows?
 
 ---
 
-## We will open it.
-
-Here's what we do to read a large text file:
-
-
-`1.` Download the file:
-```{r, echo=T, eval=F, cache=T, message=F, warning=F}
-url <- "https://github.com/MPCA-air/NTF_learn_R/raw/master/data/BIG_MET_data.zip"
-
-download.file(url, "BIG_MET_data.zip")
-
-# It's a zip file, so we can run the unzip() function
-unzip("BIG_MET_data.zip", file = "MET_data_2012-2017.csv")
-```
-
-```{r, eval=F, echo=T, message=F, warning=F}
-install.packages("readr")
-```
-
-
-`2.` Read the data with __ ` read_csv() ` __:
-```{r, echo=T, eval=F, message=F, warning=F, results='hide'}
-# Inside the ZIP file is a huge csv text file.
-# For this we can run read_csv() from the readr package.
-# This package has lots of data reading functions.
-
-library(readr)
-
-big_met <- read_csv("MET_data_2012-2017.csv")
-```
-
-```{r, include=F, eval=T, results='hide', warning=F, message=F}
-# Inside the ZIP file is a huge csv text file.
-# For this we can run read_csv() from the readr package.
-# This package has lots of data reading functions.
-
-library(readr)
-
-big_met <- read_csv("MET_data_2012-2017.csv")
-```
-
-
----
-
-# Did it work?
-
-
-### Let's count the rows.
-```{r, eval=T}
-nrow(big_met)
-```
-
-
-We can look at the data in a couple of ways:
-```{r, eval=F, echo=T, message=F, warning=F}
-# This package has lots of data processing functions.
-install.packages("dplyr")
-```
-
-```{r, eval=T, include=F}
-library(dplyr)
-```
-
----
-
-# `glimpse()` the data
-
-```{r, eval=T, echo=T, message=F, warning=F}
-library(dplyr)
-
-glimpse(big_met)
-```
-
-<br>
-
----
-
-# `summary()` of all columns
-
-```{r, eval=T, echo=T, message=F, warning=F}
-
-summary(big_met)
-```
-
----
-
-# ` filter() ` to a single site
-
-
-```{r, echo=T, eval=T, message=F, warning=F}
-library(knitr)
-
-# The filter() function is in the package dplyr
-fonddulac_met <- filter(big_met, site_catid == "27-017-7417")
-
-
-kable(head(fonddulac_met, 5), 'html')
-```
-
-
----
-
-# 6| Join related data tables with 1 line
-
-Since our concentration data has the same format and only the year is changing, we can bind the two tables together with the function `bind_rows()`.
-
-```{r, eval=T, echo=T, message=F, warning=F}
-air_data <- bind_rows(data_2015, data_2014)
-```
-
-```{r, eval=F, echo=T, message=F, warning=F}
-install.packages("lubridate")
-```
-
-```{r, eval=T, echo=T, message=F, warning=F, results='hide'}
-
-# Format the dates for both tables
-library(lubridate)
-
-air_data$date_time <-  paste(ymd(air_data$Date), hms(paste(air_data$Hour, ":00:00")))
-
-air_data$date_time <-  ymd_hms(air_data$date_time)
-
-fonddulac_met$time <- ymd_hms(fonddulac_met$time)
-
-fonddulac_met$site_catid <- NULL
-
-```
-
-
----
-
-We can `left_join()` the weather and concentration data by the __date__ column in each table.
-
-```{r, echo=T, eval=T, message=F, warning=F}
-
-air_met <- left_join(air_data, fonddulac_met, by = c("date_time" = "time"))
-```
-
-_We didn't join on site identification codes because the sites in the MET and AQS data have different IDs._
-
-
-Here's what the first few rows look like.
-```{r}
-library(knitr)
-
-kable(head(select(air_met, -date_time, -Time, -icon), 1), 'html')
-```
-
-
-```{r, eval=T,  include=F, message=F, warning=F}
-write_csv(air_met, "air_met.csv")
-```
-
-
----
-
-# 7| Documentation and transparency
-
-
-.indent[
-## **To do list**
-
-1. Analyze data
-2. ?
-3. ??
-]
-
-Documentation is hard work and much of my documentation looks like the above list. But in R, I have written each step into a text file script and __voila!__ There's documentation for myself and others.
-
-<div class="tip">
-
-.pad-right[
-You are encouraged to copy and share analyses and charts with others.
-
-It's especially fun to copy yourself from 2 years ago.
-]
-</div>
-
-
-
----
-
-# 8| You can't break your data
-
-<div class="quiz">
-
-.work[
-## Pop Quiz, hotshots!  
-
-<br>
-<strong>Which of these things have we done?</strong><br>
-<i>(Hint: It may be more than one of them.)</i>
-]
-
-
-<input type="radio"> Lost a data file. <br>
-<input type="radio"> Accidently replaced a value in Excel with a random letter like 'z'. <br> 
-<input type="radio"> Forgotten which file housed the original data. <br> 
-<input type="radio"> Saved over something important. <br> 
-<input type="radio"> Lost an entire folder of data.  <br>
-<input type="radio"> Forgotten which monitoring days I dropped and why. <br>
-
-</div>
-
-
----
-
-# 8| You can't break your data
-
-
-So far we have joined a table of MET data with concentration data, and the original data files have not been changed. The raw data is still safe.
-
-When we receive updated data we can run the same script to append the data and proceed with our analysis.
-
-
-You will notice that when we're in R, we always use a name for the data and then tell R to do something to the named object.
-
-It looks like this:
-
-```{r, eval=F}
-data <- read_excel("data.csv")
-```
-
-These R commands always act on a **copy** of the data and aren't changing the original file. So no more worries! 
-
-To look at subsets of data or to store summary results we can create copies of things in the R environment, all without creating lots of different copies of the data.
-
-
-
----
-
-# 8| You can't break your data
-
-If you want to create data from scratch, give the value a name. 
-
-
-Let's make some values for the temperature and this conference.
-```{r, echo=T, eval=T, message=F, warning=F}
-current_temp <- 70
-
-this_conference <- "NTFAQ"
-```
-
-<br>
-
-Now when we type the names into the R console it will tell us what is stored there.
-
-Hey R, what's the `current_temp`?
-
-```{r, echo=T, eval=T, message=F, warning=F}
-current_temp
-```
-
-
-
----
-
-# 9| Missing values
-
-Let's look at a `summary()` for PM2.5 concentrations and wind speed.
-
-
-```{r, echo=T, eval=T, message=F, warning=F}
-
-# The summary() function provides min, max, means, etc of each numeric variable in the data set.
-# It also tells us what each column type is, letting you know whether the data is
-# stored as characters, integers, decimals, or date objects.
-
-select(air_met, Conc, windSpeed) %>% summary()
-```
-
-You can see the mean of the "Conc" column and we see no missing values.
-
-If we look at the summary for wind speed, we see many missing values (shown as ` NA ` in R).
-We need to know this. We don't want to take means of data where most of it is missing. Other programs may ignore these values, or throw an error at you.
-
----
-
-# 9| Missing values
-
-
-<div class="note">
-But I only want one number. Is that too much to ask!?
-</div>
-
-```{r, echo=T, eval=T, message=F, warning=F, results='hide'}
-# The summarize() function reduces your data down to a statistical summary
-# mean(), max(), min(), percentile(), range(), etc.
-
-fonddulac_mean <- summarize(air_met, mean_pm25 = mean(Conc, na.rm = TRUE))
-
-fonddulac_mean
-```
-
-
-Okay, here's your answer _(if we drop all the `NAs`)_.
-
-The average PM2.5 concentration is:  __.scary[.bigtext[`r round(fonddulac_mean$mean_pm25, 3)` _ug/m3_]]__
-
-
-
----
-
-# 10| Any plot for any data
+# 5| Any plot for any data
 
 ![:scale 66%](https://datasciencedojo.com/wp-content/uploads/12_R-and-GGPLOT2-01-845x321.png)
 
@@ -681,22 +399,36 @@ The _ggplot2_ package has functions that can make almost any plot you can think 
 install.packages("ggplot2")
 ```
 
-__The fun can start now.__ `r icon::fa("rocket", animate="spin")`
+__The fun can start now.__ `r icon::fa("rocket")`
 
 
 
 ---
 class: inverse
 
-# The classic `geom_bar()` plot
+# A `geom_bar()` plot
 ```{r, echo=T, eval=T, message=F, warning=F, out.height="410px", out.width="450px"}
 library(ggplot2)
 
-ggplot(data = air_met, aes(x = site_catid, y = Conc)) +
+ggplot(data = date_2014, aes(x = site_catid, y = Conc)) +
    geom_bar(stat = "identity")
 ```
 
-It looks like one mean might be higher than the other, but we can't really tell until we can see more of the data.
+---
+
+# AQI summary
+
+```{r, echo=T, eval=T, message=F, warning=F, out.height="410px", out.width="450px"}
+source("https://raw.githubusercontent.com/dKvale/aqi-watch/master/R/aqi_convert.R")
+
+data_2014 <- mutate(data_2014, 
+                   aqi_color = conc2aqi(Conc, "Ozone") %>% aqi2color())
+
+ggplot(data = date_2014, aes(x = site_catid, y = Conc)) +
+   geom_bar(stat = "identity", aes(fill = aqi_color))
+```
+
+
 
 ---
 
@@ -789,14 +521,15 @@ filter(data_2014, SiteNum == 7417) %>% group_by(Date) %>%
 
 ---
 
-# Time series - _split by hour_
 
+# Time series - _split by hour_
 ```{r, echo=T, eval=T, message=F, warning=F, fig.width=30, fig.height=10}
 filter(data_2014, SiteNum == 7417) %>%
   ggplot(aes(x = Hour, y = Conc)) +
          geom_point(alpha = 0.5) +
          geom_smooth() +
-         ylab("Concentration (ug/m3)") + xlab("HOUR") + ggtitle("PM2.5 at Fond du Lac in 2014") +
+         ylab("Concentration (ug/m3)") + xlab("HOUR") + 
+         ggtitle("PM2.5 at Fond du Lac in 2014") +
          facet_wrap(~month(Date, label = T), ncol = 4)
 ```
 
@@ -824,31 +557,384 @@ class: inverse, middle, center
 
 ---
 
-# A calming nature journal
+# A nature journal
 ```{r, echo = F, eval = F}
 install.packages("devtools")
 
 devtools::install_github("gadenbuie/ggpomological")
 ```
 
-```{r, echo=T, eval=T, warning=F, message=F, out.height="410px"}
+```{r, echo=T, eval=T, warning=F, message=F, out.height="380px"}
 library(ggpomological)
 
 nature_plot <- ggplot(data_2014, aes(x = Date, y = Conc)) +
-                 geom_point(aes(color = as.factor(month(Date)), fill = as.factor(month(Date))), alpha = 0.8) + 
-                 scale_color_pomological() + scale_fill_pomological() + 
-                 theme_pomological_fancy() +
+                 geom_point(aes(color = as.factor(month(Date))), alpha = 0.8) + stat_smooth(geom = "line", color = "#C0C0C0", alpha = 0.7) +
+                 scale_color_pomological() + theme_pomological_fancy() +
                  labs(title = "Air monitoring results") + theme(legend.position = "none")
 
 paint_pomological(nature_plot, res = 120, width = 1200, height = 400)
 ```
 
+
+
+
 ---
 
-# 10.5|  R gives you a language for data
+# 6| Read all the rows
+
+What if you have a ** _HUGE_ ** file? 
+
+<br>
+
+Good timing! We just requested MET data from the weather people down the hall, and they sent us a text file with over million rows of data. 
+
+That's nice of them, but _don't they know_ Excel is limited to around a million rows?
+
+---
+
+## We will open it.
+
+Here's what we do to read a large text file:
+
+
+`1.` Download the file:
+```{r, echo=T, eval=F, cache=T, message=F, warning=F}
+url <- "https://github.com/MPCA-air/NTF_learn_R/raw/master/data/BIG_MET_data.zip"
+
+download.file(url, "BIG_MET_data.zip")
+
+# It's a zip file, so we can run the unzip() function
+unzip("BIG_MET_data.zip", file = "MET_data_2012-2017.csv")
+```
+
+```{r, eval=F, echo=T, message=F, warning=F}
+install.packages("readr")
+```
+
+
+`2.` Read the data with __ ` read_csv() ` __:
+```{r, echo=T, eval=F, message=F, warning=F, results='hide'}
+# Inside the ZIP file is a huge csv text file.
+# For this we can run read_csv() from the readr package.
+# This package has lots of data reading functions.
+
+library(readr)
+
+big_met <- read_csv("MET_data_2012-2017.csv")
+```
+
+```{r, include=F, eval=T, results='hide', warning=F, message=F}
+# Inside the ZIP file is a huge csv text file.
+# For this we can run read_csv() from the readr package.
+# This package has lots of data reading functions.
+
+library(readr)
+
+big_met <- read_csv("MET_data_2012-2017.csv")
+```
+
+
+---
+
+# Did it work?
+
+
+### Let's count the rows.
+```{r, eval=T}
+nrow(big_met)
+```
+
+---
+
+# dplyr gives you powerful words
+
+![](https://www.kdnuggets.com/wp-content/uploads/hex-dplyr.jpg)
+We can look at the data in many ways:
+```{r, eval=F, echo=T, message=F, warning=F, include = F}
+# This package has lots of data processing functions.
+install.packages("dplyr")
+```
+
+```{r, eval=T, include=F}
+library(dplyr)
+```
+
+__Your analysis toolbox:__ The key _dplyr_ functions
+
+| Function      | Returns                                             |  
+|:--------------|:----------------------------------------------------|  
+| `select()`    | select individual columns to drop, keep, or reorder |  
+| `arrange()`   | reorder or sort rows by value of a column           |  
+| `mutate()`    | Add new columns or update existing columns          | 
+| `filter()`    | pick a subset of rows by the value of a column      | 
+| `group_by()`  | split data into groups by values in a column        |  
+| `summarize()` | calculate a single summary row for the entire table |  
+
+##Let's use some of these words!
+
+---
+
+# `glimpse()` the data
+
+```{r, eval=T, echo=T, message=F, warning=F}
+library(dplyr)
+
+glimpse(big_met)
+```
+
+<br>
+
+---
+
+# `summary()` of all columns
+
+```{r, eval=T, echo=T, message=F, warning=F}
+
+summary(big_met)
+```
+
+---
+
+# ` filter() ` to a single site
+
+
+```{r, echo=T, eval=T, message=F, warning=F}
+library(knitr)
+
+# The filter() function is in the package dplyr
+fonddulac_met <- filter(big_met, site_catid == "27-017-7417")
+
+
+kable(head(fonddulac_met, 5), 'html')
+```
+
+
+---
+
+# 7| Join related data tables with 1 line
+
+Since our concentration data has the same format and only the year is changing, we can bind the two tables together with the function `bind_rows()`.
+
+![](https://cdn-images-1.medium.com/max/1600/1*uG1vjoSQj7gMm8craCj2xA.png)
+```{r, eval=T, echo=T, message=F, warning=F, include  = FALSE}
+air_data <- bind_rows(data_2015, data_2014)
+```
+
+```{r, eval=F, echo=T, message=F, warning=F}
+install.packages("lubridate")
+```
+
+and it looks like this
+
+```{r, eval = T, echo = F, message=F, warning=F}
+head(air_data, 6)
+```
+
+
+```{r, eval=T, echo=T, message=F, warning=F, include = F, results='hide'}
+
+# Format the dates for both tables
+library(lubridate)
+
+air_data$date_time <-  paste(ymd(air_data$Date), hms(paste(air_data$Hour, ":00:00")))
+
+air_data$date_time <-  ymd_hms(air_data$date_time)
+
+fonddulac_met$time <- ymd_hms(fonddulac_met$time)
+
+fonddulac_met$site_catid <- NULL
+
+```
+
+
+---
+
+# dplyr gives us a variety of joins
+
+A left_join() can pull together two tables like this
+
+
+![](https://mgimond.github.io/ES218/img/left_join.png)
+
+
+```{r, echo=T, eval=T, message=F, warning=F, include  = F}
+
+air_met <- left_join(air_data, fonddulac_met, by = c("date_time" = "time"))
+```
+
+`left_join()` pulls together our weather and concentration data by the __date__ column in each table.
+
+Now our data looks like this
+
+```{r}
+library(knitr)
+
+kable(head(select(air_met, -date_time, -Time, -icon), 1), 'html')
+```
+
+
+```{r, eval=T,  include=F, message=F, warning=F, include = F}
+write_csv(air_met, "air_met.csv")
+```
+
+
+
+
+
+---
+
+# 8| Documentation and transparency
+
+
+.indent[
+## **To do list**
+
+1. Analyze data
+2. ?
+3. ??
+]
+
+Documentation is hard work and much of my documentation looks like the above list. But in R, I have written each step into a text file script and __voila!__ There's documentation for myself and others.
+
+<div class="tip">
+
+.pad-right[
+You are encouraged to copy and share analyses and charts with others.
+
+It's especially fun to copy yourself from 2 years ago.
+]
+</div>
+
+
+
+---
+
+# 9| You can't break your data
+
+<div class="quiz">
+
+.work[
+## Pop Quiz, hotshots!  
+
+<br>
+<strong>Which of these things have we done?</strong><br>
+<i>(Hint: It may be more than one of them.)</i>
+]
+
+
+<input type="radio"> Lost a data file. <br>
+<input type="radio"> Accidently replaced a value in Excel with a random letter like 'z'. <br> 
+<input type="radio"> Forgotten which file housed the original data. <br> 
+<input type="radio"> Saved over something important. <br> 
+<input type="radio"> Lost an entire folder of data.  <br>
+<input type="radio"> Forgotten which monitoring days I dropped and why. <br>
+
+</div>
+
+
+---
+
+# 10| You can't break your data
+
+
+So far we have joined a table of MET data with concentration data, and the original data files have not been changed. The raw data is still safe.
+
+When we receive updated data we can run the same script to append the data and proceed with our analysis.
+
+
+You will notice that when we're in R, we always use a name for the data and then tell R to do something to the named object.
+
+It looks like this:
+
+```{r, eval=F}
+data <- read_excel("data.csv")
+```
+
+These R commands always act on a **copy** of the data and aren't changing the original file. So no more worries! 
+
+To look at subsets of data or to store summary results we can create copies of things in the R environment, all without creating lots of different copies of the data.
+
+
+
+---
+
+# 10| You can't break your data
+
+If you want to create data from scratch, give the value a name. 
+
+
+Let's make some values for the temperature and this conference.
+```{r, echo=T, eval=T, message=F, warning=F}
+current_temp <- 70
+
+this_conference <- "NTFAQ"
+```
+
+<br>
+
+Now when we type the names into the R console it will tell us what is stored there.
+
+Hey R, what's the `current_temp`?
+
+```{r, echo=T, eval=T, message=F, warning=F}
+current_temp
+```
+
+
+
+---
+
+# 11| Missing values
+
+Let's look at a `summary()` for PM2.5 concentrations and wind speed.
+
+
+```{r, echo=T, eval=T, message=F, warning=F}
+
+# The summary() function provides min, max, means, etc of each numeric variable in the data set.
+# It also tells us what each column type is, letting you know whether the data is
+# stored as characters, integers, decimals, or date objects.
+
+select(air_met, Conc, windSpeed) %>% summary()
+```
+
+You can see the mean of the "Conc" column and we see no missing values.
+
+If we look at the summary for wind speed, we see many missing values (shown as ` NA ` in R).
+We need to know this. We don't want to take means of data where most of it is missing. Other programs may ignore these values, or throw an error at you.
+
+---
+
+# 11| Missing values
+
+
+<div class="note">
+But I only want one number. Is that too much to ask!?
+</div>
+
+```{r, echo=T, eval=T, message=F, warning=F, results='hide'}
+# The summarize() function reduces your data down to a statistical summary
+# mean(), max(), min(), percentile(), range(), etc.
+
+fonddulac_mean <- summarize(air_met, mean_pm25 = mean(Conc, na.rm = TRUE))
+
+fonddulac_mean
+```
+
+
+Okay, here's your answer _(if we drop all the `NAs`)_.
+
+The average PM2.5 concentration is:  __.scary[.bigtext[`r round(fonddulac_mean$mean_pm25, 3)` _ug/m3_]]__
+
+
+
+---
+
+# 12|  R gives you a language for data
 
 It's nice to have words. 
 
+ 
 
 
 1. Let's describe going from data in a __wide__ format to data in a __tall__ format as gather().
@@ -876,7 +962,7 @@ view(wide_met)
 ---
 
 
-# 11| Automate - _update with new data_
+# 13| Automate - _update with new data_
 
 __Explosions!__
 
@@ -889,7 +975,7 @@ There was a big refinery explosion close to our monitoring site. We'll be receiv
 
 ---
 
-# 1| Automate - _update with new data_
+# 13| Automate - _update with new data_
 
 
 We have data for 2014 and 2015, but the explosion just happened now _(in the year 2016)_. Remember our data is stored in one Excel workbook. Since we wrote this in a script form we can change the date in our `read_excel()` to __2016__.
@@ -916,9 +1002,7 @@ air_data <- bind_rows(data_2016, air_data)
 ```
 
 
-
-Then we join the met data:
-```{r, eval=T, include=T, message=F, warning=F}
+```{r, eval=T, include=F, message=F, warning=F}
 
 # Set date formats
 air_data$date_time <-  paste(ymd(air_data$Date), hms(paste(air_data$Hour, ":00:00")))
@@ -929,11 +1013,13 @@ air_data$date_time <-  ymd_hms(air_data$date_time)
 air_met <- left_join(air_data, fonddulac_met, by = c("date_time" = "time")) %>% select(-Time)
 ```
 
+
 ```{r, eval=F}
 # View table
 head(air_met, 2)
 ```
 
+and then it looks like this,
 ```{r, eval=T, echo=F}
 # View table
 kable(head(air_met, 2), 'html')
@@ -942,7 +1028,7 @@ kable(head(air_met, 2), 'html')
 
 ---
 
-# 12| Make maps and never get lost again
+# 14| Make maps and never get lost again
 
 Where is the Fond du Lac monitor again? 
 
@@ -978,7 +1064,7 @@ __Go-Go gadget leaflet!__
 
 ---
 
-# 12| Make maps and never get lost again
+# 14| Make maps and never get lost again
 
 <br>
 
@@ -995,11 +1081,10 @@ leaflet(data = air_sites) %>% addTiles() %>%
 
 ---
 
-# 12| Make maps and never get lost again
+# 14| Make maps and never get lost again
 
 #### Let's add where we are right now.
 
---
 
 ```{r, eval=T, echo=T, message=FALSE, warning=FALSE, out.width="77%", out.height="390px"}
 # Label our location
@@ -1008,10 +1093,41 @@ leaflet(data = air_sites) %>% addTiles() %>%
   addPopups(-92.48, 46.66, "<a>You are HERE</a>")
 ``` 
 
+--
+
 
 ---
 
+# 14| Map weather alerts
 
+.center[
+![](images/flood_map.png)
+]
+
+```{r, eval = F}
+library(tidyverse)
+library(weatherAlerts)
+library(leaflet)
+
+alerts <- getAlerts("LA") # takes about 20 seconds
+
+severity <- alerts@data$severity
+
+colorMap <- c(Minor    = "green",
+              Moderate = "yellow",
+              Severe   = "red",
+              Extreme  = "magenta",
+              Unknown  = "grey")
+
+severityColors <- unname(colorMap[severity])
+
+leaflet() %>%
+  addTiles() %>%
+  addPolygons(data = alerts, color = "black", fillColor = severityColors, weight = 1, popup = ~paste0("<strong>", event, "</strong>", "<br><br>", summary))
+```
+
+
+---
 
 # Return of the roses
 
@@ -1022,7 +1138,7 @@ Remember the first pollutant rose we looked at? Let's load the Fond du Lac data 
 
 ---
 
-# 13| Online community + Us + You
+# 15| Online community + Us + You
 
 
 .bigtext[**Join the R community**]
@@ -1048,7 +1164,7 @@ Remember the first pollutant rose we looked at? Let's load the Fond du Lac data 
 
 ---
 
-# 14| It will compliment you
+# 16| It will compliment you
 
 There are some _just for fun_ R packages. 
 
