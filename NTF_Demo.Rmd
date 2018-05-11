@@ -15,33 +15,27 @@ output:
 
 ---
 
-
 class: inverse
 
-# How can I analyze my data?
-
-<br>
+# .bigtext[How can I analyze my data?]
 
 --
-
+<br>
 ## ...and not want to throw my computer in the lake?
 
 --
-
-## ...and be able to show you what I did?
+<br>
+## ...and be able to show someone what I did?
 
 --
-
+<br>
 ## ...and have it still make sense 2 years from now?
-
-
 
 
 ---
 class: inverse
 
 # .scary[R training is coming this Fall...]
-
 ```{r setup, include=F, message=F, warning=F}
 # Details on R presentations https://support.rstudio.com/hc/en-us/articles/200486468
 options(htmltools.dir.version = FALSE)
@@ -50,19 +44,10 @@ htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 
 ```
 
-<img src='http://lazerhorse.org/wp-content/uploads/2013/06/Old-Horror-Films-Retro-Film-Posters-The-Brain-Eaters.jpg' width="88%">
+.fade[.center[
+<img src='http://lazerhorse.org/wp-content/uploads/2013/06/Old-Horror-Films-Retro-Film-Posters-The-Brain-Eaters.jpg' width="88%" style="margin-top: 5%;">
+]]
 
----
-class: middle, center
-
-.work[__THIS IS A TRUE STORY__]
-
-
-<br>
-
-.fade[
-The __events__ depicted took place in __Minnesota__ in 2015. Dates and locations may have changed to protect the innocent. The rest is told __exactly__ as it occurred.
-]
 
 
 
@@ -121,8 +106,6 @@ class: middle
 
 <div class="note">
 
-Soooo, we were hooked. <br><br>
-
 We began learning R and we were no longer at the whims of changing budgets because...
 
 </div>
@@ -156,7 +139,9 @@ __You can download R right now. We will wait.__
 
 --
 
-<div class="note"> Ok, but how does R work?</div>
+<div class="note"> How does R work?</div>
+
+--
 
 R lets you perform data analysis like you're writing a recipe for chocolate chip cookies. Once you've written your favorite recipe you can use it over and over again or share it with your favorite collaborators and grandkids. 
 
@@ -174,36 +159,18 @@ R lets you perform data analysis like you're writing a recipe for chocolate chip
 _Servings: 1 to 10_
 ]
 
-1. Read the monitoring data in from AQS
+1. Download monitoring data from AQS.
 
 2. Look at a plot of the data.
 
-3. Remove the bad data.
+3. Remove bad data.
 
-4. Make an even better plot of the data.
+4. Make a better plot of the data.
 
 5. Summarize the data.
 
 6. Save the results.
 
----
-
-# Our story Begins
-
-
-<img src="images\business_cat.jpg" align="right" style="margin-left: 40px; margin-right: -28px; margin-top: -10px; max-width: 54%; width: 54%" />
-
-__It's your first day on the job.__ 
-
-_And you've got new data._
-
---
-
-You are given a laptop with one folder on it. In the folder is a single Excel file. Shortly after sitting down you receive a phone call. The person on the other end of the phone tells you that the data set isn't complete and will be updated on a weekly basis. Also, there is a potential need for weekly data analysis updates.
-
-_(You think briefly about your brother who sells ice cream on a beach and wonder what that would be like)._  
-
-__MISSION IMPOSSIBLE begins.__ 
 
 
 ---
@@ -228,10 +195,9 @@ __Let's Google it!__
 
 ---
 
-
-![:scale 55%](images\google_readxl.png)
-
-
+.center[
+![:scale 50%](images\google_readxl.png)
+]
 
 ---
 
@@ -277,13 +243,6 @@ We have lots of stickers and you should take some with you. Many are for a varie
 <img src="https://www.rstudio.com/wp-content/uploads/2017/05/readxl-400x464.png" width="120" align="right" style="margin-right: 180px; margin-top: 280px;">
 
 
-
-
-
-
-
-
-
 ---
 
 # 4| Read all flavors of data
@@ -318,25 +277,63 @@ These packages give R the ability to read data from almost any place it may be s
 
 --
 
-- .scary[ZIP files, large text files, modeling output]
+- **.scary[ZIP files, large text files, air modeling output]**
 
 
 --
 
-__Let's try it.__
+<div style="margin-top: -250px; font-size: 80px;">
+
+.center[
+
+__Let's try it!__ 
+]
+
+</div>
+
 
 ---
 
+# Read Excel file 
+
+First take a gander at the data. It's online [HERE](https://github.com/MPCA-air/NTF_learn_R/raw/master/data/Hourly/AQS_1hr_FondduLac.xlsx).
+
+--
+<br>
+
+To load the Excel data into R:
+
+`1.` Download the file.
+```{r, eval=F, message=F, warning=F}
+download.file("https://github.com/MPCA-air/NTF_learn_R/raw/master/data/Hourly/AQS_1hr_FondduLac.xlsx", "AQS_FondduLac.xlsx", mode = "wb")
+```
+
+--
+
+`2.` Read the __2014__ tab.
+```{r, message=F, warning=F}
+data_2014 <- read_excel("AQS_FondduLac.xlsx", sheet = "2014")
+```
+
+--
+
+`3.` Read the __2015__ tab.
+```{r, eval=T, message=F, warning=F}
+data_2015 <- read_excel("AQS_FondduLac.xlsx", sheet = "2015")
+```
+
+
+---
 
 # AirNow | Today's AQI
-```{r, eval = T, results = 'hide'}
+```{r, eval = T, results = 'hide', warning=F, message=F}
 library(tidyverse)
 
 # Connect to AirNow data site to get current air observations
 airnow_link <- paste0("https://s3-us-west-1.amazonaws.com//files.airnowtech.org/airnow/today/HourlyData_",
-                       format(Sys.time() -60*75, "%Y%m%d%H", tz = "GMT"), ".dat")
+                       format(Sys.time()-60*75, "%Y%m%d%H", tz = "GMT"), ".dat")
   
-# Read a "|" delimited file that has no column names (Thanks EPA!)
+# Read a "|" delimited file that has no column names - Thanks EPA!
 aqi_now   <- read_delim(airnow_link, "|", col_names = F)
                         
 # Add column names as a list
@@ -344,43 +341,13 @@ names(aqi_now) <- c("date", "time", "aqsid", "city", "local_time", "parameter", 
 
 # Filter to Ozone and PM2.5 results
 aqi_now <- filter(aqi_now, parameter %in% c("OZONE", "PM2.5"), aqsid == "270177417")
-
-# Show table
-aqi_now
 ```
 
 
-```{r, echo = F}
+```{r, echo=F, warning=F, message=F}
 library(knitr)
 # Show table
 select(aqi_now, city, date, time, local_time, parameter, concentration, units, -aqsid, -agency) %>% kable("html")
-```
-
-
----
-
-# Back at our day job. 
-
-First take a gander at the data. It's sitting online [HERE](https://github.com/MPCA-air/NTF_learn_R/raw/master/data/Hourly/AQS_1hr_FondduLac.xlsx).
-
---
-
-Now load the Excel data into R:
-
-`1.` Download the file:
-```{r, eval=F, message=F, warning=F}
-download.file("https://github.com/MPCA-air/NTF_learn_R/raw/master/data/Hourly/AQS_1hr_FondduLac.xlsx", "AQS_FondduLac.xlsx", mode = "wb")
-```
-
-`2.` Read the __2014__ tab:
-```{r, message=F, warning=F}
-data_2014 <- read_excel("AQS_FondduLac.xlsx", sheet = "2014")
-```
-
-
-`3.` Read the __2015__ tab:
-```{r, eval=T, message=F, warning=F}
-data_2015 <- read_excel("AQS_FondduLac.xlsx", sheet = "2015")
 ```
 
 
@@ -393,7 +360,7 @@ data_2015 <- read_excel("AQS_FondduLac.xlsx", sheet = "2015")
 
 <br>
 
-The _ggplot2_ package has functions that can make almost any plot you can think of. It can also layer plots on top of each other to add multiple elements.
+The _ggplot2_ package has functions to make almost any plot you can think of. It can also layer plots on top of each other to add multiple elements.
 
 ```{r, echo=T, eval=F, message=F, warning=F}
 install.packages("ggplot2")
@@ -402,84 +369,50 @@ install.packages("ggplot2")
 __The fun can start now.__ `r icon::fa("rocket")`
 
 
-
 ---
-class: inverse
 
+```{r, echo=F}
+theme_set(theme_grey(base_size = 35)) 
+```
+ 
 # A `geom_bar()` plot
-```{r, echo=T, eval=T, message=F, warning=F, out.height="410px", out.width="450px"}
+
+```{r, echo=T, eval=T, message=F, warning=F, out.height="315px", out.width="650px", fig.width=20, fig.height=8}
 library(ggplot2)
 
-ggplot(data = date_2014, aes(x = site_catid, y = Conc)) +
-   geom_bar(stat = "identity")
+#o3_data <- filter(data_2015, Parameter == 44201) 
+
+pm_data <- filter(data_2015, Parameter == 88101) %>% group_by(site_catid) %>% summarize(Conc = mean(Conc, na.rm = T))
+
+ggplot(data = pm_data, aes(x = site_catid, y = Conc)) +
+   geom_col() + labs(y = "ug/m3", title = "2014 PM2.5 Concentrations")
+
 ```
-
----
-
-# AQI summary
-
-```{r, echo=T, eval=T, message=F, warning=F, out.height="410px", out.width="450px"}
-source("https://raw.githubusercontent.com/dKvale/aqi-watch/master/R/aqi_convert.R")
-
-data_2014 <- mutate(data_2014, 
-                   aqi_color = conc2aqi(Conc, "Ozone") %>% aqi2color())
-
-ggplot(data = date_2014, aes(x = site_catid, y = Conc)) +
-   geom_bar(stat = "identity", aes(fill = aqi_color))
-```
-
 
 
 ---
 
 # Box plots
 
-```{r, echo=T, eval=T, message=F, warning=F, out.height="380px", out.width="450px"}
-ggplot(data = air_met, aes(x = site_catid, y = Conc)) +
-geom_boxplot()
+```{r, echo=T, eval=T, message=F, warning=F, out.height="390px", out.width="1100px", fig.width=29, fig.height=13}
+pm_data <- filter(data_2015, Parameter == 88101)
+
+ggplot(data = pm_data, aes(x = site_catid, y = Conc, fill = site_catid)) +
+  geom_boxplot(show.legend = FALSE) + labs(y = "ug/m3", x = "site", title = "2014 PM2.5 Concentrations") + scale_y_log10()
 ```
 
----
 
+```{r, eval=F, echo=F}
+---
 # More box plots
 
 Let's add some color and __ALL 25,000__ of the original data points.
 
-```{r, echo=T, eval=T, message=F, warning=F, out.height="360px", out.width="460px"}
-ggplot(data = air_met, aes(x = site_catid, y = Conc, fill = site_catid)) +
+{r, echo=T, eval=T, message=F, warning=F, out.height="360px", out.width="460px"}
+ggplot(data = pm_data, aes(x = site_catid, y = Conc, fill = site_catid)) +
    geom_boxplot() +
    geom_jitter(alpha = 0.04)
 ```
-
-
-
----
-
-# Calendar plot
-
-```{r, echo=T, eval=F}
-install.packages("openair")
-```
-
-```{r, eval=F, message=F, warning=F}
-library(openair)
-
-air_met <- air_met %>% rename(date = Date,
-                              Concentration = Conc)
-
-# openair requires dates to be stored under field name "date"
-
-calendarPlot(air_met, 
-             pollutant = "Concentration", 
-             statistic = "mean", 
-             year      = 2015, 
-             annotate  = "value", 
-             digits    = 1, 
-             key.footer= "ug/m3", 
-             main = "Daily Average PM2.5 Concentrations in Fond du Lac, 2015")
-
-```
-
 
 ---
 
@@ -490,12 +423,68 @@ calendarPlot(air_met,
 install.packages("ggbeeswarm")
 ```
 
-```{r, eval = T, warning=F, message=F}
+```{r, eval = T, warning=F, message=F, out.height="370px", out.width="1130px", fig.width=28, fig.height=10}
 library(ggbeeswarm)
 
-ggplot(air_met, aes(y = site_catid, x = Concentration)) + 
-    geom_quasirandom(groupOnX = F) +   
-    labs(title = "PM2.5 Result (ug/m^3)")
+ggplot(pm_data, aes(y = site_catid, x = Conc, fill = site_catid)) + geom_quasirandom(groupOnX = F, alpha = .01, show.legend = FALSE) +   
+    labs(title = "PM2.5 Results (ug/m^3)", y = "site ID") #+ xlim(0, 50)
+```
+
+
+---
+
+# AQI summary
+
+```{r, echo=T, eval=T, message=F, warning=F, out.height="390px", out.width="800px", fig.width=28, fig.height=12}
+source("https://raw.githubusercontent.com/dKvale/aqi-watch/master/R/aqi_convert.R")
+
+pm_data <- group_by(pm_data, site_catid, Date) %>% summarize(Conc = mean(Conc, na.rm = T)) %>% mutate(aqi_color = conc2color(Conc, "PM25") %>% factor(levels = c("#DB6B1A", "#FFEE00", "#53BF33"))) %>% arrange(aqi_color)
+
+ggplot(data = pm_data, aes(x = site_catid)) +
+   geom_bar(aes(fill = aqi_color), show.legend = F) + scale_fill_manual(values = as.character(unique(pm_data$aqi_color))) + labs(title = "2015 AQI results for PM2.5", y = "Days")
+```
+
+
+---
+
+# AQI waffles
+
+```{r, echo=F}
+theme_set(theme_grey(base_size = 55)) 
+```
+ 
+```{r, warning=F, message=F, fig.width=30, fig.height=9}
+library(waffle) #devtools::install_github("hrbrmstr/waffle")
+
+pm_sums <- group_by(pm_data, site_catid, aqi_color) %>% summarize(count = n()) %>% arrange(desc(aqi_color)) %>% ungroup() %>% mutate(aqi_color = forcats::fct_recode(aqi_color, Good = "#53BF33", Moderate = "#FFEE00", `Unhealthy` = "#DB6B1A"))
+
+iron(
+waffle(filter(pm_sums, site_catid == "27-017-7417") %>% select(aqi_color, count), rows = 7,  size = 0.5, colors = c("#65B345", "#f2d01a"), title  = "Fond du Lac AQI :: 2015"),
+
+waffle(filter(pm_sums, site_catid == "27-137-7549") %>% select(aqi_color, count), rows = 7,  size = 0.5, colors = rev(c("#F26522", "#F2D01A", "#65B345")), xlab = "1 square = 1 day", title  = "Duluth AQI :: 2015"))
+```
+
+---
+
+# Calendar plot
+
+```{r, echo=F}
+theme_set(theme_grey(base_size = 35)) 
+```
+ 
+```{r, echo=T, eval=F, fig.width=30, fig.height=11}
+install.packages("openair")
+```
+
+```{r, eval=T, message=F, warning=F}
+library(openair) # openair requires date column to be named "date"
+
+data_fond <- filter(pm_data, site_catid == "27-017-7417") %>% rename(date = Date)
+
+
+calendarPlot(data_fond, pollutant  = "Conc", statistic  = "mean", year = 2015, 
+             annotate   = "value", digits = 0, key.footer = "ug/m3", 
+             main       = "2015 PM2.5 Concentrations at Fond du Lac")
 ```
 
 
@@ -503,20 +492,13 @@ ggplot(air_met, aes(y = site_catid, x = Concentration)) +
 
 # Time series
  
-```{r, echo=F}
-#theme_set(theme_grey(base_size = 22)) 
- #scale_x_date(date_breaks = "2 months", date_labels = "%b") +
-```
- 
-```{r, echo=T, eval=T, message=F, warning=F, fig.width=30, fig.height=9.7}
-filter(data_2014, SiteNum == 7417) %>% group_by(Date) %>% 
-  summarize(Conc = median(Conc, na.rm = T)) %>% 
+```{r, echo=T, eval=T, message=F, warning=F, fig.width=30, fig.height=10}
+filter(pm_data, site_catid == "27-017-7417") %>% group_by(Date) %>% summarize(Conc = median(Conc, na.rm = T)) %>% 
   ggplot(aes(x = as.Date(Date), y = Conc, na.rm = T)) + 
-         geom_line(size = 1, color = "tomato", alpha = 0.8) +
-         geom_point(alpha = 0.5) + geom_smooth() +
-         ylab("Concentration (ug/m3)") + xlab("") + ggtitle("PM2.5 at Fond du Lac in 2014") + 
-         geom_label(aes(x = as.Date("2014-06-14"), y = 0.0527), fill = "#3C989E", 
-                    label = "May 25th: the BIG EVENT", size = 10) 
+         geom_line(size = 1, color = "tomato", size = 2) + geom_point(alpha = 0.5, size = 3) + geom_smooth() +
+         ylab("Concentration (ug/m3)") + xlab("") + ggtitle("PM2.5 at Fond du Lac in 2015") + 
+         geom_label(aes(x = as.Date("2015-07-23"), y = 32), fill = "steelblue", 
+                    label = "the BIG July Event", size = 10) 
 ```
 
 ---
@@ -524,13 +506,14 @@ filter(data_2014, SiteNum == 7417) %>% group_by(Date) %>%
 
 # Time series - _split by hour_
 ```{r, echo=T, eval=T, message=F, warning=F, fig.width=30, fig.height=10}
-filter(data_2014, SiteNum == 7417) %>%
-  ggplot(aes(x = Hour, y = Conc)) +
-         geom_point(alpha = 0.5) +
-         geom_smooth() +
-         ylab("Concentration (ug/m3)") + xlab("HOUR") + 
-         ggtitle("PM2.5 at Fond du Lac in 2014") +
-         facet_wrap(~month(Date, label = T), ncol = 4)
+library(lubridate)
+
+pm_data <- filter(data_2015, site_catid == "27-017-7417", Parameter == 88101)
+
+ggplot(pm_data, aes(x = Hour, y = Conc)) +
+         geom_point(alpha = 0.2) + geom_smooth() +
+         labs(y="Concentration (ug/m3)", x="Hour", title="PM2.5 at Fond du Lac in 2015") +
+         facet_wrap(~month(Date, label = T), ncol = 4) + scale_y_log10()
 ```
 
 
@@ -538,22 +521,18 @@ filter(data_2014, SiteNum == 7417) %>%
 
 # Time series - _split by weekday_
 ```{r, echo=T, eval=T, message=F, warning=F, fig.width=30, fig.height=10}
-filter(data_2014, SiteNum == 7417) %>% 
-  mutate(color = ifelse(wday(Date) == 5 & month(Date) == 4, "Clustered day", "Normal day")) %>%
+pm_data %>% mutate(color = ifelse(wday(Date) == 7 & month(Date) == 6, "red", "blue")) %>%
   ggplot(aes(x = wday(Date, label = T), y = Conc)) +
-    geom_boxplot(aes(fill = color), outlier.alpha = 0, show.legend = F) + 
-    geom_jitter(alpha = 0.2) +
-    ylab("Concentration (ug/m3)") + xlab("") + ggtitle("PM2.5 at Fond du Lac in 2014") + 
-    facet_wrap(~month(Date, label = T), ncol = 4)
+    geom_boxplot(aes(fill = color), outlier.alpha = 0, show.legend = F) + geom_jitter(alpha = 0.2) +
+    ylab("Concentration (ug/m3)") + xlab("") + ggtitle("PM2.5 at Fond du Lac in 2015") + 
+    facet_wrap(~month(Date, label = T), ncol = 4) + scale_y_log10()
 ```
-
-
 
 
 ---
 class: inverse, middle, center
 
-# ...Chart finale...
+# `...Chart finale...`
 
 ---
 
@@ -564,18 +543,16 @@ install.packages("devtools")
 devtools::install_github("gadenbuie/ggpomological")
 ```
 
-```{r, echo=T, eval=T, warning=F, message=F, out.height="380px"}
+```{r, echo=T, eval=T, warning=F, message=F, out.height="340px", fig.width=30, fig.height=10}
 library(ggpomological)
 
-nature_plot <- ggplot(data_2014, aes(x = Date, y = Conc)) +
+nature_plot <- ggplot(pm_data, aes(x = Date, y = Conc)) +
                  geom_point(aes(color = as.factor(month(Date))), alpha = 0.8) + stat_smooth(geom = "line", color = "#C0C0C0", alpha = 0.7) +
-                 scale_color_pomological() + theme_pomological_fancy() +
+                 scale_color_pomological() + theme_pomological_fancy() + scale_y_log10() +
                  labs(title = "Air monitoring results") + theme(legend.position = "none")
 
-paint_pomological(nature_plot, res = 120, width = 1200, height = 400)
+paint_pomological(nature_plot, res = 170, width = 1600, height = 550)
 ```
-
-
 
 
 ---
@@ -588,14 +565,17 @@ What if you have a ** _HUGE_ ** file?
 
 Good timing! We just requested MET data from the weather people down the hall, and they sent us a text file with over million rows of data. 
 
-That's nice of them, but _don't they know_ Excel is limited to around a million rows?
+<br>
+
+> That's nice, but _don't they know_ Excel is limited to around a million rows?
 
 ---
 
-## We will open it.
+# We will open it.
 
-Here's what we do to read a large text file:
+To read a large text file:
 
+--
 
 `1.` Download the file:
 ```{r, echo=T, eval=F, cache=T, message=F, warning=F}
@@ -603,7 +583,7 @@ url <- "https://github.com/MPCA-air/NTF_learn_R/raw/master/data/BIG_MET_data.zip
 
 download.file(url, "BIG_MET_data.zip")
 
-# It's a zip file, so we can run the unzip() function
+# It's stored as a ZIP file
 unzip("BIG_MET_data.zip", file = "MET_data_2012-2017.csv")
 ```
 
@@ -611,6 +591,7 @@ unzip("BIG_MET_data.zip", file = "MET_data_2012-2017.csv")
 install.packages("readr")
 ```
 
+--
 
 `2.` Read the data with __ ` read_csv() ` __:
 ```{r, echo=T, eval=F, message=F, warning=F, results='hide'}
@@ -624,11 +605,8 @@ big_met <- read_csv("MET_data_2012-2017.csv")
 ```
 
 ```{r, include=F, eval=T, results='hide', warning=F, message=F}
-# Inside the ZIP file is a huge csv text file.
-# For this we can run read_csv() from the readr package.
-# This package has lots of data reading functions.
-
 library(readr)
+# We use the readr package. This package has lots of data reading functions.
 
 big_met <- read_csv("MET_data_2012-2017.csv")
 ```
@@ -644,22 +622,36 @@ big_met <- read_csv("MET_data_2012-2017.csv")
 nrow(big_met)
 ```
 
+--
+
+```{r, eval=F}
+head(big_met)
+```
+
+```{r, echo=F}
+head(big_met, 4) %>% kable("html")
+```
+
 ---
+
 
 # dplyr gives you powerful words
 
-![](https://www.kdnuggets.com/wp-content/uploads/hex-dplyr.jpg)
-We can look at the data in many ways:
-```{r, eval=F, echo=T, message=F, warning=F, include = F}
-# This package has lots of data processing functions.
+.float-left[
+![:scale 87%](https://www.kdnuggets.com/wp-content/uploads/hex-dplyr.jpg)
+
+```{r, eval=F, echo=T, message=F, warning=F}
 install.packages("dplyr")
 ```
+]
+
+<br><br>
 
 ```{r, eval=T, include=F}
 library(dplyr)
 ```
 
-__Your analysis toolbox:__ The key _dplyr_ functions
+__Your analysis toolbox:__ key _dplyr_ functions
 
 | Function      | Returns                                             |  
 |:--------------|:----------------------------------------------------|  
@@ -670,7 +662,9 @@ __Your analysis toolbox:__ The key _dplyr_ functions
 | `group_by()`  | split data into groups by values in a column        |  
 | `summarize()` | calculate a single summary row for the entire table |  
 
-##Let's use some of these words!
+<br><br>
+
+## Let's use some of these words!
 
 ---
 
@@ -699,19 +693,32 @@ summary(big_met)
 
 
 ```{r, echo=T, eval=T, message=F, warning=F}
-library(knitr)
-
 # The filter() function is in the package dplyr
 fonddulac_met <- filter(big_met, site_catid == "27-017-7417")
+```
 
 
-kable(head(fonddulac_met, 5), 'html')
+```{r, echo=F}
+library(knitr)
+kable(head(fonddulac_met, 4), 'html')
 ```
 
 
 ---
 
-# 7| Join related data tables with 1 line
+# Look at correlations with `pairs()`
+
+
+```{r, echo=T, eval=T, message=F, warning=F}
+
+pairs(big_met)
+
+```
+
+
+---
+
+# 7| Join related data tables
 
 Since our concentration data has the same format and only the year is changing, we can bind the two tables together with the function `bind_rows()`.
 
@@ -749,9 +756,9 @@ fonddulac_met$site_catid <- NULL
 
 ---
 
-# dplyr gives us a variety of joins
+# `dplyr` gives us a variety of joins
 
-A left_join() can pull together two tables like this
+A `left_join()` can pull together two tables like this
 
 
 ![](https://mgimond.github.io/ES218/img/left_join.png)
@@ -764,11 +771,9 @@ air_met <- left_join(air_data, fonddulac_met, by = c("date_time" = "time"))
 
 `left_join()` pulls together our weather and concentration data by the __date__ column in each table.
 
+
 Now our data looks like this
-
-```{r}
-library(knitr)
-
+```{r, echo=F}
 kable(head(select(air_met, -date_time, -Time, -icon), 1), 'html')
 ```
 
@@ -776,10 +781,6 @@ kable(head(select(air_met, -date_time, -Time, -icon), 1), 'html')
 ```{r, eval=T,  include=F, message=F, warning=F, include = F}
 write_csv(air_met, "air_met.csv")
 ```
-
-
-
-
 
 ---
 
@@ -834,12 +835,7 @@ It's especially fun to copy yourself from 2 years ago.
 
 ---
 
-# 10| You can't break your data
-
-
-So far we have joined a table of MET data with concentration data, and the original data files have not been changed. The raw data is still safe.
-
-When we receive updated data we can run the same script to append the data and proceed with our analysis.
+# 9| You can't break your data
 
 
 You will notice that when we're in R, we always use a name for the data and then tell R to do something to the named object.
@@ -850,15 +846,22 @@ It looks like this:
 data <- read_excel("data.csv")
 ```
 
+<br>
+
 These R commands always act on a **copy** of the data and aren't changing the original file. So no more worries! 
 
-To look at subsets of data or to store summary results we can create copies of things in the R environment, all without creating lots of different copies of the data.
+```{r, eval=F, echo=F}
+So far we have joined a table of MET data with concentration data, and the original data files have not been changed. The raw data is still safe.
 
+When we receive updated data we can run the same script to append the data and proceed with our analysis.
+
+To look at subsets of data or to store summary results we can create copies of things in the R environment, all without creating lots of different copies of the data.
+```
 
 
 ---
 
-# 10| You can't break your data
+# 9| You can't break your data
 
 If you want to create data from scratch, give the value a name. 
 
@@ -884,7 +887,7 @@ current_temp
 
 ---
 
-# 11| Missing values
+# 10| Missing values
 
 Let's look at a `summary()` for PM2.5 concentrations and wind speed.
 
@@ -901,36 +904,36 @@ select(air_met, Conc, windSpeed) %>% summary()
 You can see the mean of the "Conc" column and we see no missing values.
 
 If we look at the summary for wind speed, we see many missing values (shown as ` NA ` in R).
-We need to know this. We don't want to take means of data where most of it is missing. Other programs may ignore these values, or throw an error at you.
+We don't want to take means of data where most of it is missing. Other programs may ignore these values, or throw an error.
 
 ---
 
-# 11| Missing values
+# 10| Missing values
 
 
 <div class="note">
-But I only want one number. Is that too much to ask!?
+I only want one number.
 </div>
 
 ```{r, echo=T, eval=T, message=F, warning=F, results='hide'}
 # The summarize() function reduces your data down to a statistical summary
 # mean(), max(), min(), percentile(), range(), etc.
 
-fonddulac_mean <- summarize(air_met, mean_pm25 = mean(Conc, na.rm = TRUE))
+fonddulac_mean <- filter(air_met, Parameter == 88101) %>% summarize(mean_pm25 = mean(Conc, na.rm = TRUE))
 
 fonddulac_mean
 ```
 
 
-Okay, here's your answer _(if we drop all the `NAs`)_.
+Okay, here's the answer _(if we drop all the `NAs`)_.
 
-The average PM2.5 concentration is:  __.scary[.bigtext[`r round(fonddulac_mean$mean_pm25, 3)` _ug/m3_]]__
+The average PM2.5 concentration is:  __.scary[.bigtext[`r round(fonddulac_mean$mean_pm25, 2)` _ug/m3_]]__
 
 
 
 ---
 
-# 12|  R gives you a language for data
+# 11|  R gives you a language for data
 
 It's nice to have words. 
 
@@ -962,23 +965,24 @@ view(wide_met)
 ---
 
 
-# 13| Automate - _update with new data_
+# 12| Automate - _update with new data_
 
 __Explosions!__
 
 .center[
-![:scale 70%](images\explosion.jpg)
+![:scale 60%](images\explosion.jpg)
 ]
-
 
 There was a big refinery explosion close to our monitoring site. We'll be receiving new monitoring data in the next hour. We need to let people know if anything suggests smoke from the explosion is reaching the air monitor.
 
 ---
 
-# 13| Automate - _update with new data_
+# 12| Automate - _update with new data_
 
 
 We have data for 2014 and 2015, but the explosion just happened now _(in the year 2016)_. Remember our data is stored in one Excel workbook. Since we wrote this in a script form we can change the date in our `read_excel()` to __2016__.
+
+<br>
 
 ```{r, echo=T, eval=T, message=F, warning=F}
 #download.file("https://github.com/MPCA-air/NTF_learn_R/raw/master/data/Hourly/AQS_1hr_FondduLac.xlsx", "AQS_Fonddulac.xlsx", mode = "wb")
@@ -987,7 +991,7 @@ data_2016 <- read_excel("AQS_Fonddulac.xlsx", sheet = "2016")
 ```
 
 
-We changed the _year_ and __BOOM!__ we've got updated data.
+We changed the _year_ and __BOOM!__  We've got updated data.
 
 ---
 
@@ -1014,21 +1018,16 @@ air_met <- left_join(air_data, fonddulac_met, by = c("date_time" = "time")) %>% 
 ```
 
 
-```{r, eval=F}
-# View table
-head(air_met, 2)
-```
-
-and then it looks like this,
+and now it looks like this,
 ```{r, eval=T, echo=F}
 # View table
-kable(head(air_met, 2), 'html')
+kable(head(air_met, 3), 'html')
 ```
 
 
 ---
 
-# 14| Make maps and never get lost again
+# 13| Make maps and never get lost again
 
 Where is the Fond du Lac monitor again? 
 
@@ -1064,11 +1063,11 @@ __Go-Go gadget leaflet!__
 
 ---
 
-# 14| Make maps and never get lost again
+# 13| Make maps and never get lost again
 
 <br>
 
-```{r, eval=T, echo=F, out.width="77%"}
+```{r, eval=T, echo=F, message=F, warning=F, out.width="77%"}
 library(leaflet)
 
 # Reduce the table to a single row for each monitoring site
@@ -1081,12 +1080,12 @@ leaflet(data = air_sites) %>% addTiles() %>%
 
 ---
 
-# 14| Make maps and never get lost again
+# 13| Make maps and never get lost again
 
 #### Let's add where we are right now.
 
 
-```{r, eval=T, echo=T, message=FALSE, warning=FALSE, out.width="77%", out.height="390px"}
+```{r, eval=T, echo=T, message=FALSE, warning=FALSE, out.width="77%", out.height="370px"}
 # Label our location
 leaflet(data = air_sites) %>% addTiles() %>%
   addCircleMarkers(label = ~as.character(SiteNum), labelOptions = labelOptions(noHide = T)) %>%
@@ -1100,10 +1099,13 @@ leaflet(data = air_sites) %>% addTiles() %>%
 
 # 14| Map weather alerts
 
-.center[
+.center-text[
 ![](images/flood_map.png)
 ]
 
+---
+
+# 14| Map weather alerts
 ```{r, eval = F}
 library(tidyverse)
 library(weatherAlerts)
@@ -1190,7 +1192,7 @@ say("Meowww. You deserve a break.", "cat")
 
 You've completed the Super fast R Intro and are ready for Day 1 of R Camp. 
 
-In the mean time you can find help on _R-Bloggers_, download the package _swirl_, Google R related questions, or take this [Coursera](https://www.coursera.org/specializations/jhu-data-science) course.
+In the mean time you can find help on _R-Bloggers_, download the package _swirl_, and take this [Coursera](https://www.coursera.org/specializations/jhu-data-science) course.
 
 
 There's also an R intro for __pirates__. If you are a pirate you can sail the high seas [Here](http://tryr.codeschool.com/).
@@ -1214,9 +1216,30 @@ This presentation was made with `Rmarkdown` and Yihui's ` xaringan ` package.
 Return to the project's [GitHub page](https://github.com/MPCA-air/NTF_learn_R).
 
 
+```{r, eval=F, echo=F}
+
+# Our story Begins
 
 
-<br><br><br><br><br><hr>
+<img src="images\business_cat.jpg" align="right" style="margin-left: 40px; margin-right: -28px; margin-top: -10px; max-width: 54%; width: 50%" />
+
+
+
+__It's your first day on the job.__ 
+
+_And you've got new data._
+
+--
+
+You are given a laptop with one folder on it. In the folder is a single Excel file. Shortly after sitting down you receive a phone call. The person on the other end of the phone tells you that the data set isn't complete and will be updated on a weekly basis. Also, there is a potential need for weekly data analysis updates.
+
+_(You think briefly about your brother who sells ice cream on a beach and wonder what that would be like)._  
+
+__MISSION IMPOSSIBLE begins.__ 
+```
+
+<br><br><br><br><br>
+<hr>
 
 
 
