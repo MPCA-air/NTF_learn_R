@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>R Demo | NTFAQ</title>
+    <title>R for Data Analysis | NTFAQ</title>
     <meta charset="utf-8">
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
@@ -22,7 +22,7 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# R Demo | NTFAQ
+# R for Data Analysis | NTFAQ
 ## <span style="display:block; text-align:center;"><img src="https://pbs.twimg.com/media/DNhps0gUQAAcS55.jpg" width="620"></span>
 
 ---
@@ -34,16 +34,21 @@ class: inverse
 
 --
 &lt;br&gt;
+.bump-right[
 ## ...and not want to throw my computer in the lake?
+]
 
 --
 &lt;br&gt;
+.bump-right[
 ## ...and be able to show someone what I did?
+]
 
 --
 &lt;br&gt;
+.bump-right[
 ## ...and have it still make sense 2 years from now?
-
+]
 
 ---
 class: inverse
@@ -52,10 +57,31 @@ class: inverse
 
 
 .fade[.center[
-&lt;img src='http://lazerhorse.org/wp-content/uploads/2013/06/Old-Horror-Films-Retro-Film-Posters-The-Brain-Eaters.jpg' width="88%" style="margin-top: 5%;"&gt;
+&lt;img src='http://lazerhorse.org/wp-content/uploads/2013/06/Old-Horror-Films-Retro-Film-Posters-The-Brain-Eaters.jpg' width="88%" style="margin-top: -34px;"&gt;
 ]]
 
 
+
+---
+class: inverse
+
+# R Camp
+
+.center[
+&lt;a href="https://mpca-air.github.io/RCamp/"&gt;
+&lt;img src='images/RCamp.png' width="70%" style="margin-top: -20px;"&gt;&lt;/a&gt;
+]
+
+
+---
+class: inverse
+
+# Air data methods
+
+.center[
+&lt;a href="https://mpca-air.github.io/air-methods/"&gt;
+&lt;img src='images/methods_book.png' width="70%" style="margin-top: -20px;"&gt;&lt;/a&gt;
+]
 
 
 ---
@@ -76,11 +102,13 @@ background-size: 87%
 .center[![:scale 72%](images\rladies_map.gif)]
 &lt;/div&gt;
 
+.center[ __R is spreading.__]
+
 People all around the world contribute to and maintain R. A main focus is making it friendlier and easier to use. 
 
 Imagine 1,000's of graduate students, non-profits, scientists, and data enthusiasts all working to provide you with tools to help analyze and visualize your data. 
 
-.center[This is happening __RIGHT NOW__.]
+
 
 
 ---
@@ -90,9 +118,9 @@ class: center, middle
 # Top 10 reasons to use R
 
 
-&lt;br&gt;
+&lt;br&gt;&lt;br&gt;
 
-The following slides contain our 10 favorite things about R.
+
 
 
 
@@ -173,13 +201,17 @@ _Servings: 1 to 10_
 ---
 class: inverse, center, middle
 
+# 3| There's lots of help
+
+--
+
 ![:scale 10%](https://windowsfileviewer.com/images/types/xlsx.png)
 
-.bigtext[We've got data.] 
+.bigtext[We've got Excel data.] 
 
 --
 &lt;br&gt;
-.bigtext[Now how do we get it into R?]
+.bigtext[But how do we get it into R?]
 
 --
 &lt;br&gt;&lt;br&gt;
@@ -198,7 +230,7 @@ __Let's Google it!__
 
 ---
 
-# 3| There's a new package waiting for you
+# 4| There's a new package waiting for you
 
 
 When someone shares their analysis recipe or new tool in R, they wrap everything together into a __package__. Packages in R are like Apps for your phone -- you load them each time you want to do something special.
@@ -245,7 +277,7 @@ We have lots of stickers and you should take some with you. Many are for a varie
 
 ---
 
-# 4| Read all flavors of data
+# 5| Read all flavors of data
 
 These packages give R the ability to read data from almost any place it may be stored. R can talk to SQL databases, read data saved from other statistical software, and pull data directly from the internet.
 
@@ -282,11 +314,12 @@ These packages give R the ability to read data from almost any place it may be s
 
 --
 
-&lt;div style="margin-top: -250px; font-size: 40px;"&gt;
+&lt;div style="margin-top: -250px;"&gt;
 
 .center[
-
-__Let's try it!__ 
+&lt;span style="font-size: 30px;"&gt;
+__Let's try it!__ <i class="fas  fa-bicycle "></i>
+&lt;/span&gt;
 ]
 
 &lt;/div&gt;
@@ -363,17 +396,17 @@ aqi_now &lt;- filter(aqi_now, parameter %in% c("OZONE", "PM2.5"), aqsid == "2701
 &lt;tbody&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Fond du Lac &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 05/10/18 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 22:00:00 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 05/11/18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 15:00:00 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -6 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; OZONE &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 48 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; PPB &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Fond du Lac &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 05/10/18 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 22:00:00 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 05/11/18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 15:00:00 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -6 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; PM2.5 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
@@ -386,7 +419,7 @@ aqi_now &lt;- filter(aqi_now, parameter %in% c("OZONE", "PM2.5"), aqsid == "2701
 
 ---
 
-# 5| Any plot for any data
+# 6| Any plot for any data
 
 ![:scale 66%](https://datasciencedojo.com/wp-content/uploads/12_R-and-GGPLOT2-01-845x321.png)
 
@@ -439,11 +472,9 @@ ggplot(data = pm_data, aes(x = site_catid, y = Conc, fill = site_catid)) +
 
 
 
-
 ---
 
 # beeswarm
-
 
 
 ```r
@@ -454,11 +485,11 @@ install.packages("ggbeeswarm")
 ```r
 library(ggbeeswarm)
 
-ggplot(pm_data, aes(y = site_catid, x = Conc, fill = site_catid)) + geom_quasirandom(groupOnX = F, alpha = .01, show.legend = FALSE) +   
-    labs(title = "PM2.5 Results (ug/m^3)", y = "site ID") #+ xlim(0, 50)
+ggplot(pm_data, aes(y = site_catid, x = Conc, color = Conc)) + geom_quasirandom(groupOnX = F, alpha = .035, show.legend = FALSE) +   
+    labs(title = "PM2.5 Results (ug/m^3)", y = "site", x = "ug/m3") + xlim(0, 60)
 ```
 
-&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-16-1.png" width="1200px" height="410px" /&gt;
+&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-15-1.png" width="1130px" height="370px" /&gt;
 
 
 ---
@@ -475,7 +506,7 @@ ggplot(data = pm_data, aes(x = site_catid)) +
    geom_bar(aes(fill = aqi_color), show.legend = F) + scale_fill_manual(values = as.character(unique(pm_data$aqi_color))) + labs(title = "2015 AQI results for PM2.5", y = "Days")
 ```
 
-&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-17-1.png" width="800px" height="390px" /&gt;
+&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-16-1.png" width="800px" height="390px" /&gt;
 
 
 ---
@@ -483,25 +514,25 @@ ggplot(data = pm_data, aes(x = site_catid)) +
 # AQI waffles
 
 
- 
-
 ```r
 library(waffle) #devtools::install_github("hrbrmstr/waffle")
 
 pm_sums &lt;- group_by(pm_data, site_catid, aqi_color) %&gt;% summarize(count = n()) %&gt;% arrange(desc(aqi_color)) %&gt;% ungroup() %&gt;% mutate(aqi_color = forcats::fct_recode(aqi_color, Good = "#53BF33", Moderate = "#FFEE00", `Unhealthy` = "#DB6B1A"))
 
 iron(
-waffle(filter(pm_sums, site_catid == "27-017-7417") %&gt;% select(aqi_color, count), rows = 7,  size = 0.5, colors = c("#65B345", "#f2d01a"), title  = "Fond du Lac AQI :: 2015"),
+waffle(filter(pm_sums, site_catid == "27-017-7417") %&gt;% select(aqi_color, count), rows = 7,  size = 0.5, colors = c("#65B345", "#f2d01a"), title  = "Fond du Lac AQI :: 2015") + theme(legend.position="left", legend.text=element_text(size=24), plot.title=element_text(size=30)),
 
-waffle(filter(pm_sums, site_catid == "27-137-7549") %&gt;% select(aqi_color, count), rows = 7,  size = 0.5, colors = rev(c("#F26522", "#F2D01A", "#65B345")), xlab = "1 square = 1 day", title  = "Duluth AQI :: 2015"))
+waffle(filter(pm_sums, site_catid == "27-137-7549") %&gt;% select(aqi_color, count), rows = 7,  size = 0.5, colors = rev(c("#F26522", "#F2D01A", "#65B345")), xlab = "1 square = 1 day", title  = "Duluth AQI :: 2015") +  theme(legend.position="left", legend.text=element_text(size=24), plot.title=element_text(size=30), axis.title.x=element_text(size=22)))
 ```
 
-![](NTF_Demo_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+![](NTF_Demo_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
 
 ---
 
 # Calendar plot
 
+
+ 
 
 ```r
 install.packages("openair")
@@ -510,16 +541,16 @@ install.packages("openair")
 
 ```r
 library(openair) # openair requires date column to be named "date"
+library(lubridate) 
 
-data_fond &lt;- filter(pm_data, site_catid == "27-017-7417") %&gt;% rename(date = Date)
-
+data_fond &lt;- filter(pm_data, site_catid == "27-017-7417", month(Date) &lt; 10) %&gt;% rename(date = Date)
 
 calendarPlot(data_fond, pollutant  = "Conc", statistic  = "mean", year = 2015, 
-             annotate   = "value", digits = 0, key.footer = "ug/m3", 
-             main       = "2015 PM2.5 Concentrations at Fond du Lac")
+             annotate   = "value", digits = 0, key.footer = "ug/m3",  par.settings = list(fontsize=list(text=22)),
+             main = "2015 PM2.5 Concentrations at Fond du Lac")
 ```
 
-![](NTF_Demo_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-20-1.png" width="1200px" /&gt;
 
 
 ---
@@ -530,16 +561,16 @@ calendarPlot(data_fond, pollutant  = "Conc", statistic  = "mean", year = 2015,
 ```r
 filter(pm_data, site_catid == "27-017-7417") %&gt;% group_by(Date) %&gt;% summarize(Conc = median(Conc, na.rm = T)) %&gt;% 
   ggplot(aes(x = as.Date(Date), y = Conc, na.rm = T)) + 
-         geom_line(size = 1, color = "tomato", size = 2) + geom_point(alpha = 0.5, size = 3) + geom_smooth() +
+         geom_line(size = 1, color = "tomato", size = 3) + geom_point(alpha = 0.5, size = 5) + geom_smooth() +
          ylab("Concentration (ug/m3)") + xlab("") + ggtitle("PM2.5 at Fond du Lac in 2015") + 
          geom_label(aes(x = as.Date("2015-07-23"), y = 32), fill = "steelblue", 
                     label = "the BIG July Event", size = 10) 
 ```
 
-![](NTF_Demo_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+![](NTF_Demo_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+
 
 ---
-
 
 # Time series - _split by hour_
 
@@ -548,13 +579,12 @@ library(lubridate)
 
 pm_data &lt;- filter(data_2015, site_catid == "27-017-7417", Parameter == 88101)
 
-ggplot(pm_data, aes(x = Hour, y = Conc)) +
-         geom_point(alpha = 0.2) + geom_smooth() +
+ggplot(pm_data, aes(x = Hour, y = Conc)) + geom_point(alpha = 0.2) + geom_smooth() +
          labs(y="Concentration (ug/m3)", x="Hour", title="PM2.5 at Fond du Lac in 2015") +
-         facet_wrap(~month(Date, label = T), ncol = 4) + scale_y_log10()
+         facet_wrap(~wday(Date, label = T), ncol = 4) + scale_y_log10()
 ```
 
-![](NTF_Demo_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
+![](NTF_Demo_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
 
 
 ---
@@ -569,13 +599,13 @@ pm_data %&gt;% mutate(color = ifelse(wday(Date) == 7 &amp; month(Date) == 6, "re
     facet_wrap(~month(Date, label = T), ncol = 4) + scale_y_log10()
 ```
 
-![](NTF_Demo_files/figure-html/unnamed-chunk-24-1.png)&lt;!-- --&gt;
+![](NTF_Demo_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
 
 
 ---
 class: inverse, middle, center
 
-# ...Chart finale...
+# `...Chart finale...`
 
 ---
 
@@ -594,22 +624,23 @@ nature_plot &lt;- ggplot(pm_data, aes(x = Date, y = Conc)) +
 paint_pomological(nature_plot, res = 170, width = 1600, height = 550)
 ```
 
-&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-26-1.png" width="2133" height="340px" /&gt;
+&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-25-1.png" width="2133" height="340px" /&gt;
 
 
 ---
 
-# 6| Read all the rows
+# 7| Read all the rows
 
 What if you have a ** _HUGE_ ** file? 
 
 &lt;br&gt;
 
-Good timing! We just requested MET data from the weather people down the hall, and they sent us a text file with over million rows of data. 
+&gt; __Good timing!__ 
+&gt;
+&gt; We just requested MET data from the weather people, and they sent us a text file with over a **1,000,000** rows of data. 
+&gt;
 
 &lt;br&gt;
-
-&gt; That's nice, but _don't they know_ Excel is limited to around a million rows?
 
 ---
 
@@ -619,7 +650,7 @@ To read a large text file:
 
 --
 
-`1.` Download the file:
+`1.` Download the file.
 
 ```r
 url &lt;- "https://github.com/MPCA-air/NTF_learn_R/raw/master/data/BIG_MET_data.zip"
@@ -631,20 +662,16 @@ unzip("BIG_MET_data.zip", file = "MET_data_2012-2017.csv")
 ```
 
 
-```r
-install.packages("readr")
-```
-
 --
 
-`2.` Read the data with __ ` read_csv() ` __:
+`2.` Read the data with __ ` read_csv() ` __.
 
 ```r
 # Inside the ZIP file is a huge csv text file.
 # For this we can run read_csv() from the readr package.
 # This package has lots of data reading functions.
 
-library(readr)
+library(readr) #install.packages("readr")
 
 big_met &lt;- read_csv("MET_data_2012-2017.csv")
 ```
@@ -782,7 +809,7 @@ head(big_met)
 # dplyr gives you powerful words
 
 .float-left[
-![:scale 90%](https://www.kdnuggets.com/wp-content/uploads/hex-dplyr.jpg)
+![:scale 85%](https://www.kdnuggets.com/wp-content/uploads/hex-dplyr.jpg)
 
 
 ```r
@@ -794,7 +821,8 @@ install.packages("dplyr")
 
 
 
-__Your analysis toolbox:__ key _dplyr_ functions
+__Your analysis toolbox__
+key _dplyr_ functions
 
 | Function      | Returns                                             |  
 |:--------------|:----------------------------------------------------|  
@@ -805,9 +833,8 @@ __Your analysis toolbox:__ key _dplyr_ functions
 | `group_by()`  | split data into groups by values in a column        |  
 | `summarize()` | calculate a single summary row for the entire table |  
 
-&lt;br&gt;&lt;br&gt;
+&lt;br&gt;
 
-## Let's use some of these words!
 
 ---
 
@@ -904,7 +931,7 @@ summary(big_met)
 
 ```r
 # The filter() function is in the package dplyr
-fonddulac_met &lt;- filter(big_met, site_catid == "27-017-7417")
+fond_met &lt;- filter(big_met, site_catid == "27-017-7417")
 ```
 
 
@@ -1011,24 +1038,10 @@ fonddulac_met &lt;- filter(big_met, site_catid == "27-017-7417")
 &lt;/table&gt;
 
 
----
-
-# Look at correlations with `pairs()`
-
-
-
-```r
-pairs(big_met)
-```
-
-```
-## Error in pairs.default(big_met): non-numeric argument to 'pairs'
-```
-
 
 ---
 
-# 7| Join related data tables
+# 8| Join related data tables
 
 Since our concentration data has the same format and only the year is changing, we can bind the two tables together with the function `bind_rows()`.
 
@@ -1091,6 +1104,7 @@ Now our data looks like this
    &lt;th style="text-align:right;"&gt; Conc &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; site_catid &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; Year &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; time &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; summary &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; precipIntensity &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; precipProbability &lt;/th&gt;
@@ -1120,6 +1134,7 @@ Now our data looks like this
    &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 27-017-7417 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 2015 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2015-06-10 22:00:00 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Clear &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
@@ -1141,9 +1156,37 @@ Now our data looks like this
 
 
 
+
 ---
 
-# 8| Documentation and transparency
+# Ozone |  Look at correlations with `pairs()`
+
+
+```r
+ozone &lt;- filter(air_met, Parameter == 44201, site_catid == "27-017-7417")
+
+pairs(select(ozone, temperature, windSpeed, Conc, Hour, humidity), col=rgb(0,100,0,25,maxColorValue=255), na.action = na.omit, cex = .8)
+```
+
+![](NTF_Demo_files/figure-html/unnamed-chunk-45-1.png)&lt;!-- --&gt;
+
+---
+
+# PM2.5 |  Look at correlations with `pairs()`
+
+
+```r
+pm &lt;- filter(air_met, Parameter == 88101, site_catid == "27-017-7417", Conc &lt; 30)
+
+pairs(select(pm, temperature, windSpeed, Conc, Hour, humidity), col=rgb(90,160,220,30,maxColorValue=255), na.action = na.omit, cex = .8)
+```
+
+![](NTF_Demo_files/figure-html/unnamed-chunk-46-1.png)&lt;!-- --&gt;
+
+
+---
+
+# 9| Documentation and transparency
 
 
 .indent[
@@ -1169,7 +1212,7 @@ It's especially fun to copy yourself from 2 years ago.
 
 ---
 
-# 9| You can't break your data
+# 10| You can't break your data
 
 &lt;div class="quiz"&gt;
 
@@ -1194,28 +1237,34 @@ It's especially fun to copy yourself from 2 years ago.
 
 ---
 
-# 9| You can't break your data
+# 10| You can't break your data
 
 
 You will notice that when we're in R, we always use a name for the data and then tell R to do something to the named object.
+
+&lt;br&gt;
 
 It looks like this:
 
 
 ```r
-data &lt;- read_excel("data.csv")
+new_data &lt;- read_excel("air-data.csv")
 ```
 
 &lt;br&gt;
 
-These R commands always act on a **copy** of the data and aren't changing the original file. So no more worries! 
+--
+
+R always act on a **copy** of the data.
+
+It isn't changing the original file. So no worries! 
 
 
 
 
 ---
 
-# 9| You can't break your data
+# 10| You can't break your data
 
 If you want to create data from scratch, give the value a name. 
 
@@ -1229,6 +1278,8 @@ this_conference &lt;- "NTFAQ"
 ```
 
 &lt;br&gt;
+
+--
 
 Now when we type the names into the R console it will tell us what is stored there.
 
@@ -1244,74 +1295,13 @@ current_temp
 ```
 
 
-
 ---
 
-# 10| Missing values
-
-Let's look at a `summary()` for PM2.5 concentrations and wind speed.
-
-
-
-```r
-# The summary() function provides min, max, means, etc of each numeric variable in the data set.
-# It also tells us what each column type is, letting you know whether the data is
-# stored as characters, integers, decimals, or date objects.
-
-select(air_met, Conc, windSpeed) %&gt;% summary()
-```
-
-```
-##       Conc           windSpeed     
-##  Min.   : -9.000   Min.   : 0.000  
-##  1st Qu.:  0.028   1st Qu.: 4.317  
-##  Median :  3.000   Median : 6.680  
-##  Mean   :  4.279   Mean   : 7.265  
-##  3rd Qu.:  7.000   3rd Qu.: 9.660  
-##  Max.   :133.000   Max.   :28.010  
-##                    NA's   :2842
-```
-
-You can see the mean of the "Conc" column and we see no missing values.
-
-If we look at the summary for wind speed, we see many missing values (shown as ` NA ` in R).
-We don't want to take means of data where most of it is missing. Other programs may ignore these values, or throw an error.
-
----
-
-# 10| Missing values
-
-
-&lt;div class="note"&gt;
-I only want one number.
-&lt;/div&gt;
-
-
-```r
-# The summarize() function reduces your data down to a statistical summary
-# mean(), max(), min(), percentile(), range(), etc.
-
-fonddulac_mean &lt;- filter(air_met, Parameter == 88101) %&gt;% summarize(mean_pm25 = mean(Conc, na.rm = TRUE))
-
-fonddulac_mean
-```
-
-
-Okay, here's the answer _(if we drop all the `NAs`)_.
-
-The average PM2.5 concentration is:  __.scary[.bigtext[6.72 _ug/m3_]]__
-
-
-
----
-
-# 11|  R gives you a language for data
+# 12|  R gives you a language for data
 
 It's nice to have words. 
 
  
-
-
 1. Let's describe going from data in a __wide__ format to data in a __tall__ format as gather().
 
 
@@ -1326,7 +1316,9 @@ long_met &lt;- big_met %&gt;% gather(Parameter, Result, -time, -summary, -icon, 
 view(long_met)
 ```
 
+
 ---
+
 # The reverse is spread().
 
 ```r
@@ -1334,22 +1326,12 @@ wide_met &lt;- long_met %&gt;% spread(Parameter, Result)
 
 view(wide_met)
 ```
----
 
 
-# 12| Automate - _update with new data_
-
-__Explosions!__
-
-.center[
-![:scale 60%](images\explosion.jpg)
-]
-
-There was a big refinery explosion close to our monitoring site. We'll be receiving new monitoring data in the next hour. We need to let people know if anything suggests smoke from the explosion is reaching the air monitor.
 
 ---
 
-# 12| Automate - _update with new data_
+# 13| Reproducible - _update with new data_
 
 
 We have data for 2014 and 2015, but the explosion just happened now _(in the year 2016)_. Remember our data is stored in one Excel workbook. Since we wrote this in a script form we can change the date in our `read_excel()` to __2016__.
@@ -1366,11 +1348,12 @@ data_2016 &lt;- read_excel("AQS_Fonddulac.xlsx", sheet = "2016")
 
 We changed the _year_ and __BOOM!__  We've got updated data.
 
+
 ---
 
-# Update the charts and roses
+# Update the charts 
 
-Now we can follow the same steps we used before to bind the tables togehter and join the MET data.
+Now we can follow the same steps we used before to bind the tables togehter and create the charts.
 
 
 
@@ -1378,142 +1361,40 @@ Now we can follow the same steps we used before to bind the tables togehter and 
 air_data &lt;- bind_rows(data_2016, air_data)
 ```
 
+---
+
+# PM2.5 waffles
 
 
 
+```r
+pm_data &lt;- filter(data_2016, Parameter == 88101) %&gt;% summarize(Conc = mean(Conc, na.rm = T)) %&gt;% mutate(aqi_color = conc2color(Conc, "PM25") %&gt;% factor(levels = c("#DB6B1A", "#FFEE00", "#53BF33"))) %&gt;% arrange(aqi_color)
 
-and now it looks like this,
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:right;"&gt; StateCode &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; CountyCode &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; SiteNum &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Latitude &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Longitude &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; Date &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Hour &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Parameter &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Conc &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; site_catid &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Year &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; date_time &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; summary &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; icon &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; precipIntensity &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; precipProbability &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; temperature &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; apparentTemperature &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; dewPoint &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; humidity &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; windSpeed &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; windBearing &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; visibility &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; cloudCover &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; pressure &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; precipType &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; precipAccumulation &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7417 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 46.71369 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; -92.51172 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2016-01-01 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 88101 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 27-017-7417 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2016 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2016-01-01 06:00:00 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Overcast &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; cloudy &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 16.37 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.10 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 10.50 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.77 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 12.05 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 270 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 9.61 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1017.86 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7417 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 46.71369 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; -92.51172 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2016-01-01 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 88101 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 27-017-7417 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2016 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2016-01-01 07:00:00 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Partly Cloudy &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; partly-cloudy-night &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 16.31 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6.35 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 10.46 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.77 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7.28 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 262 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7.26 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.31 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1017.75 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7417 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 46.71369 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; -92.51172 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2016-01-01 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 88101 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 27-017-7417 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2016 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2016-01-01 08:00:00 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Partly Cloudy &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; partly-cloudy-night &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 16.30 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 5.73 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 10.49 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.77 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 8.01 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 259 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7.32 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.31 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1017.37 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
+pm_sums &lt;- group_by(pm_data, site_catid, aqi_color) %&gt;% summarize(count = n()) %&gt;% arrange(desc(aqi_color)) %&gt;% ungroup() %&gt;% mutate(aqi_color = forcats::fct_recode(aqi_color, Good = "#53BF33", Moderate = "#FFEE00", `Unhealthy` = "#DB6B1A"))
+```
+
+```
+## Error in grouped_df_impl(data, unname(vars), drop): Column `site_catid` is unknown
+```
+
+```r
+iron(
+waffle(filter(pm_sums, site_catid == "27-017-7417") %&gt;% select(aqi_color, count), rows = 7,  size = 0.5, colors = c("#65B345", "#f2d01a"), title  = "Fond du Lac AQI :: 2015") + theme(legend.position="left", legend.text=element_text(size=15)),
+
+waffle(filter(pm_sums, site_catid == "27-137-7549") %&gt;% select(aqi_color, count), rows = 7,  size = 0.5, colors = rev(c("#F26522", "#F2D01A", "#65B345")), xlab = "1 square = 1 day", title  = "Duluth AQI :: 2015") +  theme(legend.position="left", legend.text=element_text(size=15), title.text=element_text(size=21), axis.title=element_text(size=15)))
+```
+
+```
+## Error in (function (el, elname) : "title.text" is not a valid theme element name.
+```
+
 
 
 ---
 
-# 13| Make maps and never get lost again
+# 14| Make maps and never get lost again
 
-Where is the Fond du Lac monitor again? 
-
-Was it close to the explosion? 
+&gt; Where is the Fond du Lac monitor? 
 
 --
 
@@ -1544,16 +1425,16 @@ __Go-Go gadget leaflet!__
 
 ---
 
-# 13| Make maps and never get lost again
+# 14| Make maps and never get lost again
 
 &lt;br&gt;
 
-<div id="htmlwidget-cfd512d56e157983d5ca" style="width:77%;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-cfd512d56e157983d5ca">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[46.713694,46.77107,46.8182599999999,46.743657],[-92.5117219999999,-92.11732,-92.08936,-92.165998],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,["7417","7549","7550","7554"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[46.713694,46.8182599999999],"lng":[-92.5117219999999,-92.08936]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-b029beb5fa22a2d1380c" style="width:77%;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b029beb5fa22a2d1380c">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[46.713694,46.77107,46.81826,46.743657],[-92.511722,-92.11732,-92.08936,-92.165998],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,["7417","7549","7550","7554"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[46.713694,46.81826],"lng":[-92.511722,-92.08936]}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
-# 13| Make maps and never get lost again
+# 14| Make maps and never get lost again
 
 #### Let's add where we are right now.
 
@@ -1566,18 +1447,18 @@ leaflet(data = air_sites) %&gt;% addTiles() %&gt;%
   addPopups(-92.48, 46.66, "&lt;a&gt;You are HERE&lt;/a&gt;")
 ```
 
-<div id="htmlwidget-a2e0c451d4ba2ab5d460" style="width:77%;height:370px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-a2e0c451d4ba2ab5d460">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[46.713694,46.77107,46.8182599999999,46.743657],[-92.5117219999999,-92.11732,-92.08936,-92.165998],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,["7417","7549","7550","7554"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addPopups","args":[46.66,-92.48,"<a>You are HERE<\/a>",null,null,{"maxWidth":300,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"className":""}]}],"limits":{"lat":[46.66,46.8182599999999],"lng":[-92.5117219999999,-92.08936]}},"evals":[],"jsHooks":[]}</script>
-
---
+<div id="htmlwidget-9fdf203dd8f484785574" style="width:77%;height:370px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9fdf203dd8f484785574">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[46.713694,46.77107,46.81826,46.743657],[-92.511722,-92.11732,-92.08936,-92.165998],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,["7417","7549","7550","7554"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addPopups","args":[46.66,-92.48,"<a>You are HERE<\/a>",null,null,{"maxWidth":300,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"className":""}]}],"limits":{"lat":[46.66,46.81826],"lng":[-92.511722,-92.08936]}},"evals":[],"jsHooks":[]}</script>
 
 
 ---
 
 # 14| Map weather alerts
 
-.center-text[
-![](images/flood_map.png)
+
+
+.center[
+&lt;img src="images/flood_map.png" width="65%", style="margin-top: -10px;"&gt;
 ]
 
 ---
@@ -1689,10 +1570,10 @@ say("Meowww. You deserve a break.", "cat")
 
 You've completed the Super fast R Intro and are ready for Day 1 of R Camp. 
 
-In the mean time you can find help on _R-Bloggers_, download the package _swirl_, and take this [Coursera](https://www.coursera.org/specializations/jhu-data-science) course.
+In the mean time you can find help on _R-Bloggers_, download the learning package _swirl_, or try this [Coursera](https://www.coursera.org/specializations/jhu-data-science) course.
 
 
-There's also an R intro for __pirates__. If you are a pirate you can sail the high seas [Here](http://tryr.codeschool.com/).
+There's even an R intro for __pirates__. If you are a pirate, you can sail the high seas [here](http://tryr.codeschool.com/).
 
 We want to meet you. Come talk to us. Send us an e-mail. 
 
@@ -1707,10 +1588,10 @@ We like __R__. We aren't computer scientists and you don't need to be either.
 
 &lt;br&gt;&lt;hr&gt;&lt;br&gt;&lt;br&gt;
 
+Return to the project's [GitHub page](https://github.com/MPCA-air/NTF_learn_R).
 
 This presentation was made with `Rmarkdown` and Yihui's ` xaringan ` package. 
 
-Return to the project's [GitHub page](https://github.com/MPCA-air/NTF_learn_R).
 
 
 
