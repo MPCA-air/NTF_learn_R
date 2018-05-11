@@ -1,25 +1,16 @@
----
-title: "R Demo Handout | National Tribal Air Forum"
-author: Dorian Kvale and Kristie Ellickson
-date: May 16, 2018
-output: 
-  html_document:
-    theme: "spacelab"
-    highlight: tango
-    code_folding: hide
----
+# "R Demo Handout | National Tribal Air Forum"
 
-```{r setup, include = FALSE, echo = FALSE, eval = T}
-
-library(rmarkdown)
-library(knitr)
-knitr::opts_chunk$set(echo=FALSE)
-
-```
 
 ## Today's presentation is online:
 
 [https://mpca-air.github.io/NTF_learn_R/NTF_Demo.html](https://mpca-air.github.io/NTF_learn_R/NTF_Demo.html)
+
+---
+
+
+## Instructions to Install R
+
+https://mpca-air.github.io/NTF_learn_R/00_Install.html
 
 ---
 
@@ -31,7 +22,7 @@ knitr::opts_chunk$set(echo=FALSE)
 
 ---
 
-## Previous R Training Materials _R Camp!_
+## Previous R Training Materials - _R Camp!_
 
 Find tutorials and workshops at https://MPCA-air.github.io/RCamp.
 
@@ -45,28 +36,30 @@ Find tutorials and workshops at https://MPCA-air.github.io/RCamp.
 - Coursera online courses @ https://www.coursera.org/specializations/jhu-data-science
 - R for Data Science by Hadley Wickham (paper book or online)
 - R Bloggers (Great articles online)
-- '#rstats Twitter' (follow this!)
-- R cookbooks @ cookbook-r.com (a variety of simple recipes for data and charts)
+- `#rstats` Twitter (follow this!)
+- R cookbooks @ [cookbook-r.com](http://www.cookbook-r.com) (a variety of simple recipes for data and charts)
 
 ---
 
-## Instructions to Install R
 
-https://mpca-air.github.io/NTF_learn_R/00_Install.html
+## A guide for air data methods 
+
+* We've started an online guide for air data analysis to help each other use similar methodologies to calculate means, compare sites, etc. It's posted online:
+https://mpca-air.github.io/air-methods/.
 
 ---
 
-## Shiny Tools in Today's Presentation
 
-- Pollution roses
-- Site comparisons
+## Shiny tools in today's presentation
+
+- Pollution roses: https://air-data.shinyapps.io/pollution-roses/
+
 
 ---
 
 ## R Packages in Today's Presentation
 
-<div class="columns-2">
-
+<div class="col2">
 
 __For data reading__
 
@@ -86,17 +79,6 @@ __For data processing and cleaning up__
 
 * library(lubridate)
 
-__To make dynamic documents and presentations__
-
-* library(rmarkdown)
-
-* library(knitr)
-
-
-__To make dynamic tools__
-
-* library(RShiny)
-
 __To make charts__
 
 * library(ggplot2)
@@ -111,25 +93,26 @@ __To make maps__
 
 * library(leaflet)
 
+__To make dynamic tools__
+
+* library(shiny)
+
 __To provide other information or just fun__
 
 * library(weatherAlerts)
 
 * library(cowsay)
 
+__For documents and presentations with charts _(like this one!)_ __
+
+* library(rmarkdown)
+
 </div>
 
 ---
 
 ## Contacts
-Kristie Ellickson, kristie.ellickson@state.mn.us
+Kristie Ellickson: kristie.ellickson@state.mn.us
 
-Dorian Kvale, dorian.kvale@state.mn.us
-
----
-
-## Notes
-
-* We wrote a data analysis methods book to make sure we were all using the same methodologies to calculate means, compare sites, etc. It's posted online here:
-https://mpca-air.github.io/air-methods/ 
+Dorian Kvale: dorian.kvale@state.mn.us
 

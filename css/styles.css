@@ -6,6 +6,34 @@ input[type="number"] {
   background-color: #ededed;
 }
 
+
+#go {
+background-color: #388dca;
+color: #FFF;
+border-color: #b0b0b0;
+padding: 12px;
+padding-left: 24px;
+padding-right: 28px;
+margin-top: 22px;
+margin-bottom: 20px;
+margin-left: 15px;
+font-weight: 600;
+}
+
+.go-btn {
+background-color: #388dca;
+color: #FFF;
+border-color: #b0b0b0;
+padding: 12px;
+padding-left: 24px;
+padding-right: 28px;
+margin-top: 22px;
+margin-bottom: 20px;
+margin-left: 15px;
+font-weight: 600;
+}
+
+
 div.outer {
   position: fixed;
   top: 41px;

@@ -170,7 +170,7 @@ __You can download R right now. We will wait.__
 
 R lets you perform data analysis like you're writing a recipe for chocolate chip cookies. Once you've written your favorite recipe you can use it over and over again or share it with your favorite collaborators and grandkids. 
 
-.center[![:scale 95%](images\recipe_to_cookie.png)]
+.center[![:scale 93%](images\recipe_to_cookie.png)]
 
 ---
 
@@ -201,17 +201,17 @@ _Servings: 1 to 10_
 ---
 class: inverse, center, middle
 
-# 3| There's lots of help
+# 3| There is lots of help
 
 --
 
 ![:scale 10%](https://windowsfileviewer.com/images/types/xlsx.png)
 
-.bigtext[We've got Excel data.] 
+.bigtext[Let's say we have Excel data.] 
 
 --
 &lt;br&gt;
-.bigtext[But how do we get it into R?]
+.bigtext[How do we get it into R?]
 
 --
 &lt;br&gt;&lt;br&gt;
@@ -332,7 +332,8 @@ __Let's try it!__ <i class="fas  fa-bicycle "></i>
 First take a gander at the data. It's online [HERE](https://github.com/MPCA-air/NTF_learn_R/raw/master/data/Hourly/AQS_1hr_FondduLac.xlsx).
 
 --
-&lt;br&gt;
+
+&lt;br&gt;&lt;br&gt;
 
 To load the Excel data into R:
 
@@ -366,20 +367,21 @@ data_2015 &lt;- read_excel("AQS_FondduLac.xlsx", sheet = "2015")
 ```r
 library(tidyverse)
 
-# Connect to AirNow data site to get current air observations
+# Connect to AirNow for current observations
 airnow_link &lt;- paste0("https://s3-us-west-1.amazonaws.com//files.airnowtech.org/airnow/today/HourlyData_",
                        format(Sys.time()-60*75, "%Y%m%d%H", tz = "GMT"), ".dat")
   
-# Read a "|" delimited file that has no column names - Thanks EPA!
+# Read a "|" delimited file with no column names - Thanks EPA!
 aqi_now   &lt;- read_delim(airnow_link, "|", col_names = F)
                         
-# Add column names as a list
+# Add column names
 names(aqi_now) &lt;- c("date", "time", "aqsid", "city", "local_time", "parameter", "units", "concentration", "agency")
 
-# Filter to Ozone and PM2.5 results
+# Filter to Ozone and PM2.5
 aqi_now &lt;- filter(aqi_now, parameter %in% c("OZONE", "PM2.5"), aqsid == "270177417")
 ```
 
+--
 
 &lt;table&gt;
  &lt;thead&gt;
@@ -397,19 +399,10 @@ aqi_now &lt;- filter(aqi_now, parameter %in% c("OZONE", "PM2.5"), aqsid == "2701
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Fond du Lac &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 05/11/18 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 15:00:00 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; -6 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; OZONE &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 42 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; PPB &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Fond du Lac &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 05/11/18 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 15:00:00 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 20:00:00 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; -6 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; PM2.5 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -2 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; UG/M3 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
@@ -439,33 +432,31 @@ __The fun can start now.__ <i class="fas  fa-rocket "></i>
 
 
  
-# A `geom_bar()` plot
+# A bar plot
 
 
 ```r
-library(ggplot2)
-
-#o3_data &lt;- filter(data_2015, Parameter == 44201) 
+library(tidyverse)
 
 pm_data &lt;- filter(data_2015, Parameter == 88101) %&gt;% group_by(site_catid) %&gt;% summarize(Conc = mean(Conc, na.rm = T))
 
-ggplot(data = pm_data, aes(x = site_catid, y = Conc)) +
-   geom_col() + labs(y = "ug/m3", title = "2014 PM2.5 Concentrations")
+ggplot(data = pm_data, aes(x = site_catid, y = Conc)) + geom_col() + 
+  labs(title = "2015 PM2.5 Concentrations", y = "ug/m3", x = "site")
 ```
 
-&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-12-1.png" width="650px" height="315px" /&gt;
+&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-12-1.png" width="650px" height="400px" /&gt;
 
 
 ---
 
-# Box plots
+# A .inverse[`geom_boxplot()`]
 
 
 ```r
 pm_data &lt;- filter(data_2015, Parameter == 88101)
 
 ggplot(data = pm_data, aes(x = site_catid, y = Conc, fill = site_catid)) +
-  geom_boxplot(show.legend = FALSE) + labs(y = "ug/m3", x = "site", title = "2014 PM2.5 Concentrations") + scale_y_log10()
+  geom_boxplot(show.legend = FALSE) + labs(y = "ug/m3", x = "site", title = "2015 PM2.5 Concentrations") + scale_y_log10()
 ```
 
 &lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-13-1.png" width="1100px" height="390px" /&gt;
@@ -478,18 +469,13 @@ ggplot(data = pm_data, aes(x = site_catid, y = Conc, fill = site_catid)) +
 
 
 ```r
-install.packages("ggbeeswarm")
-```
+library(ggbeeswarm) #install.packages("ggbeeswarm")
 
-
-```r
-library(ggbeeswarm)
-
-ggplot(pm_data, aes(y = site_catid, x = Conc, color = Conc)) + geom_quasirandom(groupOnX = F, alpha = .035, show.legend = FALSE) +   
+ggplot(pm_data, aes(y = site_catid, x = Conc, color = Conc)) + geom_quasirandom(groupOnX = F, alpha = .035, show.legend = FALSE, size = 2) +   
     labs(title = "PM2.5 Results (ug/m^3)", y = "site", x = "ug/m3") + xlim(0, 60)
 ```
 
-&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-15-1.png" width="1130px" height="370px" /&gt;
+&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-14-1.png" width="100%" height="422px" /&gt;
 
 
 ---
@@ -503,10 +489,10 @@ source("https://raw.githubusercontent.com/dKvale/aqi-watch/master/R/aqi_convert.
 pm_data &lt;- group_by(pm_data, site_catid, Date) %&gt;% summarize(Conc = mean(Conc, na.rm = T)) %&gt;% mutate(aqi_color = conc2color(Conc, "PM25") %&gt;% factor(levels = c("#DB6B1A", "#FFEE00", "#53BF33"))) %&gt;% arrange(aqi_color)
 
 ggplot(data = pm_data, aes(x = site_catid)) +
-   geom_bar(aes(fill = aqi_color), show.legend = F) + scale_fill_manual(values = as.character(unique(pm_data$aqi_color))) + labs(title = "2015 AQI results for PM2.5", y = "Days")
+   geom_bar(aes(fill = aqi_color), show.legend = F) + scale_fill_manual(values = as.character(unique(pm_data$aqi_color))) + labs(title = "2015 AQI results for PM2.5", y = "Days", x = "Site")
 ```
 
-&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-16-1.png" width="800px" height="390px" /&gt;
+&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-15-1.png" width="780px" height="384px" /&gt;
 
 
 ---
@@ -520,12 +506,12 @@ library(waffle) #devtools::install_github("hrbrmstr/waffle")
 pm_sums &lt;- group_by(pm_data, site_catid, aqi_color) %&gt;% summarize(count = n()) %&gt;% arrange(desc(aqi_color)) %&gt;% ungroup() %&gt;% mutate(aqi_color = forcats::fct_recode(aqi_color, Good = "#53BF33", Moderate = "#FFEE00", `Unhealthy` = "#DB6B1A"))
 
 iron(
-waffle(filter(pm_sums, site_catid == "27-017-7417") %&gt;% select(aqi_color, count), rows = 7,  size = 0.5, colors = c("#65B345", "#f2d01a"), title  = "Fond du Lac AQI :: 2015") + theme(legend.position="left", legend.text=element_text(size=24), plot.title=element_text(size=30)),
+waffle(filter(pm_sums, site_catid == "27-017-7417") %&gt;% select(aqi_color, count), rows = 7,  size = 0.35, colors = c("#65B345", "#f2d01a"), title  = "Fond du Lac AQI :: 2015") + theme(legend.position="left", legend.text=element_text(size=26), plot.title=element_text(size=32)),
 
-waffle(filter(pm_sums, site_catid == "27-137-7549") %&gt;% select(aqi_color, count), rows = 7,  size = 0.5, colors = rev(c("#F26522", "#F2D01A", "#65B345")), xlab = "1 square = 1 day", title  = "Duluth AQI :: 2015") +  theme(legend.position="left", legend.text=element_text(size=24), plot.title=element_text(size=30), axis.title.x=element_text(size=22)))
+waffle(filter(pm_sums, site_catid == "27-137-7549") %&gt;% select(aqi_color, count), rows = 7,  size = 0.35, colors = rev(c("#F26522", "#F2D01A", "#65B345")), xlab = "1 square = 1 day", title  = "Duluth AQI :: 2015") +  theme(legend.position="left", legend.text=element_text(size=26), plot.title=element_text(size=32), axis.title.x=element_text(size=25)))
 ```
 
-![](NTF_Demo_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+![](NTF_Demo_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -534,23 +520,19 @@ waffle(filter(pm_sums, site_catid == "27-137-7549") %&gt;% select(aqi_color, cou
 
  
 
-```r
-install.packages("openair")
-```
-
 
 ```r
-library(openair) # openair requires date column to be named "date"
-library(lubridate) 
+library(openair) #install.packages("openair") 
+library(lubridate)
 
-data_fond &lt;- filter(pm_data, site_catid == "27-017-7417", month(Date) &lt; 10) %&gt;% rename(date = Date)
+data_fond &lt;- filter(pm_data, site_catid == "27-017-7417", month(Date) &lt; 10) %&gt;% rename(date = Date) # openair requires date column to be named "date"
 
 calendarPlot(data_fond, pollutant  = "Conc", statistic  = "mean", year = 2015, 
-             annotate   = "value", digits = 0, key.footer = "ug/m3",  par.settings = list(fontsize=list(text=22)),
-             main = "2015 PM2.5 Concentrations at Fond du Lac")
+             annotate   = "value", digits = 0, key.footer = "ug/m3", par.settings = list(fontsize=list(text=22), layout.heights=list(top.padding=-1)),
+             main = "PM2.5 Concentrations at Fond du Lac, 2015")
 ```
 
-&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-20-1.png" width="1200px" /&gt;
+![](NTF_Demo_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
 
 
 ---
@@ -561,13 +543,13 @@ calendarPlot(data_fond, pollutant  = "Conc", statistic  = "mean", year = 2015,
 ```r
 filter(pm_data, site_catid == "27-017-7417") %&gt;% group_by(Date) %&gt;% summarize(Conc = median(Conc, na.rm = T)) %&gt;% 
   ggplot(aes(x = as.Date(Date), y = Conc, na.rm = T)) + 
-         geom_line(size = 1, color = "tomato", size = 3) + geom_point(alpha = 0.5, size = 5) + geom_smooth() +
+         geom_line(size = 2.2, color = "tomato", size = 3) + geom_point(alpha = 0.5, size = 7.5) + geom_smooth() +
          ylab("Concentration (ug/m3)") + xlab("") + ggtitle("PM2.5 at Fond du Lac in 2015") + 
          geom_label(aes(x = as.Date("2015-07-23"), y = 32), fill = "steelblue", 
                     label = "the BIG July Event", size = 10) 
 ```
 
-![](NTF_Demo_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+![](NTF_Demo_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
 
 
 ---
@@ -579,12 +561,12 @@ library(lubridate)
 
 pm_data &lt;- filter(data_2015, site_catid == "27-017-7417", Parameter == 88101)
 
-ggplot(pm_data, aes(x = Hour, y = Conc)) + geom_point(alpha = 0.2) + geom_smooth() +
+ggplot(pm_data, aes(x = Hour, y = Conc)) + geom_point(alpha = 0.2, size = 2) + geom_smooth() +
          labs(y="Concentration (ug/m3)", x="Hour", title="PM2.5 at Fond du Lac in 2015") +
          facet_wrap(~wday(Date, label = T), ncol = 4) + scale_y_log10()
 ```
 
-![](NTF_Demo_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+![](NTF_Demo_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
 
 
 ---
@@ -594,12 +576,12 @@ ggplot(pm_data, aes(x = Hour, y = Conc)) + geom_point(alpha = 0.2) + geom_smooth
 ```r
 pm_data %&gt;% mutate(color = ifelse(wday(Date) == 7 &amp; month(Date) == 6, "red", "blue")) %&gt;%
   ggplot(aes(x = wday(Date, label = T), y = Conc)) +
-    geom_boxplot(aes(fill = color), outlier.alpha = 0, show.legend = F) + geom_jitter(alpha = 0.2) +
+    geom_boxplot(aes(fill = color), outlier.alpha = 0, show.legend = F) + geom_jitter(alpha = 0.2, size = 2) +
     ylab("Concentration (ug/m3)") + xlab("") + ggtitle("PM2.5 at Fond du Lac in 2015") + 
     facet_wrap(~month(Date, label = T), ncol = 4) + scale_y_log10()
 ```
 
-![](NTF_Demo_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
+![](NTF_Demo_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
 
 
 ---
@@ -611,20 +593,21 @@ class: inverse, middle, center
 
 # A nature journal
 
+--
 
 
 ```r
-library(ggpomological)
+library(ggpomological) #devtools::install_github("gadenbuie/ggpomological")
 
 nature_plot &lt;- ggplot(pm_data, aes(x = Date, y = Conc)) +
-                 geom_point(aes(color = as.factor(month(Date))), alpha = 0.8) + stat_smooth(geom = "line", color = "#C0C0C0", alpha = 0.7) +
+                 geom_point(aes(color = as.factor(month(Date))), alpha = 0.5) + stat_smooth(geom = "line", color = "#C0C0C0", alpha = 0.7) +
                  scale_color_pomological() + theme_pomological_fancy() + scale_y_log10() +
                  labs(title = "Air monitoring results") + theme(legend.position = "none")
 
 paint_pomological(nature_plot, res = 170, width = 1600, height = 550)
 ```
 
-&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-25-1.png" width="2133" height="340px" /&gt;
+&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-22-1.png" width="2133" height="340px" /&gt;
 
 
 ---
@@ -635,9 +618,11 @@ What if you have a ** _HUGE_ ** file?
 
 &lt;br&gt;
 
-&gt; __Good timing!__ 
+&gt; __Oh no!__ 
 &gt;
-&gt; We just requested MET data from the weather people, and they sent us a text file with over a **1,000,000** rows of data. 
+&gt; We just requested MET data from the weather people.
+&gt;
+&gt; They sent us a text file with over a **1,000,000** rows of data. 
 &gt;
 
 &lt;br&gt;
@@ -704,13 +689,11 @@ head(big_met)
 &lt;table&gt;
  &lt;thead&gt;
   &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; site_catid &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; time &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; summary &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; icon &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; precipIntensity &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; precipProbability &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; temperature &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; apparentTemperature &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; precipIntensity &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; dewPoint &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; humidity &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; windSpeed &lt;/th&gt;
@@ -720,18 +703,15 @@ head(big_met)
    &lt;th style="text-align:right;"&gt; pressure &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; precipType &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; precipAccumulation &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; site_catid &lt;/th&gt;
   &lt;/tr&gt;
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 27-003-1002 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 2013-09-20 05:00:00 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Clear &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; clear-night &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 63.95 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 63.95 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 58.59 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.83 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 7.80 &lt;/td&gt;
@@ -741,16 +721,13 @@ head(big_met)
    &lt;td style="text-align:right;"&gt; 1008.50 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 27-003-1002 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 27-003-1002 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 2013-09-20 06:00:00 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Clear &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; clear-night &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 62.88 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 62.88 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 54.82 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.75 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 8.93 &lt;/td&gt;
@@ -760,16 +737,13 @@ head(big_met)
    &lt;td style="text-align:right;"&gt; 1008.76 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 27-003-1002 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 27-003-1002 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 2013-09-20 07:00:00 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Clear &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; clear-night &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 60.98 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 60.98 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 54.73 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.80 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 8.32 &lt;/td&gt;
@@ -779,16 +753,13 @@ head(big_met)
    &lt;td style="text-align:right;"&gt; 1008.76 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 27-003-1002 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 27-003-1002 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 2013-09-20 08:00:00 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Clear &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; clear-night &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 60.71 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 60.71 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 54.68 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.81 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 10.57 &lt;/td&gt;
@@ -798,7 +769,6 @@ head(big_met)
    &lt;td style="text-align:right;"&gt; 1008.97 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 27-003-1002 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -821,17 +791,16 @@ install.packages("dplyr")
 
 
 
-__Your analysis toolbox__
-key _dplyr_ functions
+__Your analysis toolbox__ &lt;br&gt;
 
 | Function      | Returns                                             |  
 |:--------------|:----------------------------------------------------|  
-| `select()`    | select individual columns to drop, keep, or reorder |  
-| `arrange()`   | reorder or sort rows by value of a column           |  
+| `select()`    | Select individual columns to drop, keep, or reorder |  
+| `arrange()`   | Reorder or sort rows by value of a column           |  
 | `mutate()`    | Add new columns or update existing columns          | 
-| `filter()`    | pick a subset of rows by the value of a column      | 
-| `group_by()`  | split data into groups by values in a column        |  
-| `summarize()` | calculate a single summary row for the entire table |  
+| `filter()`    | Pick a subset of rows by the value of a column      | 
+| `group_by()`  | Split data into groups by values in a column        |  
+| `summarize()` | Calculate a single summary row for an entire table  |  
 
 &lt;br&gt;
 
@@ -840,33 +809,12 @@ key _dplyr_ functions
 
 # `glimpse()` the data
 
+&lt;br&gt;
 
 ```r
 library(dplyr)
 
 glimpse(big_met)
-```
-
-```
-## Observations: 1,401,457
-## Variables: 17
-## $ time                &lt;dttm&gt; 2013-09-20 05:00:00, 2013-09-20 06:00:00,...
-## $ summary             &lt;chr&gt; "Clear", "Clear", "Clear", "Clear", "Clear...
-## $ icon                &lt;chr&gt; "clear-night", "clear-night", "clear-night...
-## $ precipIntensity     &lt;dbl&gt; 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0....
-## $ precipProbability   &lt;dbl&gt; 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, ...
-## $ temperature         &lt;dbl&gt; 63.95, 62.88, 60.98, 60.71, 60.42, 58.60, ...
-## $ apparentTemperature &lt;dbl&gt; 63.95, 62.88, 60.98, 60.71, 60.42, 58.60, ...
-## $ dewPoint            &lt;dbl&gt; 58.59, 54.82, 54.73, 54.68, 54.62, 54.61, ...
-## $ humidity            &lt;dbl&gt; 0.83, 0.75, 0.80, 0.81, 0.81, 0.87, 0.89, ...
-## $ windSpeed           &lt;dbl&gt; 7.80, 8.93, 8.32, 10.57, 7.19, 7.34, 7.29,...
-## $ windBearing         &lt;int&gt; 281, 265, 272, 262, 264, 255, 254, 245, 26...
-## $ visibility          &lt;dbl&gt; 9.92, 9.94, 10.00, 10.00, 10.00, 10.00, 10...
-## $ cloudCover          &lt;dbl&gt; 0.00, 0.02, 0.00, 0.00, 0.00, 0.00, 0.00, ...
-## $ pressure            &lt;dbl&gt; 1008.50, 1008.76, 1008.76, 1008.97, 1009.1...
-## $ precipType          &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "r...
-## $ precipAccumulation  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
-## $ site_catid          &lt;chr&gt; "27-003-1002", "27-003-1002", "27-003-1002...
 ```
 
 &lt;br&gt;
@@ -875,167 +823,27 @@ glimpse(big_met)
 
 # `summary()` of all columns
 
+&lt;br&gt;
 
 ```r
 summary(big_met)
 ```
 
-```
-##       time                       summary              icon          
-##  Min.   :2011-12-31 07:00:00   Length:1401457     Length:1401457    
-##  1st Qu.:2013-04-30 21:00:00   Class :character   Class :character  
-##  Median :2014-08-30 12:00:00   Mode  :character   Mode  :character  
-##  Mean   :2014-09-10 09:28:39                                        
-##  3rd Qu.:2016-01-02 21:00:00                                        
-##  Max.   :2018-01-01 05:00:00                                        
-##                                                                     
-##  precipIntensity   precipProbability  temperature     apparentTemperature
-##  Min.   :0.00000   Min.   :0.00000   Min.   :-37.14   Min.   :-56.83     
-##  1st Qu.:0.00000   1st Qu.:0.00000   1st Qu.: 28.13   1st Qu.: 20.73     
-##  Median :0.00000   Median :0.00000   Median : 45.97   Median : 42.39     
-##  Mean   :0.00212   Mean   :0.04188   Mean   : 44.31   Mean   : 40.24     
-##  3rd Qu.:0.00000   3rd Qu.:0.00000   3rd Qu.: 63.53   3rd Qu.: 63.57     
-##  Max.   :8.51830   Max.   :1.00000   Max.   :103.23   Max.   :110.73     
-##  NA's   :143       NA's   :143       NA's   :1        NA's   :1          
-##     dewPoint         humidity        windSpeed      windBearing   
-##  Min.   :-44.08   Min.   :0.0900   Min.   : 0.00   Min.   :  0.0  
-##  1st Qu.: 20.59   1st Qu.:0.6000   1st Qu.: 4.60   1st Qu.:131.0  
-##  Median : 35.60   Median :0.7500   Median : 7.18   Median :199.0  
-##  Mean   : 34.71   Mean   :0.7159   Mean   : 8.08   Mean   :200.9  
-##  3rd Qu.: 53.05   3rd Qu.:0.8500   3rd Qu.:10.68   3rd Qu.:291.0  
-##  Max.   : 80.50   Max.   :1.0000   Max.   :48.93   Max.   :359.0  
-##  NA's   :30       NA's   :30       NA's   :2137    NA's   :4756   
-##    visibility       cloudCover        pressure       precipType       
-##  Min.   : 0.010   Min.   :0.00     Min.   : 973.1   Length:1401457    
-##  1st Qu.: 9.400   1st Qu.:0.00     1st Qu.:1010.6   Class :character  
-##  Median :10.000   Median :0.08     Median :1015.8   Mode  :character  
-##  Mean   : 9.077   Mean   :0.22     Mean   :1016.0                     
-##  3rd Qu.:10.000   3rd Qu.:0.31     3rd Qu.:1021.1                     
-##  Max.   :10.000   Max.   :1.00     Max.   :1054.9                     
-##  NA's   :163      NA's   :166379   NA's   :2644                       
-##  precipAccumulation  site_catid       
-##  Length:1401457     Length:1401457    
-##  Class :character   Class :character  
-##  Mode  :character   Mode  :character  
-##                                       
-##                                       
-##                                       
-## 
-```
-
 ---
 
-# ` filter() ` to a single site
+# ` filter() ` to a single site or pollutant
 
-
+&lt;br&gt;
 
 ```r
 # The filter() function is in the package dplyr
 fond_met &lt;- filter(big_met, site_catid == "27-017-7417")
+
+ozone_data &lt;- filter(data_2015, Parameter == 44201)
 ```
 
 
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt; time &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; summary &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; icon &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; precipIntensity &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; precipProbability &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; temperature &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; apparentTemperature &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; dewPoint &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; humidity &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; windSpeed &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; windBearing &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; visibility &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; cloudCover &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; pressure &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; precipType &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; precipAccumulation &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; site_catid &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; 2014-05-06 05:00:00 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Clear &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; clear-night &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 35.97 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 31.01 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 32.02 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.85 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 5.93 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 77 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 10.00 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.01 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1018.44 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 27-017-7417 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; 2014-05-06 06:00:00 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Clear &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; clear-night &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 35.94 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 31.58 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 33.58 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.91 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 5.15 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 77 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 10.00 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.04 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1018.52 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 27-017-7417 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; 2014-05-06 07:00:00 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Clear &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; clear-night &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 34.29 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 29.02 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 33.68 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.98 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 5.92 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 86 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 10.00 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.01 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1018.14 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 27-017-7417 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; 2014-05-06 08:00:00 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Clear &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; clear-night &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 35.71 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 29.82 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 33.51 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.92 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7.23 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 97 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6.08 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1017.80 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 27-017-7417 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
+
 
 
 
@@ -1045,32 +853,13 @@ fond_met &lt;- filter(big_met, site_catid == "27-017-7417")
 
 Since our concentration data has the same format and only the year is changing, we can bind the two tables together with the function `bind_rows()`.
 
-![](https://cdn-images-1.medium.com/max/1600/1*uG1vjoSQj7gMm8craCj2xA.png)
+![:scale 80%](https://cdn-images-1.medium.com/max/1600/1*uG1vjoSQj7gMm8craCj2xA.png)
 
 
 
 ```r
-install.packages("lubridate")
+air_data &lt;- bind_rows(data_2015, data_2014)
 ```
-
-and it looks like this
-
-
-```
-## # A tibble: 6 x 12
-##   StateCode CountyCode SiteNum Latitude Longitude Date               
-##       &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;dttm&gt;             
-## 1        27         17    7417     46.7     -92.5 2015-06-10 00:00:00
-## 2        27         17    7417     46.7     -92.5 2015-06-10 00:00:00
-## 3        27         17    7417     46.7     -92.5 2015-06-11 00:00:00
-## 4        27         17    7417     46.7     -92.5 2015-06-11 00:00:00
-## 5        27         17    7417     46.7     -92.5 2015-06-11 00:00:00
-## 6        27         17    7417     46.7     -92.5 2015-06-11 00:00:00
-## # ... with 6 more variables: Time &lt;dttm&gt;, Hour &lt;dbl&gt;, Parameter &lt;dbl&gt;,
-## #   Conc &lt;dbl&gt;, site_catid &lt;chr&gt;, Year &lt;dbl&gt;
-```
-
-
 
 
 
@@ -1078,15 +867,27 @@ and it looks like this
 
 # `dplyr` gives us a variety of joins
 
-A `left_join()` can pull together two tables like this
+A `left_join()` can pull together two tables like this:
+
+.bump-right [
+![:scale 85%](images/leftjoin.jpg)
+]
+
+`left_join()` can pull together our weather and concentration data by the __date__ column in each table.
 
 
-![](https://mgimond.github.io/ES218/img/left_join.png)
+```r
+starwars_data &lt;- left_join(trainer_data, starwars)
+```
 
 
 
 
-`left_join()` pulls together our weather and concentration data by the __date__ column in each table.
+
+
+```r
+air_met &lt;- left_join(air_data, fond_met, by = "date_time")
+```
 
 
 Now our data looks like this
@@ -1106,10 +907,8 @@ Now our data looks like this
    &lt;th style="text-align:right;"&gt; Year &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; time &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; summary &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; precipIntensity &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; precipProbability &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; temperature &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; apparentTemperature &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; precipIntensity &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; dewPoint &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; humidity &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; windSpeed &lt;/th&gt;
@@ -1136,10 +935,8 @@ Now our data looks like this
    &lt;td style="text-align:right;"&gt; 2015 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 2015-06-10 22:00:00 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Clear &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 71.51 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 71.51 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 42.68 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0.35 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 11.78 &lt;/td&gt;
@@ -1161,27 +958,17 @@ Now our data looks like this
 
 # Ozone |  Look at correlations with `pairs()`
 
+&lt;br&gt;&lt;br&gt;
 
 ```r
 ozone &lt;- filter(air_met, Parameter == 44201, site_catid == "27-017-7417")
 
-pairs(select(ozone, temperature, windSpeed, Conc, Hour, humidity), col=rgb(0,100,0,25,maxColorValue=255), na.action = na.omit, cex = .8)
+pairs(select(ozone, temperature, windSpeed, Conc, Hour, humidity))
 ```
-
-![](NTF_Demo_files/figure-html/unnamed-chunk-45-1.png)&lt;!-- --&gt;
 
 ---
 
-# PM2.5 |  Look at correlations with `pairs()`
-
-
-```r
-pm &lt;- filter(air_met, Parameter == 88101, site_catid == "27-017-7417", Conc &lt; 30)
-
-pairs(select(pm, temperature, windSpeed, Conc, Hour, humidity), col=rgb(90,160,220,30,maxColorValue=255), na.action = na.omit, cex = .8)
-```
-
-![](NTF_Demo_files/figure-html/unnamed-chunk-46-1.png)&lt;!-- --&gt;
+&lt;img src="NTF_Demo_files/figure-html/unnamed-chunk-42-1.png" width="100%" height="600px" /&gt;
 
 
 ---
@@ -1193,18 +980,29 @@ pairs(select(pm, temperature, windSpeed, Conc, Hour, humidity), col=rgb(90,160,2
 ## **To do list**
 
 1. Analyze data
+
+--
+
 2. ?
+
+--
+
 3. ??
 ]
 
-Documentation is hard work and much of my documentation looks like the above list. But in R, I have written each step into a text file script and __voila!__ There's documentation for myself and others.
+--
+
+Documentation is hard work. Much of my documentation looks like above. 
+
+R forces me to write each step into a text file and __voila!__ There's documentation for myself and others.
+
+--
 
 &lt;div class="tip"&gt;
-
 .pad-right[
 You are encouraged to copy and share analyses and charts with others.
 
-It's especially fun to copy yourself from 2 years ago.
+It's especially fun to copy **yourself** from 2 years ago.
 ]
 &lt;/div&gt;
 
@@ -1220,17 +1018,17 @@ It's especially fun to copy yourself from 2 years ago.
 ## Pop Quiz, hotshots!  
 
 &lt;br&gt;
-&lt;strong&gt;Which of these things have we done?&lt;/strong&gt;&lt;br&gt;
+&lt;strong&gt;Which of these data sources have we loaded so far?&lt;/strong&gt;&lt;br&gt;
 &lt;i&gt;(Hint: It may be more than one of them.)&lt;/i&gt;
 ]
 
 
-&lt;input type="radio"&gt; Lost a data file. &lt;br&gt;
-&lt;input type="radio"&gt; Accidently replaced a value in Excel with a random letter like 'z'. &lt;br&gt; 
-&lt;input type="radio"&gt; Forgotten which file housed the original data. &lt;br&gt; 
-&lt;input type="radio"&gt; Saved over something important. &lt;br&gt; 
-&lt;input type="radio"&gt; Lost an entire folder of data.  &lt;br&gt;
-&lt;input type="radio"&gt; Forgotten which monitoring days I dropped and why. &lt;br&gt;
+&lt;input type="radio"&gt; Titanic data. &lt;br&gt;
+&lt;input type="radio"&gt; Our favorite Star Wars characters. &lt;br&gt; 
+&lt;input type="radio"&gt; Meteorological data. &lt;br&gt; 
+&lt;input type="radio"&gt; Air concentration data. &lt;br&gt; 
+&lt;input type="radio"&gt; Pottery composition.  &lt;br&gt;
+&lt;input type="radio"&gt; The Star Wars database. &lt;br&gt;
 
 &lt;/div&gt;
 
@@ -1255,7 +1053,7 @@ new_data &lt;- read_excel("air-data.csv")
 
 --
 
-R always act on a **copy** of the data.
+R always acts on a **copy** of the data.
 
 It isn't changing the original file. So no worries! 
 
@@ -1299,42 +1097,37 @@ current_temp
 
 # 12|  R gives you a language for data
 
-It's nice to have words. 
-
- 
-1. Let's describe going from data in a __wide__ format to data in a __tall__ format as gather().
+&lt;br&gt;
 
 
 
-
+.float-left[
+![:scale 70%](http://stagraph.com/HowTo/Prepocess/Images/tidyr.png)
+]
+## `gather()` pulls your data together
+## `spread()` breaks it out into more columns
 
 ```r
 library(tidyr)
 
-long_met &lt;- big_met %&gt;% gather(Parameter, Result, -time, -summary, -icon, -site_catid)
-
-view(long_met)
+long_met &lt;- big_met %&gt;% 
+            gather(Parameter, Result, -time, -summary, -site_catid)
 ```
-
-
----
-
-# The reverse is spread().
-
-```r
-wide_met &lt;- long_met %&gt;% spread(Parameter, Result)
-
-view(wide_met)
-```
-
 
 
 ---
 
 # 13| Reproducible - _update with new data_
 
+&lt;br&gt;
 
-We have data for 2014 and 2015, but the explosion just happened now _(in the year 2016)_. Remember our data is stored in one Excel workbook. Since we wrote this in a script form we can change the date in our `read_excel()` to __2016__.
+&gt; We have data for 2014 and 2015, but now we have _2016 data_. 
+
+--
+
+&gt; Since we saved the script we can change the date in the `read_excel()` to 
+&gt; __2016__.
+&gt;
 
 &lt;br&gt;
 
@@ -1346,14 +1139,14 @@ data_2016 &lt;- read_excel("AQS_Fonddulac.xlsx", sheet = "2016")
 ```
 
 
-We changed the _year_ and __BOOM!__  We've got updated data.
+We changed the _year_ and __BOOM!__  We get updated data.
 
 
 ---
 
 # Update the charts 
 
-Now we can follow the same steps we used before to bind the tables togehter and create the charts.
+Now we can follow the same steps we used before to bind the tables together and create the charts.
 
 
 
@@ -1367,26 +1160,20 @@ air_data &lt;- bind_rows(data_2016, air_data)
 
 
 
-```r
-pm_data &lt;- filter(data_2016, Parameter == 88101) %&gt;% summarize(Conc = mean(Conc, na.rm = T)) %&gt;% mutate(aqi_color = conc2color(Conc, "PM25") %&gt;% factor(levels = c("#DB6B1A", "#FFEE00", "#53BF33"))) %&gt;% arrange(aqi_color)
 
-pm_sums &lt;- group_by(pm_data, site_catid, aqi_color) %&gt;% summarize(count = n()) %&gt;% arrange(desc(aqi_color)) %&gt;% ungroup() %&gt;% mutate(aqi_color = forcats::fct_recode(aqi_color, Good = "#53BF33", Moderate = "#FFEE00", `Unhealthy` = "#DB6B1A"))
-```
-
-```
-## Error in grouped_df_impl(data, unname(vars), drop): Column `site_catid` is unknown
-```
 
 ```r
+pm_data &lt;- filter(data_2016, Parameter == 88101) %&gt;% group_by(site_catid, Date) %&gt;% summarize(Conc = mean(Conc, na.rm = T)) %&gt;% mutate(aqi_color = conc2color(Conc, "PM25") %&gt;% factor(levels = c("#ff0000", "#DB6B1A", "#FFEE00", "#53BF33"))) %&gt;% arrange(aqi_color)
+
+pm_sums &lt;- group_by(pm_data, site_catid, aqi_color) %&gt;% summarize(count = n()) %&gt;% arrange(desc(aqi_color)) %&gt;% ungroup() %&gt;% mutate(aqi_color = forcats::fct_recode(aqi_color, Good = "#53BF33", Moderate = "#FFEE00", `Unhealthy for some` = "#DB6B1A", Unhealthy = "#ff0000")) %&gt;%  bind_rows(data_frame(site_catid=c("27-017-7417","27-137-7554"), aqi_color=aqi_levels[c(3,4)], count=c(0,0))) %&gt;% arrange(desc(aqi_color))
+
 iron(
-waffle(filter(pm_sums, site_catid == "27-017-7417") %&gt;% select(aqi_color, count), rows = 7,  size = 0.5, colors = c("#65B345", "#f2d01a"), title  = "Fond du Lac AQI :: 2015") + theme(legend.position="left", legend.text=element_text(size=15)),
-
-waffle(filter(pm_sums, site_catid == "27-137-7549") %&gt;% select(aqi_color, count), rows = 7,  size = 0.5, colors = rev(c("#F26522", "#F2D01A", "#65B345")), xlab = "1 square = 1 day", title  = "Duluth AQI :: 2015") +  theme(legend.position="left", legend.text=element_text(size=15), title.text=element_text(size=21), axis.title=element_text(size=15)))
+  waffle(filter(pm_sums, site_catid == "27-017-7417") %&gt;% select(aqi_color, count), rows = 7,  size = 0.3, colors = c("#65B345","#F2D01A","#F26522","#B11117"), title = "Fond du Lac AQI :: 2015") + theme(legend.position="left", legend.text=element_text(size=18), plot.title=element_text(size=26)),
+  
+  waffle(filter(pm_sums, site_catid == "27-137-7554") %&gt;% select(aqi_color, count), rows = 7,  size = 0.3, colors = rev(c("#B11117","#F26522","#F2D01A","#65B345")), xlab = "1 square = 1 day", title  = "Duluth AQI :: 2015") +  theme(legend.position="left", legend.text=element_text(size=18), plot.title=element_text(size=26), axis.title=element_text(size=18)))
 ```
 
-```
-## Error in (function (el, elname) : "title.text" is not a valid theme element name.
-```
+![](NTF_Demo_files/figure-html/unnamed-chunk-52-1.png)&lt;!-- --&gt;
 
 
 
@@ -1398,14 +1185,12 @@ waffle(filter(pm_sums, site_catid == "27-137-7549") %&gt;% select(aqi_color, cou
 
 --
 
-Let's take a look.
-
-
+__Go-Go gadget leaflet!__
 
 
 
 ```r
-library(leaflet)
+library(leaflet)  #install.packages("leaflet")
 
 # Reduce the table to a single row for each monitoring site
 air_sites &lt;- group_by(air_met, site_catid) %&gt;% slice(1) %&gt;% filter(SiteNum != 7001)
@@ -1417,20 +1202,14 @@ leaflet(data = air_sites) %&gt;%
               labelOptions = labelOptions(noHide = T))
 ```
 
-&lt;br&gt;
-
-__Go-Go gadget leaflet!__
-
-
-
 ---
 
 # 14| Make maps and never get lost again
 
 &lt;br&gt;
 
-<div id="htmlwidget-b029beb5fa22a2d1380c" style="width:77%;height:504px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-b029beb5fa22a2d1380c">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[46.713694,46.77107,46.81826,46.743657],[-92.511722,-92.11732,-92.08936,-92.165998],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,["7417","7549","7550","7554"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[46.713694,46.81826],"lng":[-92.511722,-92.08936]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-046d48c959a12f00902a" style="width:77%;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-046d48c959a12f00902a">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[46.713694,46.77107,46.81826,46.743657],[-92.511722,-92.11732,-92.08936,-92.165998],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,["7417","7549","7550","7554"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[46.713694,46.81826],"lng":[-92.511722,-92.08936]}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -1447,8 +1226,8 @@ leaflet(data = air_sites) %&gt;% addTiles() %&gt;%
   addPopups(-92.48, 46.66, "&lt;a&gt;You are HERE&lt;/a&gt;")
 ```
 
-<div id="htmlwidget-9fdf203dd8f484785574" style="width:77%;height:370px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-9fdf203dd8f484785574">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[46.713694,46.77107,46.81826,46.743657],[-92.511722,-92.11732,-92.08936,-92.165998],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,["7417","7549","7550","7554"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addPopups","args":[46.66,-92.48,"<a>You are HERE<\/a>",null,null,{"maxWidth":300,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"className":""}]}],"limits":{"lat":[46.66,46.81826],"lng":[-92.511722,-92.08936]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-c960c640fb1d69b575f6" style="width:77%;height:370px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c960c640fb1d69b575f6">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[46.713694,46.77107,46.81826,46.743657],[-92.511722,-92.11732,-92.08936,-92.165998],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,["7417","7549","7550","7554"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addPopups","args":[46.66,-92.48,"<a>You are HERE<\/a>",null,null,{"maxWidth":300,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"className":""}]}],"limits":{"lat":[46.66,46.81826],"lng":[-92.511722,-92.08936]}},"evals":[],"jsHooks":[]}</script>
 
 
 ---
@@ -1456,9 +1235,8 @@ leaflet(data = air_sites) %&gt;% addTiles() %&gt;%
 # 14| Map weather alerts
 
 
-
 .center[
-&lt;img src="images/flood_map.png" width="65%", style="margin-top: -10px;"&gt;
+&lt;img src="images/flood_map.png" width="60%", style="margin-top: -20px;"&gt;
 ]
 
 ---
@@ -1466,11 +1244,10 @@ leaflet(data = air_sites) %&gt;% addTiles() %&gt;%
 # 14| Map weather alerts
 
 ```r
-library(tidyverse)
 library(weatherAlerts)
 library(leaflet)
 
-alerts &lt;- getAlerts("LA") # takes about 20 seconds
+alerts &lt;- getAlerts("CA") # takes about 20 seconds
 
 severity &lt;- alerts@data$severity
 
@@ -1484,7 +1261,9 @@ severityColors &lt;- unname(colorMap[severity])
 
 leaflet() %&gt;%
   addTiles() %&gt;%
-  addPolygons(data = alerts, color = "black", fillColor = severityColors, weight = 1, popup = ~paste0("&lt;strong&gt;", event, "&lt;/strong&gt;", "&lt;br&gt;&lt;br&gt;", summary))
+  addPolygons(data = alerts, color = "grey", 
+              fillColor = severityColors, weight = 1, 
+              popup = ~paste0("&lt;strong&gt;", event, "&lt;/strong&gt;", "&lt;br&gt;&lt;br&gt;", summary))
 ```
 
 
@@ -1525,13 +1304,8 @@ Remember the first pollutant rose we looked at? Let's load the Fond du Lac data 
 
 ---
 
-# 16| It will compliment you
+# 16| Congratulations!
 
-There are some _just for fun_ R packages. 
-
-
-
-_cowsay_ outputs a variety of animals saying the quotes of your choice.
 
 
 ```r
@@ -1592,10 +1366,6 @@ Return to the project's [GitHub page](https://github.com/MPCA-air/NTF_learn_R).
 
 This presentation was made with `Rmarkdown` and Yihui's ` xaringan ` package. 
 
-
-
-
-
 &lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 &lt;hr&gt;
     </textarea>
@@ -1604,7 +1374,6 @@ This presentation was made with `Rmarkdown` and Yihui's ` xaringan ` package.
 <script>var slideshow = remark.create({
 "ratio": "15:9",
 "slideNumberFormat": "",
-"highlightStyle": "github",
 "highlightLines": true,
 "countIncrementalSlides": false
 });

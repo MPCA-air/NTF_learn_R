@@ -14,11 +14,12 @@ data <- filter(data, as.Date(date) < as.Date("2016-01-01"))
 
 swap_names <- function(df, old_name, new_name) {
   
-  if (!old_name %in% c(" ", "")) {
+  if (!old_name %in% c(" ", "", names(df))) {
+    
     
     col_num <- grep(trimws(tolower(old_name)), trimws(tolower(names(df))))
     
-    names(df)[col_num[[1]]] <- new_name
+    names(df)[col_num[1]] <- new_name
     
   }
   
@@ -28,15 +29,15 @@ swap_names <- function(df, old_name, new_name) {
 }
 
 #setwd("X:/Agency_Files/Outcomes/Risk_Eval_Air_Mod/_Air_Risk_Evaluation/R/R_Camp/NTP_Training/NTF_learn_R/data")
-  pollutants <- unique(data$Pollutant)
-  years <- unique(year(data$date))
-  sites <- unique(data$ReportName)
+  pollutants <-  unique(data$Pollutant)
+  years      <-  unique(year(data$date))
+  sites      <- unique(data$ReportName)
   
   col_names <- names(data)
   
 shinyApp(
    ui = fluidPage(
-         tags$head(includeCSS("css/styles.css")),
+         tags$head(includeCSS("css/styles2.css")),
          titlePanel("Pollution wind roses"),
           br(),
          fluidRow(column(12, 
@@ -44,7 +45,12 @@ shinyApp(
            fluidRow(column(12, h3("Load data", style = "margin-top: -2px;"),
                   fileInput("master", label = NULL, placeholder = "Choose a .CSV file...", width = "320px"))), 
                   fluidRow(column(12, h4("Select column names", style = "margin-top: -2px;")), 
-                         column(1, h5("Concentration", style = "margin-top: -3px;"), 
+                         
+                           column(1, h5("Sites ", style = "margin-top: -3px;"), 
+                                  selectInput("site_col", label = NULL, width = "200px", choices = col_names), 
+                                  style = "margin-top: 8px; margin-bottom: 0px;"),
+                           
+                           column(1, h5("Concentration", style = "margin-top: -3px;"), 
                                 selectInput("conc_col", label = NULL, width = "200px",  choices = col_names), 
                                 style = "margin-top: 8px; margin-bottom: 0px;"),
                          
@@ -59,10 +65,6 @@ shinyApp(
                   column(1, h5("Date ", style = "margin-top: -3px;"), 
                          selectInput("date_col", label = NULL, width = "200px", choices = col_names), 
                          style = "margin-top: 8px; margin-bottom: 0px;"),
-              
-              column(1, h5("Sites ", style = "margin-top: -3px;"), 
-                     selectInput("site_col", label = NULL, width = "200px", choices = col_names), 
-                     style = "margin-top: 8px; margin-bottom: 0px;"),
          
                column(1, h5("Pollutants ", style = "margin-top: -3px;"), 
                 selectInput("pol_col", label = NULL, width = "200px", choices = col_names), 
@@ -74,7 +76,8 @@ shinyApp(
               
               column(1, h5("Longitude", style = "margin-top: -3px;"), 
                      selectInput("long_col", label = NULL, width = "200px", choices = col_names), 
-                     style = "margin-top: 8px; margin-bottom: 0px;")),
+                     style = "margin-top: 8px; margin-bottom: 0px;"),
+              column(1, actionButton("go", "Go", class="go-btn"))),
                style = "background-color: #eafeea")
               )),
          br(),
@@ -93,16 +96,28 @@ shinyApp(
     
     server = function(input, output, session) {
       
-      new.names <- reactive({
+      options(shiny.maxRequestSize = 50*1024^2)
+      
+      new.data <- reactive({
         
         print(is.null(input$master))
         
         if (!is.null(input$master)) {
-          
           print(input$master$datapath)
           
           data <- read_csv(input$master$datapath)
+        }
         
+      })
+      
+      new.names <- reactive({
+        
+       if (!is.null(new.data())) {
+         
+          print(input$conc_col) 
+         
+          data <- new.data()
+          
           data <- swap_names(data, input$conc_col, "Result")
           
           data <- swap_names(data, input$wind_speed, "ws")
@@ -115,6 +130,10 @@ shinyApp(
           
           data <- swap_names(data, input$pol_col, "Pollutant")
           
+          data <- swap_names(data, input$lat_col, "Latitude")
+          
+          data <- swap_names(data, input$long_col, "Longitude")
+          
         }
         
         print(nrow(data))
@@ -126,24 +145,54 @@ shinyApp(
       
       site.data <- reactive({
         
-        if (!is.null(input$Site)) sub_data <- dplyr::filter(new.names(), ReportName == input$Site)
+        if (!is.null(input$Site) & "ReportName" %in% names(new.names())) sub_data <- dplyr::filter(new.names(), ReportName == input$Site)
         else new.names()
-        
         
       })
       
-      observe({
+      observeEvent(input$go, {
         updateSelectInput(session, "Site", choices = unique(new.names()$ReportName))
       })
       
-      observe({
+      observeEvent(input$go, {
         updateSelectInput(session, "Pollutant", choices = unique(site.data()$Pollutant))
       })
       
-      observe({
+      observeEvent(input$go, {
         updateSelectInput(session, "Year", choices = unique(year(site.data()$date)))
       })
       
+      observe({
+        updateSelectInput(session, "date_col", choices = c(" ", names(new.data())))
+      })
+      
+      observe({
+        updateSelectInput(session, "site_col", choices = c(" ", names(new.data())))
+      })
+      
+      observe({
+        updateSelectInput(session, "pol_col", choices = c(" ", names(new.data())))
+      })
+      
+      observe({
+        updateSelectInput(session, "conc_col", choices = c(" ", names(new.data())))
+      })
+      
+      observe({
+        updateSelectInput(session, "wind_speed", choices = c(" ", names(new.data())))
+      })
+      
+      observe({
+        updateSelectInput(session, "wind_direct", choices = c(" ", names(new.data())))
+      })
+      
+      observe({
+        updateSelectInput(session, "lat_col", choices = c(" ", names(new.data())))
+      })
+      
+      observe({
+        updateSelectInput(session, "long_col", choices = c(" ", names(new.data())))
+      })
       
       output$normviz <- renderLeaflet({
         
@@ -151,6 +200,8 @@ shinyApp(
         print(input$Year)
         print(input$Site)
         
+        if ("wd" %in% names(new.names())) {
+          
         data_sub <- filter(new.names(), 
                             Pollutant  == input$Pollutant, 
                             format(as.Date(date), "%Y")  == input$Year, 
@@ -162,21 +213,29 @@ shinyApp(
         leaflet(data = data_sub[1, ]) %>% 
             addProviderTiles(providers$Esri.WorldImagery)  %>% 
             addCircles(fillOpacity = 0.25, opacity = 0.7, radius = 25) 
+        }
+        
         })
         
   output$siteviz <- renderPlot({
     
+    if ("wd" %in% names(new.names())) {
+    
+      print("Making rose...")
+        
     data_sub <- filter(new.names(), 
                        Pollutant  == input$Pollutant, 
                        format(as.Date(date), "%Y")  == input$Year, 
                        !is.na(Result), 
                        ReportName == input$Site)
     
+    if (F) {
     data_sub <-  data_sub  %>% 
                   mutate(MDL = max(DetectionLimit, na.rm = T), 
                          minimum = min(Result, na.rm = T), 
                          maximum = max(Result, na.rm = T), 
                          Result = ifelse(Censored, 1e-16, Result))
+    
     
     breaks_site = c(0, 
                     round(data_sub$minimum[1], digits = 3), 
@@ -186,7 +245,10 @@ shinyApp(
                     round(0.75 * data_sub$maximum[1], digits = 3), 
                     round(data_sub$maximum[1], digits = 3)) 
     
-    pollutionRose(data_sub, statistic = "abs.count", pollutant = "Result", breaks = breaks_site, key.footer = "ug/m3")
+    }
+    
+    pollutionRose(data_sub, statistic = "abs.count", pollutant = "Result", key.footer = "ug/m3") #breaks = breaks_site,
+    }
     })
     }
   )
