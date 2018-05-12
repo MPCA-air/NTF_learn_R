@@ -772,10 +772,12 @@ kable(head(select(air_met, -date_time, -Time), 1), 'html')
 ```
 
 
-```{r, eval=T,  include=F, message=F, warning=F, include = F}
+```{r, eval=T, include = F}
 air_met$Date <- as.Date(air_met$Date)
 
-write_csv(select(air_met, site_catid, windSpeed, windBearing, Date, Year, Parameter, Latitude, Longitude), "air_met.csv")
+air_met$Conc <- signif(air_met$Conc, 3)
+
+write_csv(select(air_met, site_catid, Date, Parameter, Conc, windSpeed, windBearing, Latitude, Longitude) %>% arrange(Parameter, Conc), "air_met.csv")
 ```
 
 
