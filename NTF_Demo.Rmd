@@ -686,7 +686,6 @@ unzip("BIG_MET_data.zip", file = "MET_data_2012-2017.csv")
 ```{r, echo=T, eval=F, message=F, warning=F, results='hide'}
 # Inside the ZIP file is a huge csv text file.
 # For this we can run read_csv() from the readr package.
-# This package has lots of data reading functions.
 
 library(readr) #install.packages("readr")
 
@@ -875,6 +874,7 @@ fond_met <- mutate(fond_met,
 
 ```
 
+--
 
 ```{r, eval=T, message=F, warning=F, results='hide'}
 air_met <- left_join(air_data, fond_met, by = "date_time")
@@ -882,9 +882,8 @@ air_met <- left_join(air_data, fond_met, by = "date_time")
 
 Now our data looks like this
 ```{r, echo=F}
-kable(head(select(air_met, -c(StateCode:Longitude),-date_time, -Time), 1), 'html')
+kable(head(select(air_met, -c(StateCode:Longitude), -site_catid, -date_time, -time, -Year, -Time), 1), 'html')
 ```
-
 
 ---
 
@@ -1157,7 +1156,7 @@ leaflet(data = air_sites) %>% addTiles() %>%
 
 # 14| Map weather alerts
 ```{r, eval = F}
-library(weatherAlerts)
+library(weatherAlerts)  #devtools::install_github("ianmcook/weatherAlerts")  #devtools::install_github("ianmcook/weatherAlertAreas")
 library(leaflet)
 
 alerts   <- getAlerts("CA") # takes about 20 seconds

@@ -458,30 +458,30 @@ filter(aqi_worst, parameter == "OZONE")
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; National Park Service &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Mojave NPr &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 05/16/18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 12:00:00 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; OZONE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 76 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PPB &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; National Park Service &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Death Valley NP &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 05/16/18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 12:00:00 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; OZONE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 62 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PPB &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; South Coast AQMD &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Crestline - Lake Gre &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 05/16/18 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; 12:00:00 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; OZONE &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 61 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; PPB &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; U.S. Department of State Bahrain - Manama &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Manama &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 05/16/18 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 12:00:00 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; OZONE &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 61 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; PPB &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Wyoming Department of Environmental Quality &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; South Pass &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 05/16/18 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 12:00:00 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; OZONE &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 56 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; PPB &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
@@ -802,7 +802,6 @@ unzip("BIG_MET_data.zip", file = "MET_data_2012-2017.csv")
 ```r
 # Inside the ZIP file is a huge csv text file.
 # For this we can run read_csv() from the readr package.
-# This package has lots of data reading functions.
 
 library(readr) #install.packages("readr")
 
@@ -1071,6 +1070,7 @@ fond_met &lt;- mutate(fond_met,
                    date_time = with_tz(time, tz = "America/Chicago")) %&gt;% select(-site_catid)
 ```
 
+--
 
 
 ```r
@@ -1085,9 +1085,6 @@ Now our data looks like this
    &lt;th style="text-align:right;"&gt; Hour &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; Parameter &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; Conc &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; site_catid &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Year &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; time &lt;/th&gt;
    &lt;th style="text-align:left;"&gt; summary &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; temperature &lt;/th&gt;
    &lt;th style="text-align:right;"&gt; precipIntensity &lt;/th&gt;
@@ -1108,9 +1105,6 @@ Now our data looks like this
    &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 88101 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 27-017-7417 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2015 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 2015-06-10 22:00:00 &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Clear &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 71.51 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
@@ -1126,7 +1120,6 @@ Now our data looks like this
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-
 
 ---
 
@@ -1398,7 +1391,7 @@ leaflet(data = air_sites) %&gt;% addTiles() %&gt;%
 # 14| Map weather alerts
 
 ```r
-library(weatherAlerts)
+library(weatherAlerts)  #devtools::install_github("ianmcook/weatherAlerts")  #devtools::install_github("ianmcook/weatherAlertAreas")
 library(leaflet)
 
 alerts   &lt;- getAlerts("CA") # takes about 20 seconds
