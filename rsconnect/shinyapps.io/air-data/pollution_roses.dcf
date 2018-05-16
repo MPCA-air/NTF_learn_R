@@ -5,9 +5,9 @@ account: air-data
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 337545
-bundleId: 1369593
+bundleId: 1376123
 url: https://air-data.shinyapps.io/pollution_roses/
-when: 1526072167.90588
+when: 1526441214.08265
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: 00_Install.html|00_Install.Rmd|02_NM_shiny_rose.R|air_met.csv|AQS_FondduLac.xlsx|BIG_MET_data.zip|LICENSE|MET_data_2012-2017.csv|NM_air_data.csv|NTF_Demo.html|NTF_Demo.Rmd|README.html|README.md|README.Rmd|css/camp_style.css|css/fade.css|css/macros.js|css/styles.css|css/xari_style.css|00_Install_files|data|images|libs|NTF_Demo_files|R
+ignoredFiles: 00_Install.html|00_Install.Rmd|02_NM_shiny_rose.R|air_met.csv|AQS_FondduLac.xlsx|BIG_MET_data.zip|LICENSE|MET_data_2012-2017.csv|NTF_Demo.html|NTF_Demo.Rmd|README.html|README.md|README.Rmd|README.tex|00_Install_files|data|images|libs|NTF_Demo_files|R

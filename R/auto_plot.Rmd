@@ -1,0 +1,143 @@
+---
+title: "ggplot demo"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "default-fonts", "css/xari_style.css", "css/fade.css"]
+    nature:
+      ratio: "15:9"
+      slideNumberFormat: ""
+      highlightLines: true
+      countIncrementalSlides: false
+---
+ 
+        
+(blank)
+      
+---        
+
+---
+
+.pull-left[
+  
+<br>
+```{r, eval=F}
+
+{{ggplot()}}
+
+```
+] 
+
+.pull-right[
+<br><br>
+```{r, echo=F, warning=F, message=F, cache=F}
+library(ggplot2)
+library(readr)
+library(dplyr)
+
+data <- read_csv("../air_met.csv") %>% filter(Parameter == 44201) %>% sample_n(100) %>% mutate(Conc = Conc * 1000)
+
+names(data)[c(1,4,5)] <- c("site", "Ozone", "Temp")
+
+theme_set(theme_grey(base_size = 20)) 
+
+ggplot()
+```
+]
+
+---
+
+.pull-left[
+  
+<br>
+```{r, eval=F}
+
+{{ggplot(data)}}
+
+```
+] 
+
+.pull-right[
+<br><br>
+```{r, echo=F}
+library(ggplot2)
+
+theme_set(theme_grey(base_size = 20)) 
+
+ggplot(data)
+```
+]
+
+
+---
+
+.pull-left[
+  
+<br>
+```{r, eval=F}
+
+ggplot(data) +
+       {{aes(y = Ozone, x = Temp) }}
+
+```
+] 
+
+.pull-right[
+<br><br>
+```{r, echo=F}
+
+ggplot(data) +
+       aes(y = Ozone, x = Temp)
+```
+]
+
+
+---
+
+.pull-left[
+  
+<br>
+```{r, eval=F}
+
+ggplot(data) +
+       aes(y = Ozone, x = Temp) +
+   {{geom_point()}}
+```
+] 
+
+.pull-right[
+<br><br>
+```{r, echo=F}
+
+ggplot(data,
+       aes(y = Ozone, x = Temp)) +
+   geom_point(size = 6, alpha = 0.5)
+```
+]
+
+---
+
+.pull-left[
+  
+<br>
+```{r, eval=F}
+
+ggplot(data) +
+       aes(y = Ozone, x = Temp) +
+   geom_point() +
+{{  labs(title = "Ozone vs Temperature") }}
+
+
+```
+] 
+
+.pull-right[
+<br><br>
+```{r, echo=F}
+
+ggplot(data) +
+       aes(y = Ozone, x = Temp) +
+   geom_point(size = 6, alpha = 0.5) +
+   labs(title = "Ozone vs Temperature")
+```
+]

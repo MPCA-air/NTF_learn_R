@@ -1,118 +1,192 @@
-# "R Demo Handout | National Tribal Air Forum"
+
+# R for Data Analysis | NTFAQ
+
+__Speakers:__ _Melinda Ronca-Battist, Dorian Kvale, Kristie Ellickson_
+
+##### _May 16, 2018_
 
 
-## Today's presentation is online:
-
-[https://mpca-air.github.io/NTF_learn_R/NTF_Demo.html](https://mpca-air.github.io/NTF_learn_R/NTF_Demo.html)
-
----
-
-
-## Instructions to Install R
-
-https://mpca-air.github.io/NTF_learn_R/00_Install.html
+### Follow along online 
 
 ---
 
-## Upcoming Training!
+`https://mpca-air.github.io/NTF_learn_R/NTF_Demo.html`
+
+
+
+
+### Install R
+
+---
+
+`https://mpca-air.github.io/NTF_learn_R/00_Install.html`
+
+<br>
+
+
+
+### Upcoming R Training!
+
+---
+
+<div class="col2">
 
 - 2-Day hands-on course
 - Using real air monitoring data
 - Includes criteria pollutants and air toxics
-
----
-
-## Previous R Training Materials - _R Camp!_
-
-Find tutorials and workshops at https://MPCA-air.github.io/RCamp.
-
----
-
-## Resources to Learn R
-
-- library(swirl)
-- Intro to R with Pirates!
-  library(YaRrr) @ http://nathanieldphillips.com/thepiratesguidetor/
-- Coursera online courses @ https://www.coursera.org/specializations/jhu-data-science
-- R for Data Science by Hadley Wickham (paper book or online)
-- R Bloggers (Great articles online)
-- `#rstats` Twitter (follow this!)
-- R cookbooks @ [cookbook-r.com](http://www.cookbook-r.com) (a variety of simple recipes for data and charts)
-
----
-
-
-## A guide for air data methods 
-
-* We've started an online guide for air data analysis to help each other use similar methodologies to calculate means, compare sites, etc. It's posted online:
-https://mpca-air.github.io/air-methods/.
-
----
-
-
-## Shiny tools in today's presentation
-
-- Pollution roses: https://air-data.shinyapps.io/pollution-roses/
-
-
----
-
-## R Packages in Today's Presentation
-
-<div class="col2">
-
-__For data reading__
-
-* library(readxl)
-
-* library(readr)
-
-__For air specific analysis, processing and charts__
-
-* library(openair)
-
-__For data processing and cleaning up__
-
-* library(tidyverse)
-
-* library(dplyr)
-
-* library(lubridate)
-
-__To make charts__
-
-* library(ggplot2)
-
-* library(ggbeeswarm)
-
-* library(waffle)
-
-* library(ggpomological)
-
-__To make maps__
-
-* library(leaflet)
-
-__To make dynamic tools__
-
-* library(shiny)
-
-__To provide other information or just fun__
-
-* library(weatherAlerts)
-
-* library(cowsay)
-
-__For documents and presentations with charts _(like this one!)_ __
-
-* library(rmarkdown)
+- Make charts, maps, and pollution roses
 
 </div>
 
+_Contact Melinda for more information._
+
+
+### Previous training materials :: _R Camp!_
+
 ---
 
-## Contacts
-Kristie Ellickson: kristie.ellickson@state.mn.us
+Tutorials and workshops online at `https://MPCA-air.github.io/RCamp`
 
-Dorian Kvale: dorian.kvale@state.mn.us
+
+
+### Resources for learning R
+
+---
+
+<div class="col2">
+
+- RStudio: `https://www.rstudio.com/online-learning/`
+- `library(swirl)` for interactive lessons in R
+- Intro to R with Pirates! at `http://tryr.codeschool.com/`
+- More pirates at `YaRrr! Pirates Guide to R`
+- Coursera data science: `https://www.coursera.org/jhu`
+
+
+- R for Data Science by Hadley - `http://r4ds.had.co.nz/`
+- R Bloggers articles at `https://www.r-bloggers.com/`
+- `#rstats` on Twitter
+- R cookbooks at `cookbook-r.com` (a variety of simple recipes for data and charts)
+
+</div>
+
+
+### A guide for Air data methods
+
+---
+
+We’ve started an online community guide for air data analysis methods. We use it as a resource to provide similar methodologies to calculate means, compare sites, and other common air data tasks. Everyone is invited and encouraged to contribute. It is shared online at `https://mpca-air.github.io/air-methods/`. 
+
+
+
+<img src="images/your_package.png" align="right" style="margin-left: 32px; margin-right: -22px; margin-top: 2px; float: right;">
+
+
+### Shiny tools in presentation
+
+---
+
+Wind pollution roses: `https://air-data.shinyapps.io/pollution-roses/`
+
+
+
+### Key terms
+
+---
+
+`package` An add-on for R that contains new functions someone created to help you. It’s like an App for your phone.
+
+`library` The name of the folder that stores your R packages.
+
+`script` A text file used to record the step-by-step instructions of your data analysis.
+
+`RStudio` A helpful user interface that organizes your data, charts, R scripts and packages into one bundle. 
+
+
+<br>
+
+### R Packages in presentation
+
+---
+
+__Core packages__
+
+![](images/core_packages.png){width="64%" style="margin-bottom: 0px; max-width: 64% margin-top: 0px;"}
+
+<br>
+
+
+__Data reading__
+
+* `library(readxl)`
+
+__Air specific analysis and charts__
+
+* `library(openair)`
+
+__Data processing and cleaning__
+
+* `library(tidyverse, lubridate)`
+
+
+__Charts__
+
+* `library(ggbeeswarm, waffle, ggpomological)`
+
+__Maps__
+
+* `library(leaflet, sf)`
+
+__Interactive tools__
+
+* `library(shiny)`
+
+__Just for fun__
+
+* `library(weatherAlerts, cowsay)`
+
+
+__Dynamic documents with charts__
+
+* `library(rmarkdown)`
+
+
+
+### Cheatsheets
+
+---
+
+RStudio: https://github.com/rstudio/cheatsheets/raw/master/rstudio-ide.pdf  
+Getting started: https://www.datacamp.com/community/data-science-cheatsheet 
+Charts: https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf 
+Data cleaning: https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf
+
+
+
+### Sample R commands
+
+```{r, eval=F, echo=T}
+# Load Excel data
+read_excel("air_data.xlsx")
+
+# Scatterplot of Ozone vs. Temperature
+ggplot(data, aes(y = O3_ppm, x = Temp_F)) + geom_point()
+
+# Filter data
+filter(data, Concentration > 99, site == "Big Woods Monitor")
+
+# Add new column to data
+mutate(data, O3_ppb = O3_ppm * 1000)
+```
+
+
+
+### Contacts
+
+---
+
+Melinda Ronca-Battista: <Melinda.Roncabattista@gmail.com>  
+Kristie Ellickson: <Kristie.Ellickson@state.mn.us>  
+Dorian Kvale: <Dorian.Kvale@state.mn.us>
+
+
 

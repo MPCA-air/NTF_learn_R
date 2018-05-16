@@ -1,7 +1,7 @@
-#library(shiny)
+library(shiny)
 library(lubridate)
-#library(digest)
-#library(htmltools)
+library(digest)
+library(htmltools)
 library(leaflet)
 library(openair)
 library(readr)
@@ -9,7 +9,7 @@ library(dplyr)
 
 
 #setwd("X:/Agency_Files/Outcomes/Risk_Eval_Air_Mod/_Air_Risk_Evaluation/R/R_Camp/NTP_Training/NTF_learn_R/data")
-data <- read_csv("NTF_learn_R/NM_air_data.csv")
+data <- read_csv("NM_air_data.csv")
 
 data <- filter(data, as.Date(date) < as.Date("2016-01-01"), !SITENAME %in% c("Harding High School", "Humboldt Ave."))
 
@@ -40,7 +40,7 @@ col_names <- names(data)
   
 shinyApp(
    ui = fluidPage(
-         tags$head(includeCSS("NTF_learn_R/css/styles.css")),
+         tags$head(includeCSS("css/styles.css")),
          titlePanel("Pollution wind roses"),
           br(),
          fluidRow(column(12, 
