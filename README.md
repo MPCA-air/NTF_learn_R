@@ -155,10 +155,10 @@ __Dynamic documents with charts__
 
 ---
 
-RStudio: https://github.com/rstudio/cheatsheets/raw/master/rstudio-ide.pdf  
-Getting started: https://www.datacamp.com/community/data-science-cheatsheet 
-Charts: https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf 
-Data cleaning: https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf
+RStudio: https://github.com/rstudio/cheatsheets/raw/master/rstudio-ide.pdf   
+Getting started: https://www.datacamp.com/community/data-science-cheatsheet   
+Charts: https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf     
+Data cleaning: https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf   
 
 
 

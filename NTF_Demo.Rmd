@@ -178,6 +178,9 @@ R lets you perform data analysis like you're writing a recipe for chocolate chip
 
 # A data recipe 
 
+
+<img src="images/cupcake_gif.gif" align="right" width="25%" style="margin-right: 140px; margin-top: -20px;">
+
 <br>
 
 ### __Summarized air data__
@@ -188,11 +191,11 @@ _Servings: 1 to 10_
 
 1. Download monitoring data from AQS.
 
-2. Look at a plot of the data.
+2. Plot the data.
 
 3. Remove bad data.
 
-4. Make a better plot of the data.
+4. Make more plots.
 
 5. Summarize the data.
 
@@ -224,15 +227,18 @@ _I don't know._
 __Let's Google it!__
 
 
+```{r, eval=F, echo=F}
 ---
 
 .center[
 ![:scale 50%](images\google_readxl.png)
 ]
+```
+
 
 ---
 
-# 4| There's a new package waiting for you
+# 4| There's a new package for you
 
 
 When someone shares their analysis recipe or new tool in R, they wrap everything together into a __package__. Packages in R are like Apps for your phone -- you load them each time you want to do something special.
@@ -296,11 +302,11 @@ These packages give R the ability to read data from almost any place it may be s
 
 --
 
-- Dropbox
+- Dropbox, FTP sites
 
 --
 
-- FTP sites
+- PDFs
 
 --
 
@@ -373,17 +379,64 @@ aqi_now   <- read_delim(airnow_link, "|", col_names = F)
 names(aqi_now) <- c("date", "time", "aqsid", "city", "local_time", "parameter", "units", "concentration", "agency")
 
 # Filter to Ozone and PM2.5
-aqi_now <- filter(aqi_now, parameter %in% c("OZONE", "PM2.5"), aqsid == "270177417")
+aqi_fond <- filter(aqi_now, parameter %in% c("OZONE", "PM2.5"), aqsid == "270177417")
 ```
 
 --
 
 ```{r, echo=F, warning=F, message=F}
 library(knitr)
+
 # Show table
-select(aqi_now, city, date, time, local_time, parameter, concentration, units, -aqsid, -agency) %>% kable("html")
+select(aqi_fond, city, date, time, local_time, parameter, concentration, units, -aqsid, -agency) %>% kable("html")
 ```
 
+
+---
+
+# AirNow | the Worst air award
+
+
+
+```{r, eval = T, results = 'hide', warning=F, message=F}
+# Filter to Ozone and PM2.5
+aqi_worst <- filter(aqi_now, parameter %in% c("OZONE", "PM2.5"))
+
+# Arrange from worst to best air
+aqi_worst <- arrange(aqi_worst, desc(concentration))
+```
+
+
+--
+
+### Ozone
+
+```{r, eval=F}
+# Select Ozone results
+filter(aqi_worst, parameter == "OZONE")
+```
+
+```{r, echo=F, warning=F, message=F}
+select(aqi_worst, agency, city, date, time, parameter, concentration, units, -aqsid) %>% filter(parameter == "OZONE") %>% head(3) %>% kable("html")
+```
+
+---
+
+# AirNow | the Worst air award
+
+<br><br>
+
+### PM2.5
+```{r, eval=F}
+# Select PM2.5 results
+filter(aqi_worst, parameter == "PM2.5")
+```
+
+--
+
+```{r, echo=F, warning=F, message=F}
+select(aqi_worst, agency, city, date, time, parameter, concentration, units, -aqsid) %>% filter(parameter == "PM2.5") %>% head(3) %>% kable("html")
+```
 
 
 ---
@@ -409,6 +462,15 @@ __The fun can start now.__ `r icon::fa("rocket")`
 theme_set(theme_grey(base_size = 35)) 
 ```
  
+ 
+# Making a `ggplot()` sandwich
+
+
+![](images/auto_plot2.gif)
+
+
+---
+ 
 # A bar plot
 
 ```{r, echo=T, eval=T, message=F, warning=F, out.height="400px", out.width="650px", fig.width=20, fig.height=12}
@@ -424,7 +486,7 @@ ggplot(data = pm_data, aes(x = site_catid, y = Conc)) + geom_col() +
 
 ---
 
-# A .inverse[`geom_boxplot()`]
+# .inverse[`geom_boxplot()`]
 
 ```{r, echo=T, eval=T, message=F, warning=F, out.height="390px", out.width="1100px", fig.width=29, fig.height=13}
 pm_data <- filter(data_2015, Parameter == 88101)
@@ -471,9 +533,9 @@ library(waffle) #devtools::install_github("hrbrmstr/waffle")
 pm_sums <- group_by(pm_data, site_catid, aqi_color) %>% summarize(count = n()) %>% arrange(desc(aqi_color)) %>% ungroup() %>% mutate(aqi_color = forcats::fct_recode(aqi_color, Good = "#53BF33", Moderate = "#FFEE00", `Unhealthy` = "#DB6B1A"))
 
 iron(
-waffle(filter(pm_sums, site_catid == "27-017-7417") %>% select(aqi_color, count), rows = 7,  size = 0.35, colors = c("#65B345", "#f2d01a"), title  = "Fond du Lac AQI :: 2015") + theme(legend.position="left", legend.text=element_text(size=26), plot.title=element_text(size=32)),
+waffle(filter(pm_sums, site_catid == "27-017-7417") %>% select(aqi_color, count), rows = 7,  size = 0.3, colors = c("#65B345", "#f2d01a"), title  = "Fond du Lac AQI :: 2015") + theme(legend.position="left", legend.text=element_text(size=26), plot.title=element_text(size=32)),
 
-waffle(filter(pm_sums, site_catid == "27-137-7549") %>% select(aqi_color, count), rows = 7,  size = 0.35, colors = rev(c("#F26522", "#F2D01A", "#65B345")), xlab = "1 square = 1 day", title  = "Duluth AQI :: 2015") +  theme(legend.position="left", legend.text=element_text(size=26), plot.title=element_text(size=32), axis.title.x=element_text(size=25)))
+waffle(filter(pm_sums, site_catid == "27-137-7549") %>% select(aqi_color, count), rows = 7,  size = 0.3, colors = rev(c("#F26522", "#F2D01A", "#65B345")), xlab = "1 square = 1 day", title  = "Duluth AQI :: 2015") +  theme(legend.position="left", legend.text=element_text(size=26), plot.title=element_text(size=32), axis.title.x=element_text(size=28)))
 ```
 
 ---
@@ -540,20 +602,42 @@ pm_data %>% mutate(color = ifelse(wday(Date) == 7 & month(Date) == 6, "red", "bl
 ---
 class: inverse, middle, center
 
-# `...Chart finale...`
+# `...Bonus chart...`
 
 ---
 
-# A nature journal
+# Minnesota mountains
 
 --
 
-```{r, echo=T, eval=T, warning=F, message=F, out.height="340px", fig.width=30, fig.height=10}
+```{r, eval=F}
+library(ggridges)
+library(ggpomological)
+
+filter(data_2015, Parameter == 88101) %>% 
+  ggplot(aes(x = Conc, y = site_catid, fill = site_catid)) +
+    geom_density_ridges(show.legend=F) +  scale_fill_pomological() + theme_pomological(base_family = 'Homemade Apple', base_size = 70, base_theme  = ggridges::theme_ridges()) +
+    labs(x="Concentration (ug/m3)", y="") + xlim(-6, 45)
+```
+
+```{r, echo=F, message=F, warning=F, out.height="358px", fig.width=30, fig.height=13}
+library(ggridges)
+library(ggpomological)
+
+filter(data_2015, Parameter == 88101) %>% 
+  ggplot(aes(x = Conc, y = site_catid, fill = site_catid)) +
+    geom_density_ridges(show.legend=F) +  scale_fill_pomological() + theme_pomological(base_family = 'Homemade Apple', base_size = 76, base_theme  = ggridges::theme_ridges()) + theme(plot.title=element_text(size = 44), axis.title.x=element_text(size=40)) +
+    labs(x="Concentration (ug/m3)", y="", title="1-hour PM2.5 results for 2015") + xlim(-6, 45)
+```
+
+
+
+```{r, echo=F, eval=F, warning=F, message=F, out.height="340px", fig.width=30, fig.height=10}
 library(ggpomological) #devtools::install_github("gadenbuie/ggpomological")
 
 nature_plot <- ggplot(pm_data, aes(x = Date, y = Conc)) +
                  geom_point(aes(color = as.factor(month(Date))), alpha = 0.5) + stat_smooth(geom = "line", color = "#C0C0C0", alpha = 0.7) +
-                 scale_color_pomological() + theme_pomological_fancy() + scale_y_log10() +
+                 scale_color_pomological() + theme_pomological_fancy() + #scale_y_log10() +
                  labs(title = "Air monitoring results") + theme(legend.position = "none")
 
 paint_pomological(nature_plot, res = 170, width = 1600, height = 550)
@@ -637,8 +721,33 @@ head(big_met)
 head(big_met, 4) %>% kable("html")
 ```
 
+
 ---
 
+# 8|  R gives you a language for data
+
+
+```{r, echo=F, eval=F}
+install.pacakges("tidyr")
+```
+
+.float-left[
+![:scale 90%](http://stagraph.com/HowTo/Prepocess/Images/tidyr.png)
+]
+
+<br><br>
+## `gather()` pulls your data together
+## `spread()` breaks it out into more columns
+```{r, eval=T, echo=T, warning=F}
+library(tidyr)  #install.packages(tidyr)
+
+long_met <- big_met %>% 
+            gather(Parameter, Result, -time, -summary, -site_catid)
+
+```
+
+
+---
 
 # dplyr gives you powerful words
 
@@ -715,12 +824,13 @@ kable(head(fond_met, 4), 'html')
 
 ---
 
-# 8| Join related data tables
+# 9| Join related data tables
 
 Since our concentration data has the same format and only the year is changing, we can bind the two tables together with the function `bind_rows()`.
 
 ![:scale 80%](https://cdn-images-1.medium.com/max/1600/1*uG1vjoSQj7gMm8craCj2xA.png)
 
+--
 
 ```{r, eval=T, echo=T, message=F, warning=F}
 air_data <- bind_rows(data_2015, data_2014)
@@ -735,18 +845,23 @@ air_data <- bind_rows(data_2015, data_2014)
 
 A `left_join()` can pull together two tables like this:
 
-.bump-right [
-![:scale 85%](images/leftjoin.jpg)
-]
-
-`left_join()` can pull together our weather and concentration data by the __date__ column in each table.
-
 ```{r, eval = F, echo = T}
 starwars_data <- left_join(trainer_data, starwars)
 ```
 
+.bump-right[
+![:scale 97%](images/leftjoin.jpg)
+]
 
-```{r, eval=T, echo=T, message=F, warning=F, include = F, results='hide'}
+
+---
+
+# Join MET data to monitoring data
+
+`left_join()` can pull together our weather and concentration data by the __date__ column in each table.
+
+
+```{r, eval=T, message=F, warning=F, results='hide'}
 
 # Format the dates for both tables
 library(lubridate) #install.packages("lubridate")
@@ -765,19 +880,9 @@ fond_met <- mutate(fond_met,
 air_met <- left_join(air_data, fond_met, by = "date_time")
 ```
 
-
 Now our data looks like this
 ```{r, echo=F}
-kable(head(select(air_met, -date_time, -Time), 1), 'html')
-```
-
-
-```{r, eval=T, include = F}
-air_met$Date <- as.Date(air_met$Date)
-
-air_met$Conc <- signif(air_met$Conc, 3)
-
-write_csv(select(air_met, site_catid, Date, Parameter, Conc, windSpeed, windBearing, Latitude, Longitude) %>% arrange(Parameter, Conc), "air_met.csv")
+kable(head(select(air_met, -c(StateCode:Longitude),-date_time, -Time), 1), 'html')
 ```
 
 
@@ -803,22 +908,21 @@ pairs(select(ozone, temperature, windSpeed, Conc, Hour, humidity), col=rgb(0,100
 
 ---
 
-# 9| Documentation and transparency
+# 10| Documentation and transparency
 
 
-.indent[
 ## **To do list**
 
-1. Analyze data
+ 1. Analyze data
 
 --
 
-2. ?
+ 2. ?
 
 --
 
-3. ??
-]
+ 3. ??
+
 
 --
 
@@ -830,7 +934,7 @@ R forces me to write each step into a text file and __voila!__ There's documenta
 
 <div class="tip">
 .pad-right[
-You are encouraged to copy and share analyses and charts with others.
+You're encouraged to copy and **share** analyses and charts with others.
 
 It's especially fun to copy **yourself** from 2 years ago.
 ]
@@ -840,7 +944,7 @@ It's especially fun to copy **yourself** from 2 years ago.
 
 ---
 
-# 10| You can't break your data
+# 11| You can't break your data
 
 <div class="quiz">
 
@@ -865,26 +969,28 @@ It's especially fun to copy **yourself** from 2 years ago.
 
 ---
 
-# 10| You can't break your data
+# 11| You can't break your data
 
+<br>
 
-You will notice that when we're in R, we always use a name for the data and then tell R to do something to the named object.
+R is always acting on a **copy** of the data.
+
+In R we give the data a name and then tell R to do something with it.
 
 <br>
 
 It looks like this:
 
+.bigtext[
 ```{r, eval=F}
 new_data <- read_excel("air-data.csv")
 ```
-
+]
 <br>
 
 --
 
-R always acts on a **copy** of the data.
-
-It isn't changing the original file. So no worries! 
+The original raw-data file never changes. So no more worries.
 
 ```{r, eval=F, echo=F}
 So far we have joined a table of MET data with concentration data, and the original data files have not been changed. The raw data is still safe.
@@ -897,7 +1003,9 @@ To look at subsets of data or to store summary results we can create copies of t
 
 ---
 
-# 10| You can't break your data
+# 11| You can't break your data
+
+<br>
 
 If you want to create data from scratch, give the value a name. 
 
@@ -924,31 +1032,7 @@ current_temp
 
 ---
 
-# 12|  R gives you a language for data
-
-<br>
-
-```{r, echo = F, eval = F}
-install.pacakges("tidyr")
-```
-
-.float-left[
-![:scale 70%](http://stagraph.com/HowTo/Prepocess/Images/tidyr.png)
-]
-## `gather()` pulls your data together
-## `spread()` breaks it out into more columns
-```{r, eval=T, echo=T, warning=F}
-library(tidyr)
-
-long_met <- big_met %>% 
-            gather(Parameter, Result, -time, -summary, -site_catid)
-
-```
-
-
----
-
-# 13| Reproducible - _update with new data_
+# 12| Reproducible - _update with new data_
 
 <br>
 
@@ -956,8 +1040,7 @@ long_met <- big_met %>%
 
 --
 
-> Since we saved the script we can change the date in the `read_excel()` to 
-> __2016__.
+> Since we saved the script we can change the date in `read_excel()` to __2016__.
 >
 
 <br>
@@ -975,6 +1058,8 @@ We changed the _year_ and __BOOM!__  We get updated data.
 ---
 
 # Update the charts 
+
+<br>
 
 Now we can follow the same steps we used before to bind the tables together or create charts.
 
@@ -998,16 +1083,16 @@ pm_data <- filter(data_2016, Parameter == 88101) %>% group_by(site_catid, Date) 
 pm_sums <- group_by(pm_data, site_catid, aqi_color) %>% summarize(count = n()) %>% arrange(desc(aqi_color)) %>% ungroup() %>% mutate(aqi_color = forcats::fct_recode(aqi_color, Good = "#53BF33", Moderate = "#FFEE00", `Unhealthy for some` = "#DB6B1A", Unhealthy = "#ff0000")) %>%  bind_rows(data_frame(site_catid=c("27-017-7417","27-137-7554"), aqi_color=aqi_levels[c(3,4)], count=c(0,0))) %>% arrange(desc(aqi_color))
 
 iron(
-  waffle(filter(pm_sums, site_catid == "27-017-7417") %>% select(aqi_color, count), rows = 7,  size = 0.3, colors = c("#65B345","#F2D01A","#F26522","#B11117"), title = "Fond du Lac AQI :: 2015") + theme(legend.position="left", legend.text=element_text(size=18), plot.title=element_text(size=26)),
+  waffle(filter(pm_sums, site_catid == "27-017-7417") %>% select(aqi_color, count), rows = 7, size = 0.25, colors = c("#65B345","#F2D01A","#F26522","#B11117"), title = "Fond du Lac AQI :: 2015") + theme(legend.position="left", legend.text=element_text(size=26), plot.title=element_text(size=32)),
   
-  waffle(filter(pm_sums, site_catid == "27-137-7554") %>% select(aqi_color, count), rows = 7,  size = 0.3, colors = rev(c("#B11117","#F26522","#F2D01A","#65B345")), xlab = "1 square = 1 day", title  = "Duluth AQI :: 2015") +  theme(legend.position="left", legend.text=element_text(size=18), plot.title=element_text(size=26), axis.title=element_text(size=18)))
+  waffle(filter(pm_sums, site_catid == "27-137-7554") %>% select(aqi_color, count), rows = 7, size = 0.25, colors = rev(c("#B11117","#F26522","#F2D01A","#65B345")), xlab = "1 square = 1 day", title  = "Duluth AQI :: 2015") +  theme(legend.position="left", legend.text=element_text(size=26), plot.title=element_text(size=32), axis.title.x=element_text(size=28)))
 ```
 
 
 
 ---
 
-# 14| Make maps and never get lost again
+# 13| Make maps and never get lost again
 
 > Where is the Fond du Lac monitor? 
 
@@ -1025,13 +1110,12 @@ air_sites <- group_by(air_met, site_catid) %>% slice(1) %>% filter(SiteNum != 70
 # Quick interactive map
 leaflet(data = air_sites) %>%
    addTiles() %>%
-   addCircleMarkers(label = ~as.character(SiteNum), 
-              labelOptions = labelOptions(noHide = T))
+   addCircleMarkers(label = ~as.character(SiteNum))
 ``` 
 
 ---
 
-# 14| Make maps and never get lost again
+# 13| Make maps and never get lost again
 
 <br>
 
@@ -1048,10 +1132,9 @@ leaflet(data = air_sites) %>% addTiles() %>%
 
 ---
 
-# 14| Make maps and never get lost again
+# 13| Make maps and never get lost again
 
 #### Let's add where we are right now.
-
 
 ```{r, eval=T, echo=T, message=FALSE, warning=FALSE, out.width="77%", out.height="370px"}
 # Label our location
@@ -1077,23 +1160,20 @@ leaflet(data = air_sites) %>% addTiles() %>%
 library(weatherAlerts)
 library(leaflet)
 
-alerts <- getAlerts("CA") # takes about 20 seconds
+alerts   <- getAlerts("CA") # takes about 20 seconds
 
 severity <- alerts@data$severity
 
-colorMap <- c(Minor    = "green",
-              Moderate = "yellow",
-              Severe   = "red",
-              Extreme  = "magenta",
-              Unknown  = "grey")
+```
 
-severityColors <- unname(colorMap[severity])
+--
 
+
+```{r, eval=F}
 leaflet() %>%
   addTiles() %>%
-  addPolygons(data = alerts, color = "grey", 
-              fillColor = severityColors, weight = 1, 
-              popup = ~paste0("<strong>", event, "</strong>", "<br><br>", summary))
+  addPolygons(data  = alerts, 
+              popup = ~paste0(event, summary))
 ```
 
 
@@ -1101,9 +1181,32 @@ leaflet() %>%
 
 # Return of the roses
 
-Remember the first pollutant rose we looked at? Let's load the Fond du Lac data set into the tool to see if the refinery explosion could have potentially impacted the PM2.5 concentrations.
+Remember the first pollutant rose we looked at? Let's load the Fond du Lac data set into the tool to see if we can find any PM2.5 soruces.
 
-[Pollution rose for any data](https://air-data.shinyapps.io/pollution-roses/)
+__First save the data.__
+
+
+```{r, eval=F}
+
+air_met %>% 
+  select(site_catid, Date, Parameter, Conc, temperature, windSpeed, windBearing, Latitude, Longitude) %>% 
+  arrange(Parameter, Conc) %>%
+  write_csv("air_met.csv")
+```
+
+```{r, eval=T, include=F}
+air_met$Date <- as.Date(air_met$Date)
+
+air_met$Conc <- signif(air_met$Conc, 3)
+
+write_csv(select(air_met, site_catid, Date, Parameter, Conc, temperature, windSpeed, windBearing, Latitude, Longitude) %>% arrange(Parameter, Conc), "air_met.csv")
+```
+
+--
+
+<br>
+__Open the Pollution rose tool >__
+[Pollution rose mapper](https://air-data.shinyapps.io/pollution-roses/)
 
 
 ---
@@ -1134,8 +1237,9 @@ Remember the first pollutant rose we looked at? Let's load the Fond du Lac data 
 
 ---
 
-# 16| Congratulations!
+# Congratulations!
 
+<br>
 
 ```{r, echo=T, eval=T, message=T, warning=F}
 library(cowsay)
@@ -1148,20 +1252,27 @@ say("Meowww. You deserve a break.", "cat")
 
 # Congratulations! 
 
-<img src="https://assets.wired.com/photos/w_2048/wp-content/uploads/2015/02/catinbox_simba_by-jacme31.jpg" width="61%" align="right" style="margin-left: 35px; max-width: 64%" />
 
-You've completed the Super fast R Intro and are ready for Day 1 of R Camp. 
+You've completed the fast R Intro and are ready for Day 1 of R Camp.
 
-In the mean time you can find help on _R-Bloggers_, download the learning package _swirl_, or try this [Coursera](https://www.coursera.org/specializations/jhu-data-science) course.
+<br>
+
+<img src="https://assets.wired.com/photos/w_2048/wp-content/uploads/2015/02/catinbox_simba_by-jacme31.jpg" width="55%" align="right" style="margin-left: 35px; max-width: 55%" />
 
 
-There's even an R intro for __pirates__. If you are a pirate, you can sail the high seas [here](http://tryr.codeschool.com/).
+<br>
 
-We want to meet you. Come talk to us. Send us an e-mail. 
+In the mean time download the learning package _swirl_ or try a [Coursera](https://www.coursera.org/specializations/jhu-data-science) course.
 
-We are  [Kristie.Ellickson@state.mn.us]() and [Dorian.Kvale@state.mn.us]()
 
-We like __R__. We aren't computer scientists and you don't need to be either.
+If you think you might be a __pirate__, you can sail the high seas [here](http://tryr.codeschool.com/).
+
+<br><br>
+
+Come talk data with us or send us an e-mail. 
+
+[Kristie.Ellickson@state.mn.us]() and [Dorian.Kvale@state.mn.us]()
+
 
 
 ---
