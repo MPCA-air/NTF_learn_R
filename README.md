@@ -58,14 +58,11 @@ Tutorials and workshops online at `https://MPCA-air.github.io/RCamp`
 - RStudio: `https://www.rstudio.com/online-learning/`
 - `library(swirl)` for interactive lessons in R
 - Intro to R with Pirates! at `http://tryr.codeschool.com/`
-- More pirates at `YaRrr! Pirates Guide to R`
 - Coursera data science: `https://www.coursera.org/jhu`
-
 
 - R for Data Science by Hadley - `http://r4ds.had.co.nz/`
 - R Bloggers articles at `https://www.r-bloggers.com/`
 - `#rstats` on Twitter
-- R cookbooks at `cookbook-r.com` (a variety of simple recipes for data and charts)
 
 </div>
 
