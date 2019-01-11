@@ -10,7 +10,7 @@ __Speakers:__ _Melinda Ronca-Battist, Dorian Kvale, Kristie Ellickson_
 
 ---
 
-`https://mpca-air.github.io/NTF_learn_R/NTF_Demo.html`
+https://mpca-air.github.io/NTF_learn_R/NTF_Demo.html
 
 
 
@@ -19,7 +19,7 @@ __Speakers:__ _Melinda Ronca-Battist, Dorian Kvale, Kristie Ellickson_
 
 ---
 
-`https://mpca-air.github.io/NTF_learn_R/00_Install.html`
+https://mpca-air.github.io/NTF_learn_R/00_Install.html
 
 <br>
 
