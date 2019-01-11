@@ -19,7 +19,7 @@ https://mpca-air.github.io/NTF_learn_R/NTF_Demo.html
 
 ---
 
-https://mpca-air.github.io/NTF_learn_R/00_Install.html
+https://itep-r.netlify.com/page/install.html
 
 <br>
 
