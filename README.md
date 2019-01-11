@@ -31,7 +31,7 @@ https://itep-r.netlify.com/page/install.html
 
 <div class="col2">
 
-- 2-Day hands-on course
+- 3-Day hands-on course
 - Using real air monitoring data
 - Includes criteria pollutants and air toxics
 - Make charts, maps, and pollution roses
